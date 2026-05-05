@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>TestHub</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600&display=swap');
 :root{
@@ -674,8 +675,27 @@ function pick(btn,ch,co,e){
     else if(j===ch&&!ok)b.classList.add('wrong');
     else b.classList.add('dim');
   });
-  if(ok){score++;document.getElementById('scTag').textContent=`✓ ${score}`;}
-  else btn.classList.add('shk');
+  // Telegram Mini App haptic feedback + vibration fallback
+  if(ok){
+    score++;
+    document.getElementById('scTag').textContent=`✓ ${score}`;
+    // Light short feedback for correct
+    try{
+      if(window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.HapticFeedback){
+        window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
+      }
+      if(navigator.vibrate)navigator.vibrate(50);
+    }catch(e){}
+  } else {
+    btn.classList.add('shk');
+    // Stronger longer feedback for wrong - double pulse
+    try{
+      if(window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.HapticFeedback){
+        window.Telegram.WebApp.HapticFeedback.notificationOccurred('error');
+      }
+      if(navigator.vibrate)navigator.vibrate([100,60,150]);
+    }catch(e){}
+  }
   showFB(ok,ok?null:qs[qi].o[co]);
 }
 
@@ -736,6 +756,13 @@ function toast(msg){
   const t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');
   setTimeout(()=>t.classList.remove('on'),2500);
 }
+// Initialize Telegram WebApp
+try{
+  if(window.Telegram&&window.Telegram.WebApp){
+    window.Telegram.WebApp.ready();
+    window.Telegram.WebApp.expand();
+  }
+}catch(e){}
 init();
 </script>
 </body>
