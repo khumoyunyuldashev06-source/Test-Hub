@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>TestHub</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600&display=swap');
+:root{
+  --bg:#03040d;--card:#0b0d1e;--border:#181e3a;--border2:#1f2745;
+  --accent:#6257ff;--accent2:#b94dff;--green:#00e591;--red:#ff3355;--yellow:#ffc300;
+  --text:#d8dcff;--muted:#404878;--white:#fff;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 80% 60% at 10% -5%,rgba(98,87,255,.14) 0%,transparent 65%),
+             radial-gradient(ellipse 60% 50% at 90% 100%,rgba(185,77,255,.09) 0%,transparent 65%);}
+.app{position:relative;z-index:1;min-height:100vh;}
+.screen{display:none;}
+.screen.active{display:flex;flex-direction:column;animation:fu .32s ease both;}
+@keyframes fu{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+/* HOME */
+#home{min-height:100vh;}
+.home-hero{padding:48px 22px 26px;text-align:center;
+background:linear-gradient(180deg,rgba(98,87,255,.1) 0%,transparent 100%);
+border-bottom:1px solid var(–border);}
+.brand{display:inline-flex;align-items:center;gap:10px;margin-bottom:20px;}
+.brand-ico{width:48px;height:48px;border-radius:15px;font-size:24px;display:flex;align-items:center;justify-content:center;
+background:linear-gradient(135deg,var(–accent),var(–accent2));box-shadow:0 0 28px rgba(98,87,255,.45);}
+.brand-name{font-family:‘Syne’,sans-serif;font-size:22px;font-weight:800;
+background:linear-gradient(90deg,var(–accent),var(–accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-h{font-family:‘Syne’,sans-serif;font-size:clamp(22px,6vw,34px);font-weight:800;line-height:1.2;margin-bottom:8px;}
+.hero-h span{background:linear-gradient(90deg,#8078ff,var(–accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-sub{color:var(–muted);font-size:14px;margin-bottom:18px;}
+.chips{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;}
+.chip{background:rgba(98,87,255,.11);border:1px solid rgba(98,87,255,.22);border-radius:99px;
+padding:4px 13px;font-size:12px;color:#9090d0;font-weight:500;}
+
+.sec-lbl{padding:18px 20px 8px;font-family:‘Syne’,sans-serif;font-size:10px;font-weight:700;
+letter-spacing:2.5px;text-transform:uppercase;color:var(–muted);}
+
+.subjects{padding:0 13px 90px;display:flex;flex-direction:column;gap:10px;}
+
+.sc{background:var(–card);border:1px solid var(–border);border-radius:18px;
+padding:16px 17px;display:flex;align-items:center;gap:13px;cursor:pointer;
+transition:border-color .18s,box-shadow .18s,transform .15s;position:relative;overflow:hidden;}
+.sc::before{content:’’;position:absolute;inset:0;border-radius:18px;opacity:0;
+background:linear-gradient(135deg,var(–sc-g,rgba(98,87,255,.07)),transparent);transition:opacity .2s;}
+.sc:hover::before,.sc:focus::before{opacity:1;}
+.sc:hover{border-color:var(–sc-b,rgba(98,87,255,.38));box-shadow:0 0 18px rgba(98,87,255,.1);}
+.sc:active{transform:scale(.975);}
+.sc.locked{opacity:.4;cursor:default;}
+.sc-ico{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;}
+.sc-info{flex:1;min-width:0;}
+.sc-name{font-family:‘Syne’,sans-serif;font-size:15px;font-weight:700;color:var(–white);
+margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sc-meta{font-size:12px;color:var(–muted);}
+.sc-btn{background:linear-gradient(135deg,var(–accent),var(–accent2));border-radius:10px;
+padding:6px 14px;font-family:‘Syne’,sans-serif;font-size:11px;font-weight:700;color:#fff;flex-shrink:0;}
+.sc-btn.lock{background:var(–border2);color:var(–muted);}
+
+.footer-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(3,4,13,.94);backdrop-filter:blur(20px);
+border-top:1px solid var(–border);padding:10px 20px 18px;text-align:center;font-size:12px;color:var(–muted);}
+
+/* QUIZ */
+#quiz-screen{min-height:100vh;}
+.qhdr{display:flex;align-items:center;gap:10px;padding:13px 15px;position:sticky;top:0;z-index:30;
+background:rgba(3,4,13,.97);backdrop-filter:blur(22px);border-bottom:1px solid var(–border);}
+.back{width:36px;height:36px;border-radius:10px;background:var(–card);border:1px solid var(–border);
+display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(–text);
+flex-shrink:0;transition:all .14s;}
+.back:active{transform:scale(.9);}
+.qhdr-mid{flex:1;min-width:0;}
+.qhdr-nm{font-family:‘Syne’,sans-serif;font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.qhdr-pr{font-size:11px;color:var(–muted);}
+.sc-tag{background:rgba(0,229,145,.1);border:1px solid rgba(0,229,145,.22);border-radius:99px;
+padding:4px 11px;font-size:12px;font-weight:600;color:var(–green);flex-shrink:0;white-space:nowrap;}
+
+.pb-wrap{padding:8px 15px 0;background:rgba(3,4,13,.97);}
+.pb{height:3px;background:var(–border);border-radius:99px;overflow:hidden;}
+.pb-fill{height:100%;background:linear-gradient(90deg,var(–accent),var(–accent2));border-radius:99px;transition:width .4s ease;}
+
+.q-area{padding:18px 17px 0;}
+.q-num{display:inline-block;background:rgba(98,87,255,.13);color:#9090ff;
+font-family:‘Syne’,sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;
+border-radius:7px;padding:3px 9px;margin-bottom:10px;}
+.q-text{font-family:‘Syne’,sans-serif;font-size:15px;font-weight:700;line-height:1.55;
+color:var(–white);margin-bottom:0;}
+
+.opts{padding:14px 17px 130px;display:flex;flex-direction:column;gap:8px;}
+.opt{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:13px;
+border:1.5px solid var(–border);background:var(–card);cursor:pointer;width:100%;
+text-align:left;transition:all .16s;position:relative;overflow:hidden;}
+.opt:active:not(.ans){transform:scale(.98);}
+.opt.ans{cursor:default;}
+.opt-let{width:29px;height:29px;border-radius:8px;background:var(–border2);
+display:flex;align-items:center;justify-content:center;font-family:‘Syne’,sans-serif;
+font-size:11px;font-weight:800;color:var(–muted);flex-shrink:0;transition:all .16s;}
+.opt-txt{font-size:13px;color:var(–muted);line-height:1.45;flex:1;transition:color .16s;}
+.opt-ico{font-size:16px;flex-shrink:0;opacity:0;transition:opacity .16s;}
+
+.opt.correct{background:rgba(0,229,145,.07);border-color:var(–green);}
+.opt.correct .opt-let{background:var(–green);color:#000;font-weight:800;}
+.opt.correct .opt-txt{color:var(–green);font-weight:600;}
+.opt.correct .opt-ico{opacity:1;}
+.opt.wrong{background:rgba(255,51,85,.07);border-color:var(–red);}
+.opt.wrong .opt-let{background:var(–red);color:#fff;}
+.opt.wrong .opt-txt{color:var(–red);}
+.opt.wrong .opt-ico{opacity:1;}
+.opt.dim{opacity:.32;}
+
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.1);animation:rpl .5s ease-out;pointer-events:none;}
+@keyframes rpl{from{transform:scale(0);opacity:1}to{transform:scale(5);opacity:0}}
+@keyframes shk{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+.shk{animation:shk .36s ease;}
+
+/* FEEDBACK */
+.fb{position:fixed;bottom:0;left:0;right:0;z-index:40;padding:14px 17px 26px;
+background:rgba(5,6,18,.98);backdrop-filter:blur(24px);border-top:1px solid var(–border);
+transform:translateY(100%);transition:transform .28s cubic-bezier(.34,1.56,.64,1);}
+.fb.show{transform:translateY(0);}
+.fb-row{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.fb-em{font-size:28px;}
+.fb-ti{font-family:‘Syne’,sans-serif;font-size:15px;font-weight:800;}
+.fb-ti.ok{color:var(–green);}
+.fb-ti.no{color:var(–red);}
+.fb-su{font-size:12px;color:var(–muted);margin-top:2px;line-height:1.4;}
+.nx-btn{width:100%;padding:14px;border-radius:13px;border:none;
+background:linear-gradient(135deg,var(–accent),var(–accent2));
+color:#fff;font-family:‘Syne’,sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .15s;}
+.nx-btn:active{transform:scale(.97);opacity:.88;}
+
+/* RESULT */
+#result-screen{min-height:100vh;align-items:center;justify-content:center;padding:36px 22px;text-align:center;}
+.res-em{font-size:70px;margin-bottom:14px;}
+.res-ti{font-family:‘Syne’,sans-serif;font-size:25px;font-weight:800;margin-bottom:6px;}
+.res-su{color:var(–muted);font-size:13px;margin-bottom:26px;line-height:1.5;}
+.ring-wrap{width:156px;height:156px;position:relative;margin:0 auto 26px;}
+.ring-wrap svg{width:100%;height:100%;transform:rotate(-90deg);}
+.ring-bg{fill:none;stroke:var(–border2);stroke-width:9;}
+.ring-fill{fill:none;stroke-width:9;stroke-linecap:round;transition:stroke-dashoffset 1.1s cubic-bezier(.4,0,.2,1);}
+.ring-ctr{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.ring-pct{font-family:‘Syne’,sans-serif;font-size:28px;font-weight:800;}
+.ring-lbl{font-size:10px;color:var(–muted);}
+.res-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;width:100%;max-width:300px;margin-bottom:24px;}
+.rs-box{background:var(–card);border:1px solid var(–border);border-radius:13px;padding:12px 6px;}
+.rs-v{font-family:‘Syne’,sans-serif;font-size:22px;font-weight:800;margin-bottom:2px;}
+.rs-l{font-size:11px;color:var(–muted);}
+.res-btns{display:flex;flex-direction:column;gap:9px;width:100%;max-width:300px;}
+.btn-r{padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,var(–accent),var(–accent2));
+color:#fff;font-family:‘Syne’,sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .15s;}
+.btn-h{padding:14px;border-radius:13px;border:1px solid var(–border);background:var(–card);
+color:var(–text);font-family:‘Syne’,sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .15s;}
+.btn-r:active,.btn-h:active{transform:scale(.97);}
+
+/* CONFETTI */
+.conf-w{position:fixed;inset:0;pointer-events:none;z-index:100;overflow:hidden;}
+.conf{position:absolute;top:-10px;border-radius:2px;animation:fall linear both;}
+@keyframes fall{from{transform:translateY(-10px) rotate(0)}to{transform:translateY(110vh) rotate(720deg);opacity:0}}
+
+/* TOAST */
+.toast{position:fixed;bottom:72px;left:50%;transform:translateX(-50%) translateY(8px);
+background:var(–card);border:1px solid var(–border2);color:var(–text);
+padding:9px 17px;border-radius:10px;font-size:13px;z-index:999;
+white-space:nowrap;opacity:0;transition:all .28s;pointer-events:none;}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+
+</head>
+<body>
+<div class="app">
+
+<!-- HOME -->
+
+<div id="home" class="screen active">
+  <div class="home-hero">
+    <div class="brand">
+      <div class="brand-ico">🧠</div>
+      <div class="brand-name">TestHub</div>
+    </div>
+    <div class="hero-h">Bilimingizni <span>sinang!</span></div>
+    <div class="hero-sub">Fanni tanlang va testni boshlang</div>
+    <div class="chips">
+      <div class="chip">🎓 4 ta fan</div>
+      <div class="chip">📝 360+ savol</div>
+      <div class="chip">⚡ Tez natija</div>
+    </div>
+  </div>
+  <div class="sec-lbl">FANLAR</div>
+  <div class="subjects" id="subjectsGrid"></div>
+  <div class="footer-bar">Yangi fanlar tez orada qo'shiladi 🚀</div>
+</div>
+
+<!-- QUIZ -->
+
+<div id="quiz-screen" class="screen">
+  <div class="qhdr">
+    <div class="back" onclick="goHome()">←</div>
+    <div class="qhdr-mid">
+      <div class="qhdr-nm" id="qName"></div>
+      <div class="qhdr-pr" id="qProg"></div>
+    </div>
+    <div class="sc-tag" id="scTag">✓ 0</div>
+  </div>
+  <div class="pb-wrap"><div class="pb"><div class="pb-fill" id="pbFill" style="width:0%"></div></div></div>
+  <div class="q-area">
+    <div class="q-num" id="qNum">SAVOL 1</div>
+    <div class="q-text" id="qTxt"></div>
+  </div>
+  <div class="opts" id="optsList"></div>
+  <div class="fb" id="fb">
+    <div class="fb-row">
+      <div class="fb-em" id="fbEm"></div>
+      <div><div class="fb-ti" id="fbTi"></div><div class="fb-su" id="fbSu"></div></div>
+    </div>
+    <button class="nx-btn" id="nxBtn" onclick="nextQ()">Keyingisi →</button>
+  </div>
+</div>
+
+<!-- RESULT -->
+
+<div id="result-screen" class="screen">
+  <div class="res-em" id="resEm">🏆</div>
+  <div class="res-ti" id="resTi"></div>
+  <div class="res-su" id="resSu"></div>
+  <div class="ring-wrap">
+    <svg viewBox="0 0 160 160">
+      <circle class="ring-bg" cx="80" cy="80" r="68"/>
+      <circle class="ring-fill" id="ringFill" cx="80" cy="80" r="68" stroke-dasharray="427" stroke-dashoffset="427"/>
+    </svg>
+    <div class="ring-ctr">
+      <div class="ring-pct" id="ringPct">0%</div>
+      <div class="ring-lbl">natija</div>
+    </div>
+  </div>
+  <div class="res-stats">
+    <div class="rs-box"><div class="rs-v" id="rsOk" style="color:var(--green)">0</div><div class="rs-l">To'g'ri</div></div>
+    <div class="rs-box"><div class="rs-v" id="rsNo" style="color:var(--red)">0</div><div class="rs-l">Noto'g'ri</div></div>
+    <div class="rs-box"><div class="rs-v" id="rsAll" style="color:var(--accent)">0</div><div class="rs-l">Jami</div></div>
+  </div>
+  <div class="res-btns">
+    <button class="btn-r" onclick="retry()">🔄 Qayta urinish</button>
+    <button class="btn-h" onclick="goHome()">🏠 Bosh sahifa</button>
+  </div>
+</div>
+
+</div>
+<div class="conf-w" id="confW"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const SUBJECTS=[
+{id:'raqamli',name:'Raqamli Iqtisodiyot',icon:'💻',ibg:'rgba(98,87,255,.17)',sg:'rgba(98,87,255,.07)',sb:'rgba(98,87,255,.4)',desc:'100 ta savol',
+questions:[
+{q:'"Axborot jamiyati" atamasi qachon va kimlar tomonidan kiritilgan?',o:['XX asrning boshlarida P.Bruker tomonidan','XX asrning 1960 yillarida T.Umesov va F.Maxluplar','XX asrning oxirida 1995 yilda N.Negroponte','1999 yilda Nil Leyn tomonidan'],c:1},
+{q:'"Raqamli iqtisodiyot" tushunchasiga asos solgan olim?',o:['Don Tapskot, 1994-1995 yillar','Nikolas Negroponte, 1995 yil','Lin Margerio, 1999 yil','P.Bruker, 1990 yillar'],c:0},
+{q:'Postindustrial jamiyatda bilim asosiy omil hisoblanadigan bosqich?',o:['Sanoatgacha (agrar) jamiyat','Sanoat jamiyati (XVIII-XX asrlar)','Postindustrial jamiyat (XX asr ikkinchi yarmi)','Barcha javoblar to\'g\'ri'],c:2},
+{q:'Postindustrial iqtisodiyotning umumlashtiruvchi konsepsiyasi?',o:['Xizmat ko\'rsatish iqtisodiyoti','Axborot iqtisodiyoti','Bilimlar iqtisodiyoti','Raqamli iqtisodiyot'],c:2},
+{q:'"Kreativ iqtisodiyot" qaysi konsepsiyadan kelib chiqqan?',o:['Axborot iqtisodiyoti','Bilimlar iqtisodiyoti','Internet iqtisodiyoti','Tarmoq iqtisodiyoti'],c:1},
+{q:'Raqamli iqtisodiyotning uch bosqichli aloqa tizimi?',o:['Raqamli muhit, platformalar, ekotizimlar','Internet, tarmoq, ma\'lumotlar bazasi','Dasturiy ta\'minot, apparat, foydalanuvchilar','Hukumat, biznes, tadbirkorlik'],c:0},
+{q:'Raqamli platforma yaratishda texnologik tamoyillar?',o:['Ma\'lumotlar bazasining ochiqligi','Tarmoqning o\'zaro ta\'siri mexanizmi','Texnologik jarayonlarning ochiqligi','Barcha javoblar to\'g\'ri'],c:3},
+{q:'Axborot iqtisodiyotida mahsuldorlik nimaga bog\'liq?',o:['Axborotni yig\'ish, saqlash va himoya qilish','Ma\'lumotlarni to\'plash, tahlil va qarorlar qabul qilish','Raqamli texnologiyalarni joriy etish darajasi','Axborot infratuzilmasini moliyalashtirish'],c:1},
+{q:'Tashkilotlar, hukumat va fuqarolar hamkorligini ta\'minlovchi komponent?',o:['Raqamli platformalar','AKT sanoati','Raqamli iqtisodiyot ekotizimlari','Internet iqtisodiyoti'],c:2},
+{q:'Raqamli iqtisodiyotdan foyda oluvchilarning ketma-ketligi?',o:['Davlat - Biznes - Aholi','Aholi - Biznes - Davlat','Biznes - Aholi - Davlat','Davlat - Aholi - Biznes'],c:0},
+{q:'Lin Margerio (1999) raqamli iqtisodiyotning qaysi qismlarini ajratgan?',o:['Internetning kengayishi, elektron savdo','Faqat elektron tijorat va banking','Faqat tarmoq iqtisodiyoti va blokcheyn','Zamonaviy AKT va dasturiy ta\'minot'],c:0},
+{q:'Raqamli segmentga tegishli kompaniyalar?',o:['Amazon va eBay','Google va Facebook','Uber va Airbnb','Alibaba va Amazon'],c:1},
+{q:'Raqamli iqtisodiyot tarkibiy elementlariga nima KIRMAYDI?',o:['Telekommunikatsiya tizimlari','Raqamli almashish platformalari','An\'anaviy qog\'oz hujjat aylanmasi','Kiberxavfsizlik'],c:2},
+{q:'AKT ning zamonaviy vositalariga qaysilar kiradi?',o:['Shaxsiy kompyuterlar va axborot tarmoqlari','Sun\'iy intellekt va zamonaviy aloqa vositalari','Dasturiy ta\'minot va ma\'lumot saqlash','Barcha javoblar to\'g\'ri'],c:3},
+{q:'Texnologik tartib nima?',o:['Kompaniyalarning savdo strategiyasi','Texnologik agregatlar, standartlar va tamoyillar guruhi','Davlat tomonidan boshqariladigan texnologiyalar','Faqat IT sanoatiga tegishli tushuncha'],c:1},
+{q:'Birinchi sanoat inqilobi qaysi ixtiro bilan bog\'liq?',o:['Elektr dvigatel','Bug\' dvigateli','Kompyuter','Internet'],c:1},
+{q:'Ikkinchi sanoat inqilobining asosiy ixtirosi?',o:['Bug\' dvigatellari','Genri Fordning konveyer liniyasi','Shaxsiy kompyuterlar','Mobil telefon'],c:1},
+{q:'Uchinchi sanoat inqilobi qaysi texnologiyalar bilan boshlandi?',o:['Bug\' dvigatelining ixtirosi','Kompyuter va sanoat robotlari','Smartfonlar va bulutli texnologiyalar','3D printer va kriptovalyuta'],c:1},
+{q:'"Sanoat 4.0" atamasi qachon va qayerda kiritilgan?',o:['2016 yilda Davos forumida','2011 yilda Gannover yarmarkasida','2000 yilda Silicon Valley\'da','1990 yilda Tokyo forumida'],c:1},
+{q:'"Kotelnikov teoremasi" nimani isbotladi?',o:['Kompyuter tezligini oshirish mumkinligi','Analog signalni raqamli signalga aylantirish','Internetning global tarqalishi','Sun\'iy intellektning yaratilishi'],c:1},
+{q:'ARPANET qachon yaratilgan?',o:['1957 yilda','1969 yilda','1990 yilda','2000 yilda'],c:1},
+{q:'Globallashuvning uchinchi bosqichi qachon boshlangan?',o:['1870-yildan, transport rivojlanishi','1945-yildan, proteksionizmni yo\'q qilish','1980-yillardan, iqtisodiy siyosatning o\'zgarishi','2010-yildan, mobil texnologiyalar'],c:2},
+{q:'Transchegaraviy elektron tijorat o\'sishini ko\'rsatuvchi trend?',o:['1-trend','2-trend','3-trend','5-trend'],c:0},
+{q:'Google ni kim yaratgan?',o:['Mark Tsukerberg va Dastinn Moskovits','Stiv Jobs va Stiv Voznyak','Larri Peyj va Sergey Brin','Bill Geyts va Pol Allen'],c:2},
+{q:'Alibaba Group qachon tashkil etilgan?',o:['1995 yilda','1998 yilda','1999 yilda','2003 yilda'],c:2},
+{q:'Raqamli iqtisodiyot qurish vazifalariga qaysi biri KIRMAYDI?',o:['Barqaror raqamli ekotizimni shakllantirish','Me\'yoriy-huquqiy hujjatlarni ishlab chiqish','An\'anaviy qog\'oz hujjat aylanmasini rivojlantirish','Risklar (tavakkalchilik)ni boshqarish'],c:2},
+{q:'Sun\'iy intellekt (AI) nima?',o:['Kompyuter apparati ishlab chiqarishni avtomatlashtirish','Aqlli mashinalarni boshqarish texnologiyasi','Internet tarmoqlarini tubdan o\'zgartiruvchi texnologiya','Ma\'lumotlarni saqlash usuli'],c:1},
+{q:'Bulutli hisoblash (Cloud Computing) nima?',o:['Faqat axborotlarni masofadan saqlash','Masofadan saqlash, hisoblash va tarmoq arxitekturasi','Internet tarmog\'ini yaratish texnologiyasi','Dasturiy ta\'minotni ishlab chiqarish metodikasi'],c:1},
+{q:'Blokcheyn texnologiyasi nima uchun mo\'ljallangan?',o:['Faqat kriptovalyuta yaratish','Turli aktivlarni ishonchli hisobga olish','Faqat elektron to\'lovlar','Kompyuter o\'yinlari yaratish'],c:1},
+{q:'3D bosib chiqarish qanday ishlaydi?',o:['Ortiqcha materialni olib tashlash','Materiallarni eritish orqali jism qurish','Ketma-ket material qatlamlarini qo\'llash','Lazer yordamida qirqish'],c:2},
+{q:'2045-yilga kelib Internetga ulangan qurilmalar soni?',o:['10 milliarddan ortiq','50 milliarddan ortiq','100 milliarddan ortiq','500 milliarddan ortiq'],c:2},
+{q:'O\'zbekistonda raqamli iqtisodiyotning asosiy subyekti?',o:['Moliya vazirligi','Raqamli texnologiyalar vazirligi','Iqtisodiyot vazirligi','Tashqi iqtisodiy aloqalar vazirligi'],c:1},
+{q:'"Raqamli O\'zbekiston-2030" strategiyasi qachon tasdiqlangan?',o:['2018-yil 3-iyulda','2019-yil 9-aprelda','2020-yil 5-oktyabrda','2021-yil 1-yanvarda'],c:2},
+{q:'O\'zbekiston Ochiq ma\'lumotlar portali manzili?',o:['opendata.uz','data.egov.uz','open.gov.uz','portal.uz'],c:1},
+{q:'Identifikasiya texnologiyalariga qaysi biri KIRMAYDI?',o:['Magnit karta va chip karta','Biometrik (barmoq izlari)','Radiochastota (RFID)','Bulutli hisoblash'],c:3},
+{q:'Neyron tarmoqlari qanday printsip asosida qurilgan?',o:['Mexanik mashinalar prinsipi','Biologik neyron tarmoqlari prinsipi','Elektr zanjirlari prinsipi','Kimyoviy reaksiyalar prinsipi'],c:1},
+{q:'API (Application Programming Interface) nima?',o:['Kompyuter o\'yini ilovasi interfeysi','Ilova dasturlash interfeysi','Internet brauzeri ilovasi','Operatsion tizim'],c:1},
+{q:'Bulutli hisoblash tarixining asoschisi va birinchi xizmat?',o:['Microsoft, 2005-yilda','Amazon, 2006-yilda','Google, 2007-yilda','IBM, 2008-yilda'],c:1},
+{q:'NIST aniqlagan bulutli hisoblash xususiyatlari soni?',o:['3 ta','4 ta','5 ta','6 ta'],c:2},
+{q:'Faqat bitta tashkilot ehtiyojlarini qondiruvchi bulut modeli?',o:['Ommaviy bulut (Public cloud)','Xususiy bulut (Private cloud)','Jamoat buluti (Community cloud)','Gibrid bulut (Hybrid cloud)'],c:1},
+{q:'IaaS (Infrastructure as a Service) modeli nima?',o:['Tayyor dasturiy ta\'minot taqdim etish','Iste\'molchi o\'z infratuzilmasini loyihalash','Faqat ma\'lumotlarni saqlash xizmati','Dasturiy ta\'minot platformalarini ishlab chiqish'],c:1},
+{q:'"Katta ma\'lumotlar" (Big Data) atamasi qachon keng qo\'llanila boshladi?',o:['2005-yil','2008-yil','2011-yil','2015-yil'],c:2},
+{q:'Big Data ning 5"V" xususiyatlari?',o:['Volume, Velocity, Viability, Veracity, Value','Volume, Velocity, Variety, Value, Veracity','Variety, Value, Viability, Volume, Velocity','Volume, Variety, Value, Viebility, Velocity'],c:1},
+{q:'"IoT" atamasi kim tomonidan va qachon kiritilgan?',o:['Kevin Eshton, 1999-yilda','Stiv Jobs, 2000-yilda','Bill Geyts, 2001-yilda','Mark Tsukerberg, 2005-yilda'],c:0},
+{q:'SaaS (Software as a Service) modeli nima?',o:['Infratuzilmani taqdim etish','Platformani taqdim etish','Dasturiy ta\'minotni taqdim etish','Apparat ta\'minotini taqdim etish'],c:2},
+{q:'Gibrid bulut (Hybrid cloud) nima?',o:['Faqat xususiy bulut','Faqat ommaviy bulut','Faqat jamoat buluti','Barchasini qamrab oladi'],c:3},
+{q:'Bit Gold virtual pul tizimiga kim asos solgan?',o:['Satoshi Nakamoto, 2008-yilda','Niko Sabo, 1998-yilda','Vitalik Buterin, 2013-yilda','Adam Bek, 2003-yilda'],c:1},
+{q:'"Smart contract" atamasining muallifi?',o:['Satoshi Nakamoto','Adam Bek','Niko Sabo','Vitalik Buterin'],c:2},
+{q:'Proof-of-Work (PoW) kim tomonidan yaratilgan?',o:['Adam Bek, 2003-yilda HashCash uchun','Satoshi Nakamoto, 2008-yilda','Niko Sabo, 1998-yilda','Vitalik Buterin, 2015-yilda'],c:0},
+{q:'Blokcheynda qo\'llaniladigan xeshlash algoritmi?',o:['MD5','SHA-128','SHA-256','SHA-512'],c:2},
+{q:'Proof-of-Stake (PoS): blokni tasdiqlash huquqi nimaga asoslanadi?',o:['Hisoblash quvvatiga','Tokenlarning ulushi miqdoriga','Tugunning geografik joylashuviga','Ishtirokchining yoshi va tajribasiga'],c:1},
+{q:'"Blokcheyn 1.0" avlodi nima bilan bog\'liq?',o:['Smart-shartnomalar','Kriptovalyutalar','Davlat boshqaruvi','Sog\'liqni saqlash'],c:1},
+{q:'Kriptovalyuta nima?',o:['Oddiy elektron pul va shtrix kos','Noyob kriptografik kodga ega raqamli pul birligi','Bank plastik kartasi va onlayn hamyon','Mobil to\'lov tizimi'],c:1},
+{q:'Smart-shartnoma nima?',o:['Oddiy qog\'oz shartnoma','Shartlar asosida mablag\' uzatishni avtomatik boshqaruvchi dastur','Bank shartnomasi, avtomatik tuzuvchi dastur','Elektron pochta xabari'],c:1},
+{q:'Ethereum blokcheynida birinchi marta ishlatilgan texnologiya?',o:['Kriptovalyuta','Smart-shartnomalar','Bulutli hisoblash','Sun\'iy intellekt'],c:1},
+{q:'Kriptovalyutani rasman to\'lov vositasi sifatida tan olgan yagona davlat?',o:['AQSH','Germaniya','Yaponiya','Xitoy'],c:2},
+{q:'Elektron hukumat nima?',o:['Davlat xizmatlarini raqamli platforma orqali boshqarish','Davlat, fuqarolar va tadbirkorlar munosabatlarini AKT orqali avtomatlashtirish','Davlat muassasalarini axborot texnologiyalari yordamida modernizatsiyalash','Davlat boshqaruvini raqamlashtirish va onlayn xizmatlar infratuzilmasi'],c:1},
+{q:'O\'zbekistonda elektron hukumat konsepsiyasi qachon ishlab chiqilgan?',o:['2002-yilda','2005-yilda','2007-yilda','2010-yilda'],c:2},
+{q:'Yagona interaktiv davlat xizmatlari portali qachon ishga tushirilgan?',o:['2010-yil 1-iyul','2012-yil 1-iyul','2013-yil 1-iyul','2015-yil 1-iyul'],c:1},
+{q:'2025-yilda portalda mavjud xizmatlar soni?',o:['500','650','819','900'],c:2},
+{q:'Fuqarolar va davlat o\'rtasidagi munosabat shakli?',o:['G2B (Government to Business)','G2G (Government to Government)','G2C (Government to Citizen)','G2E (Government to Employee)'],c:2},
+{q:'Davlat va biznes o\'rtasidagi munosabat shakli?',o:['G2B (Government to Business)','G2G (Government to Government)','G2C (Government to Citizen)','G2E (Government to Employee)'],c:0},
+{q:'Aqlli shahar (Smart City) qaysi texnologiyalarga asoslanadi?',o:['Raqamli infratuzilma, kiberxavfsizlik, elektron boshqaruv platformalari','IoT, AI, Big Data, bulutli texnologiyalar va boshqalar','Sensor qurilmalar, ma\'lumotlar markazlari va raqamli kommunikatsiyalar','Blokcheyn, 5G, robototexnika va aqlli qurilmalar'],c:1},
+{q:'O\'zbekistonda boshlangan Smart loyihalar?',o:['Faqat Smart City','Smart City, Smart School, Smart Mahalla','Faqat Smart School','Faqat Smart Mahalla'],c:1},
+{q:'Masofaviy o\'qish imkonini beruvchi ta\'lim shakli?',o:['Aralash ta\'lim (blended learning)','Masofaviy ta\'lim (online ta\'lim)','Faqat auditoriya darslari','Moslashuvchan ta\'lim (adaptive learning)'],c:1},
+{q:'Raqamli platforma nima?',o:['Foydalanuvchilar va xizmat ko\'rsatuvchilar o\'rtasidagi ekotizim','Ishtirokchilar o\'rtasida almashinuvni osonlashtirish orqali qiymat yaratuvchi model','Raqamli tranzaksiyalar va xizmatlar almashinuvini boshqaruvchi tizim','Axborot, tovar va xizmatlar oqimini tartibga soluvchi mexanizm'],c:1},
+{q:'"Raqamli" (digital) so\'zi qaysi tildan kelib chiqqan?',o:['Fransuzcha "digitale" — raqamli belgi','Lotincha "digitus" — barmoq, sanashning eng qadimgi vositasi','Yunoncha "dígitos" — son, o\'lchov birligi','Italyancha "digitare" — raqamlash'],c:1},
+{q:'Dasturiy ta\'minot (Software) nechta asosiy turga bo\'linadi?',o:['Uchta: tizimli, amaliy va xizmat dasturlari','Ikkita: tizimli va amaliy dasturlar','To\'rtta: tizimli, amaliy, xizmat va tarmoq','Beshta: tizimli, amaliy, xizmat, tarmoq va maxsus'],c:0},
+{q:'Operatsion tizim (Windows, iOS) qaysi turga kiradi?',o:['Amaliy dasturlar','Tizimli dasturlar','Internet dasturlari','Mobil ilovalar'],c:1},
+{q:'O\'zbekistonda AKTni rivojlantirishga doir birinchi Prezident farmoni?',o:['2000-yilda','2002-yilda','2005-yilda','2007-yilda'],c:1},
+{q:'Elektron hukumatdan raqamli davlatga o\'tishda muhim texnologiya?',o:['Blokcheyn, kriptografiya, ochiq kodli dasturlar','Sun\'iy intellekt, Big Data, bulutli texnologiyalar, 5G','IoT, robototexnika, kvant hisoblash, gibrid platformalar','Kiberxavfsizlik, ma\'lumotlar markazlari, optik tarmoqlar'],c:1},
+{q:'Raqamli davlat (Digital Government) nima?',o:['Davlat xizmatlarini raqamli kanallar orqali yetkazish','Barcha sohalarda AKT orqali samaradorlikni oshirishga qaratilgan tizim','Davlat muassasalarini integratsiyalash tizimi','Raqamli infratuzilma asosida modernizatsiyalash mexanizmi'],c:1},
+{q:'Kiberhavfsizlik tizimlari nimani himoya qiladi?',o:['Tarmoq infratuzilmasini va kommunikatsiya kanallarini','Davlat axborot resurslarini va shaxsiy ma\'lumotlarni kiber tahdidlardan','Raqamli platformalar va ma\'lumotlar bazalarini zararli dasturlardan','Axborot tizimlari va onlayn xizmatlarni ruxsatsiz kirishdan'],c:1},
+{q:'2024-yilda O\'zbekiston BMT elektron hukumat reytingidagi o\'rni?',o:['50-o\'rin','57-o\'rin','63-o\'rin','70-o\'rin'],c:1},
+{q:'5G tarmoqlari raqamli davlatda nima uchun muhim?',o:['Smart City va IoT qurilmalarini uzluksiz ulash uchun','Yuqori tezlikdagi internet va infratuzilmani rivojlantirish uchun','Elektron platformalarni tezkor tarmoq bilan ta\'minlash uchun','Raqamli transformatsiyani tezlashtirish uchun'],c:0},
+{q:'Ochiq ma\'lumotlar platformalari nima uchun zarur?',o:['Axborotni jamoatchilikka erkin taqdim etish va hisobdorlikni kuchaytirish','Davlat ma\'lumotlarini ochiq formatda taqdim etish va shaffoflik','Fuqarolar uchun davlat resurslaridan erkin foydalanish','Ma\'lumotlarga asoslangan qarorlar qabul qilish'],c:0},
+{q:'Elektron demokratiya vositalari?',o:['Raqamli muloqot platformalari, fuqarolik tashabbuslarini qo\'llab-quvvatlash','Elektron ovoz berish, jamoatchilik fikrini o\'rganish platformalari','Onlayn petitsiyalar, fuqarolar murojaatlarini elektron qayta ishlash','Raqamli referendumlar, ochiq muhokama va so\'rovnoma platformalari'],c:1},
+{q:'Raqamli davlatda Big Data qayerda qo\'llaniladi?',o:['Xizmatlarni optimallashtirish va ehtiyojlarni aniqlashda','Davlat boshqaruvida qarorlar qabul qilish, tahlil va prognozlashda','Milliy xavfsizlikni ta\'minlash va kibertahdidlarni aniqlashda','Ijtimoiy siyosatni ishlab chiqish va byudjetni rejalashtirish'],c:1},
+{q:'Yagona interaktiv davlat xizmatlari portalidagi dastlabki xizmatlar soni?',o:['20 ga yaqin','42 ga yaqin','60 ga yaqin','100 ga yaqin'],c:1},
+{q:'Elektron hukumat va raqamli davlat o\'rtasidagi asosiy farq?',o:['Elektron hukumat raqamlashtiradi, raqamli davlat tizimni qayta quradi','Raqamli davlat elektron hukumatning davomi, kengroq ekotizim va to\'liq transformatsiya','Elektron hukumat faqat onlayn, raqamli davlat barcha sohalarni qamrab oladi','Raqamli davlat innovatsion texnologiyalar va ma\'lumotlarga asoslangan boshqaruvni joriy etadi'],c:1},
+{q:'ICO (Initial Coin Offering) nima?',o:['Yangi kriptobirzani ochish orqali investitsiya','Yangi kriptovalyuta birliklarini sotish orqali investitsiya jalb qilish','Kriptovalyutani davlat tomonidan tartibga solish orqali investitsiya','Boshqa valyutaga almashtirish orqali investitsiya'],c:1},
+{q:'To\'liq aniqlashni talab qilmaydigan taqsimlangan reyestrlar tarmog\'i turi?',o:['Yopiq tarmoqlar','Gibrid tarmoqlar','Ochiq tarmoqlar','Maxfiy tarmoqlar'],c:2},
+{q:'Ethereum (ETH) ning asosiy xususiyati?',o:['Faqat to\'lov vositasi','Smart-shartnomalar texnologiyasini ishlatish','Faqat oltin bilan qo\'llab-quvvatlanadi','Markazlashtirilgan tizim'],c:1},
+{q:'Blokcheyn: vositachilarni yo\'q qilish imkonini beruvchi afzallik?',o:['Shaffoflik va markazlashtirish','Markazsizlashtirish','Xavfsizlik','Yuqori tezlik'],c:1},
+{q:'Blokcheynning xavfsizlik nuqtai nazaridan muammo tug\'diradigan kamchiligi?',o:['Markazsizlashtirish','Shaffoflik','Anonimlik','Yuqori mavjudlik'],c:2},
+{q:'"Blokcheyn 2.0" avlodi qaysi sohalarda qo\'llaniladi?',o:['Elektron pochta va moliyaviy xizmatlar','Moliyaviy xizmatlar va smart-shartnomalar','Faqat kriptovalyutalar','Faqat sog\'liqni saqlash'],c:1},
+{q:'Ripple (XRP) qachon ishga tushirilgan?',o:['2009-yilda, faqat kriptovalyuta','2012-yilda, real vaqtda raqamli aktivlarni almashtirish','2015-yilda, smart-shartnomalar','2017-yilda, tokenlar'],c:1},
+]},
+{id:'mikro',name:'Mikroiqtisodiyot',icon:'📊',ibg:'rgba(0,229,145,.14)',sg:'rgba(0,229,145,.05)',sb:'rgba(0,229,145,.35)',desc:'100 ta savol',
+questions:[
+{q:'Umumiy muvozanat deganda nima tushuniladi?',o:['Faqat bir bozordagi talab va taklif muvozanati','Barcha bozorlarning o\'zaro ta\'siri natijasida shakllanadigan muvozanat','Davlat tomonidan belgilangan narxlar tizimi','Faqat monopoliya bozoridagi muvozanat'],c:1},
+{q:'Teskari aloqa samarasi deganda qanday holat tushuniladi?',o:['Bir bozordagi o\'zgarish boshqa bozorlarga ta\'sir qilmaydi','Bir bozordagi o\'zgarish boshqa bozorlarni o\'zgartirib, qaytib birinchi bozorga ta\'sir qiladi','Faqat davlat aralashuvi bilan yuzaga keladi','Faqat monopsoniyada kuzatiladi'],c:1},
+{q:'Qisman muvozanat qaysi holatni aks ettiradi?',o:['Iqtisodiyotdagi barcha bozorlarning muvozanatini','Alohida bir tovar bozoridagi muvozanat holatini','Xalqaro savdo muvozanatini','Iste\'molchi va ishlab chiqaruvchi o\'rtasidagi kelishuvni'],c:1},
+{q:'Pareto bo\'yicha samarali taqsimot qanday holatda erishiladi?',o:['Bir kishining farovonligi pasaytirilmasdan boshqasinikini oshirish mumkin bo\'lsa','Hech kimning farovonligini pasaytirmasdan boshqasinikini oshirishning boshqa varianti bo\'lmasa','Davlat tomonidan teng taqsimlansa','Barcha iste\'molchilar bir xil miqdorda iste\'mol qilsa'],c:1},
+{q:'Edjuort qutisi qanday maqsadda ishlatiladi?',o:['Ishlab chiqarish xarajatlarini hisoblash uchun','Ikki tovarni ikki kishi o\'rtasida taqsimlashning barcha variantlarini ko\'rsatish uchun','Monopoliya foydasini aniqlash uchun','Narxlar indeksini hisoblash uchun'],c:1},
+{q:'Adolatli taqsimotga oid yondashuvlardan biri EMAS?',o:['Klassik liberalizm','Utilitarizm','Marksizm','Roulzian yondashuv'],c:2},
+{q:'Sof monopoliya bozorida qanday holat yuz beradi?',o:['Ko\'plab sotuvchilar va ko\'plab xaridorlar','Bitta sotuvchi va ko\'plab xaridorlar','Bitta xaridor va ko\'plab sotuvchilar','Ikki firma o\'rtasidagi kelishuv'],c:1},
+{q:'Monopsoniya deb qanday bozorga aytiladi?',o:['Bitta sotuvchi, ko\'plab xaridor','Bitta xaridor, ko\'plab sotuvchi','Ko\'plab sotuvchi va ko\'plab xaridor','Ikki tomonlama monopol hokimiyat'],c:1},
+{q:'Oligopoliya bozorining asosiy xususiyati nima?',o:['Bitta firmaning to\'liq hukmronligi','Cheklangan sonli firmalarning hukmronligi','Sotuvchilar va xaridorlarning juda ko\'pligi','Davlat tomonidan boshqariladigan narxlar'],c:1},
+{q:'Monopol raqobat bozori qanday xususiyatga ega?',o:['Bir nechta yirik firmalar faoliyat yuritadi','Ko\'plab firmalar bor, har biri o\'z narxini ma\'lum chegarada nazorat qiladi','Faqat bitta firma mavjud','Hech qanday firma narxga ta\'sir qila olmaydi'],c:1},
+{q:'Sof raqobat bozorida uzoq muddatli muvozanat sharti?',o:['Narx o\'rtacha xarajatdan yuqori','Narx o\'rtacha xarajatdan past','Narx o\'rtacha xarajatga teng va firma normal foyda oladi','Narx cheklangan darajada belgilanadi'],c:2},
+{q:'Tarmoqqa kirish to\'siqlariga quyidagilardan qaysi biri KIRMAYDI?',o:['Davlat tomonidan berilgan maxsus huquqlar','Patentlar va mualliflik huquqlari','Ko\'plab kichik firmalarning mavjudligi','Noyob resurslarga egalik qilish'],c:2},
+{q:'Monopol hokimiyat darajasi qanday omillarga bog\'liq?',o:['Faqat firmaning kattaligiga','O\'rinbosar tovarlarning mavjudligi va bozor ulushiga','Faqat davlat subsidiyalariga','Faqat ishlab chiqarish texnologiyasiga'],c:1},
+{q:'Monopolist maksimal foyda olish uchun qanday shartni bajarishi kerak?',o:['O\'rtacha daromad o\'rtacha xarajatga teng bo\'lishi','Chekli daromad chekli xarajatga teng bo\'lishi','Narx minimal bo\'lishi','Taklif talabdan yuqori bo\'lishi'],c:1},
+{q:'Ikki tomonlama monopoliyada qanday holat yuzaga keladi?',o:['Monopolist-sotuvchi va monopolist-xaridor uchrashadi','Ko\'plab sotuvchi va ko\'plab xaridor','Davlat tomonidan narx belgilanadi','Hech qanday savdo bo\'lmaydi'],c:0},
+{q:'Nomukammal raqobat turlariga KIRMAYDI?',o:['Monopoliya','Oligopoliya','Sof raqobat','Monopsoniya'],c:2},
+{q:'F. Nayt ehtimolni necha turga bo\'ladi?',o:['1','2','3','4'],c:1},
+{q:'Tavakkalchilikni pasaytirish usuli HISOBLANMAYDI?',o:['Diversifikatsiya','Sug\'urtalash','Monopoliyani kuchaytirish','Axborot izlash'],c:2},
+{q:'Kafolatlangan natijani tavakkalchilikdan afzal ko\'ruvchi inson?',o:['Tavakkalchilikka moyil','Tavakkalchilikka qarshi','Tavakkalchilikka befarq','Tavakkalchilikka neutral'],c:1},
+{q:'Asimmetrik axborot deganda nima tushuniladi?',o:['Hamma subyektlar bir xil axborotga ega','Ba\'zi subyektlar muhim axborotga ega, boshqalari ega emas','Axborot umuman mavjud emas','Faqat davlat axborotga ega'],c:1},
+{q:'Ma\'naviy tavakkalchilikni (moral risk) kamaytirish usuli?',o:['Sug\'urta badalini oshirish','Yo\'qotishni to\'liq qoplash','Yo\'qotishni qisman qoplash sharti bilan sug\'urtalash','Hech qanday tekshiruv o\'tkazmaslik'],c:2},
+{q:'Inglyz auktsionida narx qanday o\'zgaradi?',o:['Yuqoridan pastga','Pastdan yuqoriga','O\'zgarmas','Tasodifiy'],c:1},
+{q:'Golland auktsionida asosan qanday tovarlar sotiladi?',o:['Noyob san\'at asarlari','Tez buziladigan mahsulotlar','Ko\'chmas mulk','Qimmatbaho qog\'ozlar'],c:1},
+{q:'Bozor signali nima?',o:['Firma nomi va obro\'si','Sug\'urta polisi','Dividend miqdori','Soliq stavkasi'],c:0},
+{q:'Fyuchers shartnomasi nimani anglatadi?',o:['Hozirgi vaqtda tovarni darhol sotish','Kelajakda ma\'lum kunda, oldindan belgilangan narxda tovarni yetkazib berish','Tovarni bepul olish','Sug\'urta to\'lovini kechiktirish'],c:1},
+{q:'Xedjirlash operatsiyasining maqsadi nima?',o:['Tavakkalchilikni oshirish','Bir tavakkalchilikni boshqa tavakkalchilik bilan qoplash','Sug\'urtani bekor qilish','Narxlarni oshirish'],c:1},
+{q:'Subyektiv risk (axloqiy risk) qanday holatda yuzaga keladi?',o:['Sug\'urta kompaniyasi zararni to\'liq qoplashiga ishonib, odamlar ehtiyot choralarini kamaytirganda','Sug\'urta mavjud bo\'lmaganda','Davlat aralashganda','Tavakkalchilik o\'lchovga ega bo\'lmaganda'],c:0},
+{q:'Agentlik munosabatlarida "agent" kim hisoblanadi?',o:['Ishonch bildiruvchi tomon','Harakat qiluvchi shaxs','Sug\'urtalovchi','Auktsioner'],c:1},
+{q:'Olib-sotarlik (savdogarlik) iqtisodiyotda qanday rol o\'ynaydi?',o:['Narxlarni oshiradi','Narxlarni vaqt va joy bo\'yicha tekislaydi','Talabni pasaytiradi','Taklifni yo\'q qiladi'],c:1},
+{q:'Tavakkalchiliksiz aktivlar deganda nima tushuniladi?',o:['Kelajakdagi daromadi noaniq bo\'lgan aktivlar','Qimmatli qog\'ozlar','Qanday daromad keltirishi oldindan ma\'lum bo\'lgan aktivlar','Faqat davlat obligatsiyalari'],c:2},
+{q:'Tashqi samara (externality) deganda nima tushuniladi?',o:['Bozordagi oldi-sotdidan olinadigan va narxda ifodalanadigan foyda','Bozordagi oldi-sotdidan olinadigan, lekin narxda ifodalanmagan xarajat yoki foyda','Faqat davlat tomonidan tartibga solinadigan xarajat','Faqat ishlab chiqaruvchiga tegishli foyda'],c:1},
+{q:'Salbiy tashqi samaraga misol?',o:['Ta\'lim olish','Kimyo zavodining daryoni ifloslantirishi','Ilmiy tadqiqotlar','Bog\'dorchilik'],c:1},
+{q:'Ijtimoiy chekli xarajat (MSC) qanday ifodalanadi?',o:['MSC = MPC – MEC','MSC = MPC + MEC','MSC = MPB + MEB','MSC = MPB – MEB'],c:1},
+{q:'Ijobiy tashqi samaraga misol?',o:['Zavod chiqindisi','Avtomobil gazi','Ma\'rifat va ilm-fan','Shahar shovqini'],c:2},
+{q:'Salbiy tashqi samarani kamaytirish uchun davlat siyosati?',o:['Subsiydiya berish','Tartiblashtiruvchi soliq joriy qilish','Bepul ruxsatnoma berish','Talabni oshirish'],c:1},
+{q:'Ijobiy tashqi samarani oshirish uchun davlat siyosati?',o:['Soliq oshirish','Tartiblashtiruvchi subsiydiya berish','Ishlab chiqarishni cheklash','Eksportni taqiqlash'],c:1},
+{q:'Ko\'uz teoremasiga ko\'ra, tranzaksion xarajatlar nolga teng bo\'lsa natija?',o:['Faqat davlat qaroriga bog\'liq','Mulkchilik huquqini taqsimlashga bog\'liq emas','Har doim samarasiz bo\'ladi','Faqat soliqqa bog\'liq'],c:1},
+{q:'Ko\'uz teoremasi qanday sharoitda o\'z kuchini yo\'qotadi?',o:['Tranzaksion xarajatlar nolga teng bo\'lganda','Tomonlar soni 2-3 tadan ko\'payib, tranzaksion xarajatlar oshganda','Davlat aralashmaganda','Mulk huquqi aniq belgilangan bo\'lsa'],c:1},
+{q:'Sof ijtimoiy ne\'matning ikkita asosiy xususiyati?',o:['Raqobatlilik va eksklyuzivlik','Iste\'molda tanlanmaslik va iste\'moldan ajratilmaslik','Kamayib borayotgan foyda va oshib borayotgan xarajat','Cheklangan resurs va cheksiz ehtiyoj'],c:1},
+{q:'"Chiptasiz muammosi" (free rider problem) deganda nima?',o:['Iste\'molchi tovarni to\'lab sotib oladi','Iste\'molchi ijtimoiy ne\'matdan bepul foydalanishga harakat qiladi','Davlat ne\'matni taqiqlaydi','Faqat boylar ne\'matdan foydalanadi'],c:1},
+{q:'"Umumiy mulk fojiasi" deganda nima tushuniladi?',o:['Resurslardan tejamkorlik bilan foydalanish','Resurslardan haddan tashqari isrofgarichilik bilan foydalanish','Mulkni davlatlashtirish','Resurslarni hech kim ishlatmasligi'],c:1},
+{q:'Umumiy mulk fojiasini oldini olishning eng samarali usuli?',o:['Resurslarni bepul qilib qo\'yish','Yagona mulkdor yoki davlat nazorati','Cheksiz foydalanish huquqi berish','Subsidiyalarni bekor qilish'],c:1},
+{q:'Tartiblashtiruvchi soliq (Pigou solig\'i) qanday maqsadda qo\'llaniladi?',o:['Ijobiy tashqi samarani oshirish','Salbiy tashqi samarani ichki samaraga aylantirish','Narxlarni pasaytirish','Talabni kamaytirish'],c:1},
+{q:'Sof xususiy ne\'matga misol?',o:['Milliy mudofaa','Ko\'cha chiroqlari','Non','Armiya xizmati'],c:2},
+{q:'Narx diskriminatsiyasining eng keng tarqalgan turi?',o:['Birinchi darajali narx diskriminatsiyasi','Ikkinchi darajali narx diskriminatsiyasi','Uchinchi darajali narx diskriminatsiyasi','To\'rtinchi darajali narx diskriminatsiyasi'],c:2},
+{q:'Ikkinchi darajali narx diskriminatsiyasiga misol?',o:['Talabalar va pensionerlar uchun chegirmalar','Samolyot chiptalarining turli vaqtlarda turlicha narxlanishi','Ko\'proq hajmda sotib olinganda bir birlik narxining arzonlashishi','Ichki bozorda qimmat, tashqi bozorda arzon narx'],c:2},
+{q:'Iste\'molchi ortiqchaligi deganda nima tushuniladi?',o:['Iste\'molchining to\'lashi mumkin bo\'lgan maksimal narx bilan haqiqiy narx o\'rtasidagi farq','Ishlab chiqaruvchining olgan foydasi','Bozor narxining taklif chizig\'idan pastligi','Davlat tomonidan belgilangan minimal narx'],c:0},
+{q:'Birinchi darajali narx diskriminatsiyasiga xos?',o:['Har bir xaridorga uning to\'lovga tayyor bo\'lgan eng yuqori narxni belgilash','Barcha xaridorlar uchun bir xil narx','Faqat hajmga qarab narx o\'zgarishi','Bozorni yosh va daromadga qarab bo\'lish'],c:0},
+{q:'Mahsulotni tabaqalashtirish (differentiation) nima maqsadda qo\'llaniladi?',o:['Xarajatlarni kamaytirish','Turli xaridor guruhlari ehtiyojlarini qondirish','Davlat nazoratini kuchaytirish','Eksportni cheklash'],c:1},
+{q:'Ikki qismli tarif (two-part tariff) deganda nima tushuniladi?',o:['Faqat bir marta to\'lov','Kirish to\'lovi va har bir birlik uchun alohida to\'lov','Ikki xil mahsulotni bir narxda sotish','Davlat tomonidan ikki xil narx belgilash'],c:1},
+{q:'Uchinchi darajali narx diskriminatsiyasiga misol?',o:['Har bir xaridorga alohida narx','Katta hajmdagi xarid uchun chegirma','Talabalar va nafaqaxo\'rlar uchun alohida chegirmali narxlar','Elektr energiyasining hajmga qarab narxlanishi'],c:2},
+{q:'Davlat minimal narx belgilasa qanday samara yuzaga keladi?',o:['Iste\'molchi ortiqchaligi ortadi','Bozor muvozanati buziladi, ortiqcha taklif paydo bo\'lishi mumkin','Talab keskin oshadi','Hech qanday o\'zgarish bo\'lmaydi'],c:1},
+{q:'Foydalilik (utility) va foyda (profit) haqida qaysi gap to\'g\'ri?',o:['Ular bir xil ma\'noni anglatadi','Foydalilik iste\'molchi qoniqishi, foyda ishlab chiqaruvchi daromadi','Foydalilik faqat davlat uchun hisoblanadi','Foyda foydalilikdan kichik bo\'lishi shart'],c:1},
+{q:'"Narxlar jangi" qaysi bozor turiga xos hodisa?',o:['Sof monopoliya','Monopsoniya','Oligopoliya','Sof raqobat'],c:2},
+{q:'Monopol raqobat bozorining samarasizligi nimada namoyon bo\'ladi?',o:['Narx chekli xarajatdan past bo\'ladi','Firmalar doimiy ravishda katta foyda oladi','Ortiqcha ishlab chiqarish quvvati mavjud','Bozorda faqat bitta firma ishlaydi'],c:2},
+{q:'Halol raqobatga misol?',o:['Iqtisodiy josuslik','Qalbaki mahsulot sotish','Bozor haqida to\'liq axborotga asoslangan raqobat','Aldash va firibgarlik'],c:2},
+{q:'Faqat ikkita firma faoliyat ko\'rsatsa, bu holat qanday ataladi?',o:['Monopoliya','Duopoliya','Monopsoniya','Oligopsoniya'],c:1},
+{q:'Kurno modelida har bir firma qanday taxmin asosida harakat qiladi?',o:['Raqobatchi narxni o\'zgartirmaydi deb hisoblaydi','Raqobatchi ishlab chiqarish hajmini o\'zgarmas deb qaraydi','Raqobatchi bozorni tark etadi deb o\'ylaydi','Raqobatchi ham xuddi shunday hajmda ishlab chiqaradi'],c:1},
+{q:'Shtakelberg modelida asosiy e\'tibor qaysi omilga qaratilgan?',o:['Narxlarning o\'zaro kelishuviga','Rahbar va ergashuvchi firmalarning harakatiga','Davlatning narx nazoratiga','Iste\'molchilarning daromadlariga'],c:1},
+{q:'Bertran modelida firmalar qaysi ko\'rsatkich bo\'yicha raqobatlashadi?',o:['Ishlab chiqarish hajmi','Reklama xarajatlari','Narx','Mahsulot sifati'],c:2},
+{q:'"Mahbus dilemmasi" o\'yin nazariyasida nimani namoyish etadi?',o:['Hamkorlik har doim eng yaxshi natijaga olib keladi','Shaxsiy manfaat hamkorlikka nisbatan dominant strategiya bo\'lishi mumkin','Jinoyatchilar har doim bir-birlarini himoya qiladi','Davlat aralashuvi shart emas'],c:1},
+{q:'Monopolistik raqobat bozorida uzoq muddatli muvozanatda?',o:['Narx = minimal o\'rtacha xarajat','Narx > chekli xarajat va foyda = 0','Narx = chekli xarajat','Firmalar ijobiy iqtisodiy foyda oladi'],c:1},
+{q:'Monopolistik raqobatning xususiyati?',o:['Mahsulotlar bir-birining o\'rnini mukammal bosadi','Bozorda juda kam sotuvchi bor','Mahsulotlar differentsiatsiyalashgan','Bozorga kirishda mutlaq tusiqlar mavjud'],c:2},
+{q:'Oligopoliya va monopolistik raqobat o\'rtasidagi asosiy farq?',o:['Oligopoliyada faqat xizmat ko\'rsatiladi','Monopolistik raqobatda firmalar o\'zaro strategik bog\'liq emas','Oligopoliyada narx har doim davlat tomonidan belgilanadi','Monopolistik raqobatda foyda doim ijobiy'],c:1},
+{q:'Agar oligopoliyada firmalar o\'rtasida yashirin kelishuv bo\'lsa?',o:['Bozor mukammal raqobatga aylanadi','Narxlar monopoliyadagidek yuqori bo\'lishi mumkin','Foyda nolga tushadi','Ishlab chiqarish hajmi maksimal bo\'ladi'],c:1},
+{q:'"Narxlar jangi" qachon to\'xtaydi?',o:['Narx o\'rtacha o\'zgaruvchan xarajatdan pastga tushganda','Narx o\'rtacha umumiy xarajatga teng bo\'lganda','Davlat aralashganda','Firmalar bozorni tark etganda'],c:1},
+{q:'Oligopoliyaga kirish to\'sig\'i HISOBLANMAYDI?',o:['Davlat tomonidan berilgan maxsus huquq','Patent va mualliflik huquqi','Resurslar taklifiga egalik','Iste\'molchilarning past daromadi'],c:3},
+{q:'Monopolistik raqobatdagi "reserv quvvat" nimani anglatadi?',o:['Firma minimal o\'rtacha xarajatdan past hajmda ishlab chiqaradi','Firma maksimal foyda oladi','Firma narxni chekli xarajatga teng qilib belgilaydi','Firma bozorda monopolist bo\'ladi'],c:0},
+{q:'Bozor ojizligi nima?',o:['Bozor resurslardan samarali foydalanishni ta\'minlay olmaydi','Bozor resurslardan samarali foydalanishni ta\'minlay oladi','Narxlarni doimiy ravishda nazorat qiladi','A va C Javoblar to\'g\'ri'],c:0},
+{q:'Bozor ojizligini ko\'rsatuvchi nechta tur mavjud?',o:['2','3','4','5'],c:2},
+{q:'"Oligopoliya" so\'zi qanday ma\'noni anglatadi?',o:['Grekcha oligos-bir necha, poleo-sotaman','Inglizcha oligos-tanho, poleo-sotaman','Arabcha oligos-bir necha, poleo-sotaman','O\'zbekcha oligos-bir necha, poleo-sotaman'],c:0},
+{q:'O\'zbekistonda qashshoqlikka qarshi kurash vositalari?',o:['"Temir daftar", "Ayollar daftari", "Yoshlar daftari"','Yagona qishloq xo\'jaligi solig\'i','Majburiy mehnat burchi','Mikrokreditlashni taqiqlash'],c:0},
+{q:'Narx diskriminatsiyasi necha turga bo\'linadi?',o:['2','1','4','3'],c:3},
+{q:'YAIM 2025 yilda qanchani tashkil qildi?',o:['122 mlrd dollar','117 mlrd dollar','136 mlrd dollar','145 mlrd dollar'],c:3},
+{q:'Minimal narx siyosati odatda qaysi sohada qo\'llaniladi?',o:['Bank sektori','Qishloq xo\'jaligi','IT sohasi','Qurilish'],c:1},
+{q:'Ishlab chiqarish kvotasi nima?',o:['Mahsulot narxini pasaytirish','Mahsulot ishlab chiqarishni maksimal miqdori','Eksportni oshirish','Iste\'molni rag\'batlantirish'],c:1},
+{q:'Davlat ishlab chiqarish kvotasi bilan qanday natijaga erishmoqchi?',o:['Talabni oshirish','Narxni kerakli darajaga ko\'tarish','Ishlab chiqarish xarajatlarini kamaytirish','Bozordagi firmalar sonini ko\'paytirish'],c:1},
+{q:'Ko\'uz teoremasining asosiy g\'oyasini kim ta\'riflagan?',o:['A.S. Pigou','Dj. Stigler','R. Kouz','F. Nayt'],c:1},
+{q:'AQShda qishloq xo\'jaligida narxlarni barqarorlashtirish siyosati?',o:['Importni erkinlashtirish','Ishlab chiqarishni cheklash','Subsidiyalarni bekor qilish','Eksport solig\'ini oshirish'],c:1},
+{q:'Iste\'molchi ortiqchaligi qancha yuqori bo\'lsa, iste\'molchi?',o:['Shuncha ko\'p zarar ko\'radi','Shuncha kam tovarlar sotib oladi','Shuncha ko\'p foyda oladi','Narxlar shuncha yuqori bo\'ladi'],c:2},
+{q:'Korrupsiya iqtisodiy siyosatda qanday muammo keltirib chiqaradi?',o:['Resurslarning to\'g\'ri taqsimlanmasligi','Iqtisodiy o\'sishning tezlashishi','Bandlikning oshishi','Inflyatsiyaning pasayishi'],c:0},
+{q:'Davlat litsenziya berish orqali qanday siyosatni amalga oshiradi?',o:['Narxlarni pasaytirish','Ishlab chiqarish yoki sotish hajmini cheklash','Iste\'molni oshirish','Bozorni to\'liq erkinlashtirish'],c:1},
+{q:'Tarmoqqa kirish to\'siqlariga misol?',o:['Ko\'plab kichik firmalarning mavjudligi','Patentlar va mualliflik huquqi','Talabning yuqori elastikligi','Iste\'molchilarning ko\'pligi'],c:1},
+{q:'Iqtisodiy siyosatning yo\'qotishlaridan biri?',o:['Iqtisodiy o\'sish','Bandlikni oshirish','Raqobatning susayishi','Inflyatsiyani nazorat qilish'],c:2},
+{q:'Davlatning iqtisodiy siyosatining asosiy maqsadlaridan biri?',o:['Monopoliyalarni kuchaytirish','Iqtisodiy o\'sishni ta\'minlash','Narxlarni sun\'iy ravishda oshirish','Importni butunlay cheklash'],c:1},
+{q:'Ishlab chiqaruvchi ortiqchaligi grafikda qayerda joylashgan?',o:['Talab chizig\'i ustida','Taklif chizig\'i ostida','Bozor narxi chizig\'idan pastda','Talab va taklif kesishgan nuqtada'],c:1},
+]},
+{id:'siyosat',name:'Iqtisodiy Siyosat',icon:'🏛️',ibg:'rgba(255,195,0,.12)',sg:'rgba(255,195,0,.04)',sb:'rgba(255,195,0,.3)',desc:'70 ta savol',
+questions:[
+{q:'Quyidagilardan qaysi biri monetar siyosat vositasi HISOBLANMAYDI?',o:['Qayta moliyalashtirish siyosati','Byudjet-soliq siyosati','Majburiy zaxiralar siyosati','Ochiq bozorlar siyosati'],c:1},
+{q:'Iqtisodiy siyosat darajalari?',o:['Mikro, makro, meta','Eksport, import','Inflyatsiya, deflyatsiya','Ma\'muriy, iqtisodiy, institutsional'],c:0},
+{q:'Davlatning tashqi iqtisodiy siyosatiga quyidagilardan qaysi biri KIRMAYDI?',o:['Eksport','Import','Migratsiya','Ishsizlikni kamaytirish'],c:3},
+{q:'Iqtisodiy siyosatning ma\'muriy usullariga kiradi?',o:['Taqiqlash, ruxsat berish, majburlash choralari','Moliyaviy imtiyoz va rag\'bat choralari','Ijtimoiy institutlarni yaratish, saqlash va rivojlantirish','Inflyatsiya, deflyatsiya'],c:0},
+{q:'Iqtisodiy siyosatning institutsional usullariga kiradi?',o:['Taqiqlash, ruxsat berish, majburlash choralari','Moliyaviy imtiyoz va rag\'bat choralari','Ijtimoiy institutlarni yaratish, saqlash va rivojlantirish','Inflyatsiya, deflyatsiya'],c:2},
+{q:'Tarmoqda u qadar ko\'p bo\'lmagan korxonalarning mavjud bo\'lishi va hukmronlik qilishi?',o:['Monopoliya','Oligopoliya','Monopsoniya','Sof raqobat'],c:1},
+{q:'Erkin savdo zonasiga to\'g\'ri ta\'rif?',o:['Milliy bojxona hududidan tashqariga chiqarilgan hudud bo\'lib, ilmiy-tadqiqot, dizayn, konstruktorlik byurolari joylashgan zona','Milliy bojxona hududidan tashqaridagi hudud. Ichida tovarlarni saqlash va sotish operatsiyalari o\'tkaziladi','Alohida ma\'muriy tuman hududida iqtisodiy faoliyatning imtiyozli rejimi bo\'lgan zonalar','G\'arbiy Yevropa, Kanada, Xitoyda va Braziliyada maxsus rejim hududida tashkil etilgan tadbirkorlik zonalari'],c:1},
+{q:'Servis zonasiga to\'g\'ri ta\'rif?',o:['Turizm va dam olish infratuzilmasi ob\'ektlarini yaratish, rekonstruksiya va rivojlantirish hududi','Milliy bojxona hududidan tashqaridagi ilmiy-tadqiqot, dizayn, konstruktorlik byurolari joylashgan hudud','Moliyaviy va moliyaviy bo\'lmagan xizmatlar ko\'rsatuvchi firmalar uchun imtiyozli rejimdagi hudud','Alohida ma\'muriy tuman hududida iqtisodiy faoliyatning imtiyozli rejimi bo\'lgan zonalar'],c:2},
+{q:'Ilmiy-texnologik hudud — bu…',o:['Ilmiy-texnologik hudud','Kompleks hududlar','Servis zonasi','Sanoat ishlab chiqarish zonasi'],c:0},
+{q:'Erkin iqtisodiy zonalar uchun davlat imtiyozlari?',o:['Eksport bojlaridan ozod qilish; mol-mulk solig\'i, QQS va boshqalardan ozod qilinishi','Investorlarning mulk va mol-mulk solig\'i, QQS va boshqalarni to\'lashdan qisman yoki to\'liq ozod qilinishi','Hudud ichida ishlab chiqarilgan mahsulotlarga eksport bojlaridan qisman yoki to\'liq ozod qilish','Hududda ishlab chiqarilgan mahsulotlarni bepul tashqi to\'liq ozod qilish'],c:0},
+{q:'"Erkin iqtisodiy zonalar to\'g\'risida"gi qonun qachon qabul qilingan?',o:['25.04.1996','23.09.1993','25.05.1999','25.05.2000'],c:2},
+{q:'Mamlakatimizda ilk iqtisodiy zona qaysi yili va qaysi hududda tashkil etildi?',o:['2003-yil, "Angren"','1999-yil, "Urgut"','2008-yil, "Navoiy"','2012-yil, "Jizzax"'],c:2},
+{q:'300 ming — 3 mln. AQSh dollarigacha investitsiyalarga necha yil imtiyoz beriladi?',o:['3 yil muddatga','7 yil muddatga','5 yil muddatga','8 yil muddatga'],c:2},
+{q:'«Prognoz» so\'zi qaysi tildan olingan?',o:['Fransuzcha','Lotincha','Yunoncha','Nemis'],c:2},
+{q:'«Prognozlashtirish» bu…',o:['Rejalashtirish','Prognozni ishlab chiqish, mushohida, tahlil qilish','Prognozni bekor qilish','Kelajakni ilmiy usullar orqali istiqbollash'],c:1},
+{q:'Fiskal siyosat nima?',o:['Pul-kredit siyosati','Davlat byudjeti taqchilligi','Byudjet-soliq siyosati','Yillik inflyatsiya'],c:2},
+{q:'Mulkchilik munosabatlari - bu…',o:['Mulkka egalik qilish va undan foydalanish','Mulkni tasarruf etish','Mulkni o\'zlashtirish jarayonlarida vujudga keladigan iqtisodiy munosabat','Barcha javob to\'g\'ri'],c:3},
+{q:'Mulkka egalik qilish degan tushunchaga to\'g\'ri ta\'rif?',o:['Bu mol-mulk taqdirini mustaqil hal qilish','U mol-mulkni daromad olish uchun yoki shaxsiy ehtiyojni qondirish uchun ishlatilishini bildiradi','Mulkni egasi qo\'lida saqlanib turishini bildiradi va moddiy boyliklarni o\'zlashtirishning ijtimoiy shaklini ifodalaydi','Bu mol-mulkni iqtisodiy faoliyatda ishlatilishi yoki ijtimoiy hayotda qo\'llanilishidir'],c:2},
+{q:'Mulkdan foydalanish degan tushunchaga to\'g\'ri ta\'rif?',o:['Bu mol-mulk taqdirini mustaqil hal qilish','Bu mol-mulkni ijtimoiy hayotda qo\'llanilishidir','Mulkni egasi qo\'lida saqlanib turishini bildiradi','U mol-mulkni daromad olish uchun yoki shaxsiy ehtiyojni qondirish uchun ishlatilishini bildiradi'],c:3},
+{q:'Mulkni tasarruf etish tushunchasiga to\'g\'ri ta\'rif?',o:['Bu mol-mulk taqdirini mustaqil hal qilish','Bu mol-mulkni iqtisodiy faoliyatda ishlatilishi','Mulkni egasi qo\'lida saqlanib turishini bildiradi','U mol-mulkni daromad olish uchun yoki shaxsiy ehtiyojni qondirish uchun ishlatilishini bildiradi'],c:0},
+{q:'Mulkchilik shakllari to\'liq berilgan javob?',o:['Jamoa mulki, Davlat mulki, Aralash mulk','Jamoa mulki, Davlat mulki, Shaxsiy mulk, Yakka tartibdagi xususiy mulk, Aralash mulk','Jamoa mulki, Davlat mulki, Shaxsiy mulk, Xususiy mulk, Yakka tartibdagi xususiy mulk, Korporativ xususiy mulk','Jamoa mulki, Davlat mulki, Xususiy mulk, Shaxsiy mulk, Korxona mulki, Oila mulki, Xalq mulki, Tashkilot mulki'],c:2},
+{q:'Jamoa mulkiga berilgan to\'g\'ri ta\'rif?',o:['O\'z vazifalarini bajarish maqsadida davlat tomonidan o\'zlashtiriluvchi turli vosita va ne\'matlar','Ayrim kishi va guruhlarga tegishli bo\'lib yollanma mehnatdan foydalanib daromad topishga qaratilgan mulk','Muayyan maqsad yo\'lida turli ko\'rinishdagi jamoalarga birlashgan kishilar tomonidan birgalikda o\'zlashtiriluvchi vosita va ne\'matlar','Fuqarolarning shaxsiy yoki oilaviy ehtiyojlarini qondirishga qaratilgan mulk'],c:2},
+{q:'Davlat mulkiga berilgan to\'g\'ri ta\'rif?',o:['Ayrim kishi va guruhlarga tegishli bo\'lib yollanma mehnatdan daromad topishga qaratilgan mulk','O\'z vazifalarini bajarish maqsadida davlat tomonidan o\'zlashtiriluvchi turli vosita va ne\'matlar','Muayyan maqsad yo\'lida turli ko\'rinishdagi jamoalarga birlashgan kishilar tomonidan birgalikda o\'zlashtiriluvchi vosita va ne\'matlar','Fuqarolarning shaxsiy yoki oilaviy ehtiyojlarini qondirishga qaratilgan mulk'],c:1},
+{q:'Xususiy mulkka berilgan to\'g\'ri ta\'rif?',o:['Ayrim kishi va guruhlarga tegishli bo\'lib yollanma mehnatdan foydalanib daromad topishga qaratilgan mulk','O\'z vazifalarini bajarish maqsadida davlat tomonidan o\'zlashtiriluvchi turli vosita va ne\'matlar','Muayyan maqsad yo\'lida turli ko\'rinishdagi jamoalarga birlashgan kishilar tomonidan birgalikda o\'zlashtiriluvchi vosita va ne\'matlar','Fuqarolarning shaxsiy yoki oilaviy ehtiyojlarini qondirishga qaratilgan mulk'],c:0},
+{q:'Shaxsiy mulkka berilgan to\'g\'ri ta\'rif?',o:['Ayrim kishi va guruhlarga tegishli bo\'lib yollanma mehnatdan daromad topishga qaratilgan mulk','O\'z vazifalarini bajarish maqsadida davlat tomonidan o\'zlashtiriluvchi turli vosita va ne\'matlar','Muayyan maqsad yo\'lida turli ko\'rinishdagi jamoalarga birlashgan kishilar tomonidan birgalikda o\'zlashtiriluvchi vosita va ne\'matlar','Fuqarolarning shaxsiy yoki oilaviy ehtiyojlarini qondirishga qaratilgan mulk'],c:3},
+{q:'Aralash mulkka berilgan to\'g\'ri ta\'rif?',o:['Ayrim kishi va guruhlarga tegishli bo\'lib yollanma mehnatdan daromad topishga qaratilgan mulk','O\'z vazifalarini bajarish maqsadida davlat tomonidan o\'zlashtiriluvchi turli vosita va ne\'matlar','Turli mulk shakllari sintezidan tashkil topib shunga muvofiq tarzda o\'zlashtiriluvchi vosita va ne\'matlar','O\'z vazifalarini bajarish maqsadida davlat va jamiyat tomonidan o\'zlashtiriluvchi turli vosita va ne\'matlar'],c:2},
+{q:'Davlat iqtisodiy siyosatining ta\'sir etish usullari?',o:['Iqtisodiy, siyosiy, huquqiy, ma\'naviy','Ma\'muriy, iqtisodiy, institutsional','Siyosiy, ijtimoiy, huquqiy','Ekologik, xalqaro, nazorat'],c:1},
+{q:'Barqaror iqtisodiy o\'sish nima?',o:['Uzoq vaqt davomida iqtisodiyotni yuqori sur\'atlar bilan o\'sib borishidir','Ishlab chiqarish resurslarining cheklanmaganligi va jamiyat ehtiyojlarining o\'sib borishi','Ishlab chiqarish quvvati va jamiyat ehtiyojlarini rivojlantirishga samarali foydalanishni o\'sib borishi','Tabaqalanishi ham aholining kam ta\'minlangan qismini qo\'llab quvvatlash dasturlarini o\'sib borishi'],c:0},
+{q:'Iqtisodiy o\'sish turlari?',o:['Ekstensiv va intensiv','Barqaror va Ekatensiv o\'sish','Real iqtisod va barqaror o\'sish','Barcha variantlar to\'g\'ri'],c:0},
+{q:'Davlatning iqtisodiy siyosati deganda nima tushuniladi?',o:['Bu mamlakat iqtisodiyotining holati, xalqaro iqtisodiyotiga ta\'sir etishi','Bu yalpi ichki mahsulotning bir maromida va yetarli suratlar bilan o\'sishiga sharoit yaratishni bildiradi','Bu iqtisodiyotni boshqarish sohasidagi davlatning maqsadli chora-tadbirlari tizimi','Bu chet elga qaram bo\'lishlikka yo\'l qo\'ymaslik'],c:2},
+{q:'Mamlakatning iqtisodiy o\'sish sur\'atini tavsiflaydigan ko\'rsatkichlar?',o:['Real YaIM va aholi jon boshiga real YaIMning o\'sishi','Yalpi talab va yalpi taklif YaMMning o\'sish ko\'rsatgichlari','Iste\'mol va jamg\'arma','Investitsiyalar miqdori'],c:0},
+{q:'Iqtisodiy o\'sishga salbiy ta\'sir etuvchi omil?',o:['Mehnat unumdorligining o\'sishi','Atrof muhitning ifloslanishi','Raqobat','Taklif omillari'],c:1},
+{q:'Iqtisodiyotning inqirozlarsiz, barqaror rivojlanishi – bu…',o:['Muvozanatlik','Stagnatsiya','Giperinlyatsiya','Inflyatsiya'],c:0},
+{q:'Ishchi kuchining bir hududdan boshqasiga ko\'chib yurishi?',o:['Migratsiya','Emigratsiya','Immigratsiya','Irrigatsiya'],c:0},
+{q:'Byudjet profitsiti qachon vujudga keladi?',o:['Daromadlar va xarajatlar qismi teng bo\'lganda','Daromadlar xarajatlar qismidan kam bo\'lganda','Sof eksport ijobiy bo\'lganda','Daromadlar xarajatlar qismidan ortiq bo\'lganda'],c:3},
+{q:'Byudjet defitsiti qachon vujudga keladi?',o:['Daromadlar va xarajatlar qismi teng bo\'lganda','Daromadlar xarajatlar qismidan kam bo\'lganda','Sof eksport ijobiy bo\'lganda','Daromadlar xarajatlar qismidan ortiq bo\'lganda'],c:1},
+{q:'Byudjet muvozanati qachon vujudga keladi?',o:['Daromadlar va xarajatlar qismi teng bo\'lganda','Daromadlar xarajatlar qismidan kam bo\'lganda','Sof eksport ijobiy bo\'lganda','Daromadlar xarajatlar qismidan ortiq bo\'lganda'],c:0},
+{q:'Davlat byudjeti nechta qismga bo\'linadi?',o:['1','3','4','2'],c:3},
+{q:'Davlat qarzi – bu...',o:['Davlatning o\'z fuqarolari, banklar, korxonalar va xorijiy mamlakatlardan qarzi','Davlatning sof eksportdagi ulushining qasqarishi','Davlat byudjetidagi taqchillikning o\'sishi','Davlatning xorijiy davlatlardan qarzi'],c:0},
+{q:'Pul emissiyasi nima?',o:['Iqtisodiyotga qo\'shimcha pul massasini chiqarish','Pullarni almashtirish','Pullarning qadrsizlanishi','Iqtisodiyotdan qo\'shimcha pul massasini yig\'ib olish'],c:0},
+{q:'Bank foydasi (marja) to\'g\'ri ko\'rsatilgan?',o:['Bank tomonidan olingan foiz summalari','To\'langan foiz summalari','Ssuda foizida to\'plangan mablag\'','Olingan va to\'langan foiz summalari o\'rtasidagi farq'],c:3},
+{q:'Davlatning xarajatlar va soliqlar bilan bog\'liq siyosati?',o:['Fiskal siyosat','Monetar siyosat','Sotsial-iqtisodiy siyosat','Ijtimoiy siyosat'],c:0},
+{q:'Davlatning pul muomalasini tartibga solish bilan bog\'liq siyosati?',o:['Fiskal siyosat','Monetar siyosat','Sotsial-iqtisodiy siyosat','Ijtimoiy siyosat'],c:1},
+{q:'Davlat monopoliyalarga qarshi faoliyatni qaysi maqsadda amalga oshiradi?',o:['Tadbirkorlik va erkin raqobatini himoya qilish maqsadida','Yakka hokimlikni yo\'qotish va bartaf qilish maqsadida','Monopoliyalarni bartaraf etish maqsadida','Bozor mexanizmlari harakatini cheklash maqsadida'],c:0},
+{q:'Qanday holatda savdo balansi vujudga keladi?',o:['Eksport=import','Eksport<import','Eksport>import','Talab=taklif'],c:0},
+{q:'Mintaqaviy iqtisodiyot – amaliy iqtisodiy fan bo\'lib, u:',o:['Yagona davlat doirasida turli mintaqalarda sodir bo\'ladigan ijtimoiy-iqtisodiy jarayonlar','Mintaqada mavjud foydali qazilma boyliklar va boshqa tabiiy resurslardan oqilona foydalanish','Iqtisodiyotni hududiy tashkil etishni rejalashtirish maqsadida hududlarni iqtisodiy rivojlantirish','"Iqtisodiy makon" tushunchasi va geografik joylashuv g\'oyasini rivojlantirish'],c:0},
+{q:'Makroiqtisodiy zonalar nima?',o:['Bitta transport tarmog\'i bilan birlashtirilgan hududlar','Bir xil tabiiy va iqtisodiy sharoitlar bilan ajralib turadigan yirik hududiy ob\'ektlar','Yirik (ko\'pincha strategik ahamiyatga ega) korxonalar va ishlab chiqarish ob\'ektlari joylashgan hududlar','Ishlab chiqarish ob\'ektlari va ularning joylashuv hududlari'],c:1},
+{q:'Mehnat resurslarini tavsiflovchi eng muhim ko\'rsatkichlar?',o:['Kasbiy tajriba, tashabbus','Ta\'lim, professional daraja','Tashabbuskorlik, o\'rganish va mustaqil o\'rganishga moyillik','Ish va ishchi kuchi'],c:1},
+{q:'Ishlab chiqaruvchi kuchlarning hududiy taqsimlanishi qanday jarayon?',o:['Iqtisodiy-geografik jarayon','Iqtisodiy jarayon','Ijtimoiy jarayon','Geografik jarayon'],c:0},
+{q:'29 million bandlar, 30 million ishchi kuchi bo\'lsa, ishsizlik darajasi?',o:['10%','3,3%','8%','5,5%'],c:1},
+{q:'Ishlab chiqarishning qayta-qayta pasayishi qanday ishsizlikni keltirib chiqaradi?',o:['Mavsumiy','Strukturaviy','Siklik','Ishqalanish'],c:2},
+{q:'Yengil sanoatni rivojlantirishda muhim omillar?',o:['Ishchi kuchi, iste\'mol, investitsiya','Mehnat resurslari, kapital','Xomashyo, mehnat, iste\'mol omillari','Xomashyo, investitsiya, iste\'mol omillari'],c:2},
+{q:'Hududiy-sanoat komplekslari nima uchun tuziladi?',o:['Transport va iqtisodiy aloqalarning rivojlanishi','Korxonalar va tarmoqlarning joylashishi','Mehnat salohiyatidan foydalanish','Atrof-muhitni yaxshilash'],c:1},
+{q:'O\'zbekistonda yuklarni tashishda asosiy transport turi?',o:['Avtomobil','Dengiz','Temir yo\'l','Havo'],c:2},
+{q:'"Toshkent-Samarqand-Termiz"ni bog\'lovchi eng muhim avtomobil yo\'li?',o:['Zarafshon trakti','Samarqand trakti','O\'zbekiston trakti','Farg\'ona halqasi'],c:2},
+{q:'O\'zbekiston YaIM ishlab chiqarishida eng katta ulushga ega tarmoq?',o:['Transport va aloqa','Qishloq xo\'jaligi','Sanoat','Savdo'],c:2},
+{q:'Inflyatsiyaga qarshi kurashning asosiy usullari?',o:['Pul emissiyasini ko\'paytirish','Pul-kredit siyosati, byudjet-soliq siyosati, ishlab chiqarish','Narxlarni davlat tomonidan belgilash, byudjet-soliq siyosati, taklifni oshirish','Importni cheklash orqali'],c:1},
+{q:'O\'zbekistonda inflyatsiyaga qarshi kurashda asosiy rol o\'ynovchi organ?',o:['O\'zbekiston Respublikasi Moliya vazirligi','O\'zbekiston Respublikasi Markaziy banki','O\'zbekiston Respublikasi Iqtisodiyot vazirligi','O\'zbekiston Respublikasi Davlat soliq qo\'mitasi'],c:1},
+{q:'Mehnat resurslarining sifati deganda nima tushuniladi?',o:['Soni, sog\'lig\'i, mehnatga bo\'lgan munosabati','Asosan jinsi tushuniladi','Ta\'lim darajasi, kasbiy malaka, sog\'lig\'i, mehnatga bo\'lgan munosabati','Yoshi, sog\'lig\'i, jinsi, irkiy kelib chiqishi, mehnatga bo\'lgan munosabati'],c:2},
+{q:'Tabiiy resurslar qanday turlarga bo\'linadi?',o:['Mineral resurslar, iqlim va biologik resurslar, mehnat resurslari','Suv resurslari, iqlim va biologik resurslar','O\'rmon resurslari, iqlim va biologik resurslar','Mineral, suv, o\'rmon, tuproq, iqlim va biologik resurslar'],c:3},
+{q:'Iqtisodiy siyosat nima?',o:['Davlat xarajatlarini, iqtisodiy jarayonlarni kuzatish va yo\'naltirish uchun qo\'llaydigan barcha vosita va usullar','Soliqlar yig\'ish','Davlatning iqtisodiy rivojlanishga ta\'sir ko\'rsatish uchun qo\'llaydigan chora-tadbirlar majmui','Tashqi savdo'],c:2},
+{q:'Xususiylashtirish deganda nimani tushunasiz?',o:['Davlat mulkini boshqarishni takomillashtirish','Davlat mulkini xususiy mulkka o\'tkazish','Davlat mulkini ijaraga berish','Davlat mulkini sotish'],c:1},
+{q:'Prognozlashtirishning asosiy maqsadi nima?',o:['Rejalashtirilgan maqsadlarga erishish yo\'llarini aniqlash va yo\'naltirish','Kelajakdagi ijtimoiy-iqtisodiy holatni ilmiy asosda oldindan aniqlash','Hozirgi vaziyatni tahlil qilish','Dasturlarni amalga oshirish uchun resurslarni taqsimlash'],c:1},
+{q:'Kichik biznesni qo\'llab-quvvatlashning shakllari?',o:['Moliyaviy, ma\'naviy ma\'rifiy, ilmiy uslubiy','Moliyaviy, moliyaviy bo\'lmagan va institutsional','Institutsional','Moliyaviy bo\'lmagan'],c:1},
+{q:'Nima uchun monopoliyalar iqtisodiyot uchun zararli?',o:['Ular mahsulot narxini pasaytiradilar va daromad tengsizligi kuchayadi','Ular innovatsiyalarni rag\'batlantiradilar','Ular narxlarni sun\'iy ravishda oshiradilar va mahsulot tanlash imkoniyatini cheklaydilar','Ular ishlab chiqarish samaradorligini oshiradilar'],c:2},
+{q:'Monopolizmga qarshi siyosatning asosiy maqsadi?',o:['Monopoliyalarni yaratish, iqtisodiy samaradorlikni oshirish','Yirik kompaniyalarni qo\'llab-quvvatlash','Bozorda raqobatni himoya qilish va rivojlantirish','Narxlarni davlat tomonidan belgilash'],c:2},
+{q:'Davlatning investitsiya siyosati iqtisodiy o\'sishga qanday ta\'sir qiladi?',o:['Hech qanday ta\'sir qilmaydi','Investitsiyalarni jalb qilish, innovatsiyalarni rag\'batlantirish, infratuzilmani rivojlantirish orqali iqtisodiy o\'sishni ta\'minlaydi','Ayrim sohalarning rivojlanishiga ta\'sir qiladi, umumiy raqobatbardoshlik pasayadi','Davlat byudjetini to\'ldiradi'],c:1},
+{q:'Davlatning tashqi iqtisodiy faoliyatni (TIF) tartibga solish siyosati nima?',o:['Importni cheklash siyosati','Davlatning xalqaro savdo, investitsiya, valyuta operatsiyalari va boshqa tashqi iqtisodiy aloqalarni tartibga solishga qaratilgan chora-tadbirlari majmui','Eksportni qisqartirish siyosatini olib borish','TIFga aralashmaslik siyosati'],c:1},
+{q:'Innovatsiya deganda nimani tushunasiz?',o:['Faqatgina yangi mahsulot yaratish','Mavjud mahsulotni takomillashtirish','Yangi g\'oyalar, texnologiyalar va yechimlarni amaliyotga joriy etish, bu iqtisodiy va ijtimoiy foyda keltiradi','Ilmiy tadqiqot o\'tkazish'],c:2},
+{q:'Likvidlilik deganda —',o:['To\'lov qobiliyati','Daromad farqi','Budjet defitsiti','Bank islohoti'],c:0},
+{q:'Respublikamizda islohotlarning dastlabki bosqichida qaysi soha ustuvor bo\'lgan?',o:['Sanoat','Xizmatlar sohasi','Qishloq xo\'jaligi','Tashqi savdo'],c:2},
+{q:'Jahon moliyaviy inqirozi sabablaridan biri?',o:['YaIM o\'sishi','Davlat qarzi','Banklar likvidligining zaifligi','Budjet profitsiti'],c:2},
+{q:'Xususiylashtirish bu —',o:['Davlat mulkini aholi qo\'liga foydalanishga topshirish','Davlat tadbirkorlik registridan o\'tgan fuqarolarga davlat mulkini sheriklik asosida topshirish','Fuqarolarning va davlatga taalluqli bo\'lmagan yuridik shaxslarning davlat mulki ob\'ektlarini yoki aksiyalarini davlatdan sotib olish','Yangi mulkchilik munosabatiga asoslangan mulk shaklini yaratish'],c:2},
+{q:'Hamma tovarlarni sotish va sotib olish mumkin bo\'lgan umumiy ekvivalent rolini o\'ynovchi maxsus tovar?',o:['Qimmatli qog\'oz','Aksiya','Mahsulot','Pul'],c:3},
+{q:'Prognozlash qo\'llash miqyosiga ko\'ra qaysi turlarga bo\'linadi?',o:['Mahalliy, hududiy, mamlakat','Korxona, mamlakat, xalqaro','Bozor, bojxona, korxona','Oila, hudud, mamlakat'],c:0},
+{q:'Kredit munosabatlarining asosiy elementi nima?',o:['Kredit obyekti','Kredit summasi','Foiz stavkasi','Qarz beruvchi va qarz oluvchi'],c:3},
+]}
+,
+{id:'pul',name:'Pul va Banklar',icon:'🏦',ibg:'rgba(0,180,255,.14)',sg:'rgba(0,180,255,.05)',sb:'rgba(0,180,255,.35)',desc:'90 ta savol',
+questions:[
+{q:"Pulning kelib chiqish tarixi haqida qaysi ma'lumot to'g'ri?",o:["Pul XX asrda ixtiro qilingan sun'iy vosita","Dastlabki jamiyatlarda ortib qolgan mahsulotlarni bir-biriga berish orqali ayirboshlash o'rnatilgan","Pul faqat qimmatbaho metallar ko'rinishida mavjud bo'lgan","Pul mehnat taqsimoti paydo bo'lgunga qadar vujudga kelgan"],c:1},
+{q:"'Pul vositachiligidagi ayirboshlash'ning afzalligi nimada?",o:["Ayirboshlash xarajatlarini kamaytiradi, vaqtni tejaydi va iqtisodiy samaradorlikni oshiradi","Har doim ikki tomonlama manfaatni talab qiladi","Faqat qimmatbaho metallar yordamida amalga oshiriladi","Natural xo'jalik sharoitida qo'llanilgan eng qadimgi ayirboshlash usuli"],c:0},
+{q:"Qiymat shakllari evolyutsiyasining to'g'ri ketma-ketligi?",o:["Oddiy shakl - Pul shakli - Kengaytirilgan shakl - Umumiy shakl","Umumiy shakl - Kengaytirilgan shakl - Oddiy shakl - Pul shakli","Oddiy shakl - Kengaytirilgan shakl - Umumiy shakl - Pul shakli - Qog'oz-pul shakli","Pul shakli - Oddiy shakl - Kengaytirilgan shakl - Umumiy shakl"],c:2},
+{q:"Oltin va kumushning pul sifatida uzoq vaqt qo'llanilishiga imkon bergan xususiyatlariga qaysi biri KIRMAYDI?",o:["Bir jinsliligi va bo'linuvchanligi","Qiymatining o'zgarmasligi va sifatining buzilmasligi","Og'irligining juda kichik bo'lishi","Saqlanish qulayligi"],c:2},
+{q:"Qog'oz pullarning paydo bo'lishiga sabab bo'lmagan omil qaysi?",o:["Qimmatbaho metallarni olib yurish, saqlash va xavfsizligidagi qiyinchiliklar","Oltin va kumush pullarning muomalada eskirishi, yedirilishi","Qimmatbaho metallarning dunyoda juda kam miqdorda qolishi","Tovar va xizmatlar massasining qimmatbaho metallar massasiga nisbatan tez o'sishi"],c:2},
+{q:"Adam Smit pulga qanday ta'rif bergan?",o:["Pul - iqtisodiyotning qon tomiri","Pul - muomalaning buyuk g'ildiragi va savdo-sotiqning yuksak quroli","Pul - boylikning yagona o'lchovi","Pul - xalqlar farovonligining asosi"],c:1},
+{q:"Pulning 'pul osonlik bilan bir joydan ikkinchi joyga ko'chirilishi mumkin' degan xususiyati qanday ataladi?",o:["Likvidlik","Bir jinslilik","Ko'chma","Tan olinishi"],c:2},
+{q:"Pulning qaysi funksiyasi kredit asosidagi to'lovlar, soliqlar, ish haqini to'lashda foydalanish bilan bog'liq?",o:["Qiymat o'lchovi","Ayirboshlash vositasi","To'lov vositasi","Jamg'arma vositasi"],c:2},
+{q:"Xalqaro valyuta bozorlarida konversion operatsiyalarning 90%+ qancha valyutada amalga oshiriladi?",o:["3 ta valyutada (AQSH dollari, yevro, funt sterling)","5 ta valyutada (AQSH dollari, yevro, yapon iyenasi, funt sterling, Shveytsariya franki)","7 ta valyutada (yuqoridagilarga qo'shimcha Xitoy yuani va Kanada dollari)","10 ta valyutada"],c:1},
+{q:"Pulning metallik nazariyasining asosiy g'oyasi?",o:["Pulning qiymati davlat tomonidan belgilanadi","Pul sifatida faqat oltin va kumush tan olinadi, ular jamiyat boyligining asosiy manbai","Pul shartli belgi bo'lib, uning tovar tabiati yo'q","Pulning asosiy funksiyasi faqat ayirboshlash vositasidir"],c:1},
+{q:"Pulning metallik nazariyasining asoschisi kim?",o:["Adam Smit","Tomas Men","Nikolo Orezme","Jorj Berkli"],c:2},
+{q:"Tomas Menning 'pul savdoni yaratadi, savdo esa pulni ko'paytiradi' fikri qaysi nazariyaga tegishli?",o:["Nominalistik nazariya","Miqdoriy nazariya","Metallik nazariya","Keyns nazariyasi"],c:2},
+{q:"Metallik nazariyaning asosiy kamchiligi?",o:["Tarafdorlari pulning faqat nominal qiymatiga e'tibor qaratganlar","Jamiyat boyligini faqat qimmatbaho metallar bilan chegaralab, boylikning asl manbai mehnat ekanligini tushuna olmadilar","Ular qog'oz pullarni metall pullardan afzal deb bilganlar","Ular pulni huquqiy kategoriya sifatida talqin etganlar"],c:1},
+{q:"Pulning nominallik nazariyasining asosiy g'oyasi?",o:["Pulning qiymati uning metall tarkibiga bog'liq","Pullar tovar tabiatiga ega bo'lib, ularning qiymati mehnat bilan belgilanadi","Pullar shartli belgilar, davlat hokimiyatining mahsuli bo'lib, ularning qiymati nominal bilan belgilanadi","Pulning asosiy funksiyasi jamg'arma vositasi hisoblanadi"],c:2},
+{q:"Nominalistik nazariyaning asoschilari kimlar?",o:["Adam Smit va Devid Rikardo","Karl Marks va Fridrix Engels","Jorj Berkli va Jeyms Styuart","Milton Fridman va Anna Shvarts"],c:2},
+{q:"Nominalistik nazariyaning asosiy kamchiligi nimada?",o:["Pulning metall mazmuniga haddan tashqari e'tibor qaratilgan","Pulning qiymatini davlat belgilaydi deb hisoblab, pulning tovar tabiatiga ega ekanligi inkor etiladi","Pulning faqat ayirboshlash vositasi funksiyasi tan olinadi","Pulning jamg'arma vositasi funksiyasi inkor etiladi"],c:1},
+{q:"Germaniyada 1920-yillarda yuz bergan giperinflyatsiya qaysi nazariyaning asossizligini isbotladi?",o:["Metallik nazariya","Miqdoriy nazariya","Nominalistik nazariya","Keyns nazariyasi"],c:2},
+{q:"Pulning miqdoriy nazariyasining asoschisi kim?",o:["Adam Smit","Karl Marks","Jan Boden","Milton Fridman"],c:2},
+{q:"Irving Fisherning almashuv tenglamasi qaysi ko'rinishga ega?",o:["M = K x P x Y","M x V = P x Q","M x P = V x Q","P x V = M x Q"],c:1},
+{q:"Fisher tenglamasidagi M, V, P, Q harflari nima anglatadi?",o:["M - pul massasi, V - pul aylanish tezligi, P - tovarlar bahosi, Q - tovarlar miqdori","M - tovarlar miqdori, V - pul massasi, P - baho, Q - aylanish tezligi","M - aylanish tezligi, V - pul massasi, P - tovarlar miqdori, Q - baho","M - baho, V - tovarlar miqdori, P - aylanish tezligi, Q - pul massasi"],c:0},
+{q:"Fisher tenglamasining asosiy kamchiligi?",o:["Fisher pul aylanish tezligi (V) va tovar miqdori (Q) o'zgarmas deb olgan","Fisher faqat metall pullarni hisobga olgan","Fisher pulning faqat nominal qiymatiga e'tibor qaratgan","Fisher tenglamasida matematik xatolar mavjud"],c:0},
+{q:"Keynsning likvidlikni afzal ko'rish nazariyasida pulga talab qanday motivlar orqali izohlanadi?",o:["Metallik, nominalistik va miqdoriy motivlar","Transaksion, ehtiyotkorlik va spekulyativ motivlar","Ishlab chiqarish, taqsimlash va iste'mol motivlari","Investitsion, jamg'arma va kredit motivlari"],c:1},
+{q:"Milton Fridmanning pul massasi o'sishi haqidagi taklifi qanday?",o:["Pul massasining yillik o'sishi 1-2% oralig'ida bo'lishi kerak","Pul massasining yillik o'sishi 3-5% oralig'ida bo'lishi kerak","Pul massasining yillik o'sishi 8-10% oralig'ida bo'lishi kerak","Pul massasining o'sishi umuman cheklanmasligi kerak"],c:1},
+{q:"Fridmanning fikricha, pul massasi o'sishi 5% dan yuqori bo'lsa qanday oqibat yuz beradi?",o:["Iqtisodiy o'sish sekinlashadi","Inflyatsiya kuchayadi","Ishsizlik darajasi oshadi","Milliy valyuta mustahkamlanadi"],c:1},
+{q:"Pul agregatlari qanday tartibda joylashgan?",o:["M3 - M2 - M1 - M0","M0 - M1 - M2 - M3","M1 - M0 - M3 - M2","M2 - M1 - M0 - M3"],c:1},
+{q:"Quyidagi pul nazariyalari va ularning vakillari o'rtasidagi qaysi juftlik NOTO'G'RI?",o:["Metallik nazariya - Uilyam Stefford","Nominalistik nazariya - Georq Knapp","Miqdoriy nazariya - Djon Keyns","Monetarizm - Milton Fridman"],c:2},
+{q:"Pul aylanmasi tushunchasining mohiyati qaysi javobda to'g'ri ifodalangan?",o:["Pul aylanmasi - bu faqat naqd pullarning harakati","Pul aylanmasi - bu pullarning naqd va naqdsiz shakllardagi uzluksiz harakati yig'indisidir","Pul aylanmasi - bu qimmatli qog'ozlarning muomaladagi harakati","Pul aylanmasi - bu faqat banklararo hisob-kitoblar tizimi"],c:1},
+{q:"Naqd pul aylanmasining qaysi xususiyati NOTO'G'RI?",o:["Bevosita banknotalar va tangalar vositasida amalga oshiriladi","Asosan aholining daromadlari va xarajatlari bilan bog'liq","Naqd pullar orqali to'lovlarni nazorat qilish oson va shaffof","Naqd pullarni olib yurish xavfsizlik nuqtai nazaridan muammoli"],c:2},
+{q:"Naqd pul aylanmasini tashkil etish tamoyillariga qaysi biri KIRMAYDI?",o:["Normativ-huquqiy asoslar mavjudligi","Majburiy saqlash - barcha korxonalar o'z naqd pullarini tijorat banklarida saqlashlari shart","Kassa limiti - korxonalarga kassada kichik miqdorda naqd pul saqlashga ruxsat etiladi","Naqd pullarni erkin muomalada cheklovsiz ishlatish"],c:3},
+{q:"Naqd pullarni muomalaga chiqarish (emissiya) kim tomonidan amalga oshiriladi?",o:["Tijorat banklari","Moliya vazirligi","Markaziy bank","Davlat byudjeti"],c:2},
+{q:"Naqd pullarni muomaladan olish qanday hollarda amalga oshiriladi?",o:["Aynan pul islohoti o'tkazilganda","Eskirgan, yirtilgan banknotalar, pul islohoti va inflyatsiyani jilovlash maqsadida","Faqat inflyatsiya yuqori bo'lganda","Har yili muntazam ravishda"],c:1},
+{q:"Naqdsiz pul aylanmasining qaysi afzalligi NOTO'G'RI?",o:["Xavfsizlik - naqd pullarni olib yurish va saqlash xavfi yo'q","Yashirin iqtisodiyotni rivojlantiradi va soliq to'lashdan qochish imkoniyatini oshiradi","Tejamkorlik - naqd pullarni qayta ishlash, tashish, saqlash xarajatlari kamayadi","Tezkorlik - elektron to'lovlar orqali to'lovlar tez amalga oshadi"],c:1},
+{q:"Naqdsiz pul aylanmasini tashkil etish tamoyillariga qaysi biri KIRMAYDI?",o:["Hisobvaraq majburiyati","Aktseptlash","Naqd pullardan majburiy foydalanish","Ta'minlanganlik"],c:2},
+{q:"To'lovlarni amalga oshirishning kalendar ketma-ketligi nima?",o:["To'lovlar oldindan belgilangan maqsadlarga qarab to'lanadi","Qaysi qarzdorlik oldin paydo bo'lgan bo'lsa, o'sha to'lanadi","Birinchi navbatda ish haqi, keyin byudjetga to'lovlar to'lanadi","To'lovlar tasodifiy tartibda amalga oshiriladi"],c:1},
+{q:"Pul bozori instrumentlariga qaysi biri KIRMAYDI?",o:["Obligatsiyalar","Tijorat veksellari","Depozit sertifikatlari","Aktsiyalar (uzoq muddatli qimmatli qog'ozlar)"],c:3},
+{q:"Bank aktsepti deganda nima tushuniladi?",o:["Bank tomonidan kredit berish","Bank tomonidan tijorat vekseli va chek bo'yicha to'lovning kafolatlanishi","Bank tomonidan valyuta sotib olish","Bank tomonidan depozit qabul qilish"],c:1},
+{q:"Pul agregati M0 tarkibiga nimalar kiradi?",o:["Muomaladagi jismoniy qog'oz va tanga pullari (naqd pullar)","Muomaladagi naqd pullar + talab qilib olinadigan depozitlar","M1 + pul bozoridagi aksiyalar + omonat depozitlari","M2 + yirik muddatli depozitlar"],c:0},
+{q:"Inkasso topshiriqnomasi qanday maqsadda qo'llaniladi?",o:["Ixtiyoriy to'lovlarni amalga oshirish uchun","Majburiy undirish uchun","Kredit olish uchun","Valyuta ayirboshlash uchun"],c:1},
+{q:"Sudlar tomonidan berilgan ijro varaqlari bo'yicha bajarilish muddati qancha?",o:["1 yil","2 yil","3 yil","5 yil"],c:2},
+{q:"Korxonalar naqd pul tushumlarini bankka topshirishda qanday hujjatdan foydalanadi?",o:["Chek","E'lonnoma","Veksel","To'lov talabnomasi"],c:1},
+{q:"Mijoz bankdan ish haqi olish uchun qanday hujjat topshiradi?",o:["To'lov topshiriqnomasi","Inkasso topshiriqnomasi","Naqd pul cheki","E'lonnoma"],c:2},
+{q:"Pul aylanmasi va pul muomalasi o'rtasidagi farq?",o:["Pul aylanmasi statik, pul muomalasi dinamik holatni ifodalaydi","Pul muomalasi statik, pul aylanmasi dinamik holatni ifodalaydi","Pul aylanmasi va pul muomalasi bir xil tushunchalar","Pul aylanmasi faqat naqd, pul muomalasi faqat naqdsiz pullarni o'z ichiga oladi"],c:1},
+{q:"Pul massasini o'lchashda likvidli yondashuv asoschisi kim?",o:["I. Fisher","A. Smit","J.M. Keyns","M. Fridman"],c:2},
+{q:"Pul agregatlari qanday maqsadda qo'llaniladi?",o:["Aynan naqd pullarni hisobga olish uchun","Pul massasini miqdoriy va sifat jihatdan o'lchashda","Kreditlarni hisobga olish uchun","Valyuta operatsiyalarini hisobga olish uchun"],c:1},
+{q:"O'zbekiston Respublikasida pul massasining asosiy ko'rsatkichi qaysi pul agregati?",o:["M0","M1","M2","M3"],c:2},
+{q:"Pul tizimining asosiy elementlariga qaysi biri KIRMAYDI?",o:["Milliy pul birligi (valyuta)","Pul belgilarining turlari","Fond bozori indekslari","Pul emissiyasi tartibi"],c:2},
+{q:"Elektron pullarning huquqiy ta'rifi qaysi javobda to'g'ri?",o:["Elektron pullar - bu bank plastik kartalari","Elektron pullar - elektron shaklda saqlanadigan hamda elektron pullar tizimida to'lov vositasi sifatida qabul qilinadigan shartsiz pul majburiyatlaridir","Elektron pullar - bu internet orqali o'tkaziladigan pullar","Elektron pullar - bu kriptovalyutalar"],c:1},
+{q:"Pul sifatida ishlatiladigan materialga ko'ra pul tizimlarining to'g'ri ketma-ketligi?",o:["Metall pul tizimlari - Tovar pul tizimlari - Qog'oz-kredit - Elektron","Tovar pul tizimlari - Metall pul tizimlari - Qog'oz-kredit pul tizimlari - Elektron pul tizimlari","Qog'oz-kredit - Metall - Tovar - Elektron","Elektron - Qog'oz-kredit - Metall - Tovar"],c:1},
+{q:"Pul muomalasini tartibga solish mexanizmining asosiy instrumentlariga qaysi biri KIRMAYDI?",o:["Qayta moliyalash stavkasi","Majburiy zaxira normasi","Byudjet taqchilligi","Ochiq bozor operatsiyalari"],c:2},
+{q:"O'zbekiston Respublikasining milliy valyutasi qachon muomalaga kiritilgan?",o:["1991 yil 1 sentyabr","1993 yil 15 noyabr","1994 yil 1 iyul","2000 yil 1 yanvar"],c:2},
+{q:"So'm-kuponlar qanday nisbatda so'mga almashtirilgan?",o:["1 so'm = 10 so'm-kupon","1 so'm = 100 so'm-kupon","1 so'm = 1000 so'm-kupon","1 so'm = 10000 so'm-kupon"],c:2},
+{q:"'Inflyatsiya' atamasi birinchi marta kim tomonidan va qachon iqtisodiy oborotga kiritilgan?",o:["Adam Smit, 1776 yil","Karl Marks, 1867 yil","Aleks Delmar, 1864 yil","Jon Keyns, 1936 yil"],c:2},
+{q:"Inflyatsiyani yuzaga keltiruvchi asosiy sabablarga qaysi biri KIRMAYDI?",o:["Byudjet taqchilligi","Muomalaga ta'minlanmagan pullarning chiqarilishi","Ishlab chiqarish samaradorligining oshishi","Talab va taklif o'rtasidagi nomutanosiblik"],c:2},
+{q:"Taklif inflyatsiyasining (xarajatlar inflyatsiyasi) asosiy sababi nima?",o:["Aholi daromadlarining oshishi","Ishlab chiqarish xarajatlarining o'sishi","Davlat xarajatlarining kamayishi","Kreditlarning kengayishi"],c:1},
+{q:"Sokin (mo'tadil) inflyatsiyada narx-navoning o'sish darajasi qanchani tashkil qiladi?",o:["Yiliga 1% dan 2% gacha","Yiliga o'rtacha 3% dan 10% gacha","Yiliga 10% dan 50% gacha","Yiliga 100% dan ortiq"],c:1},
+{q:"Giperinflyatsiya qanday narx o'sishi bilan tavsiflanadi?",o:["Yiliga 10% dan 20% gacha","Yiliga 50% dan 100% gacha","Yiliga 500% gacha","Yiliga 1000% dan ortiq"],c:3},
+{q:"Inflyatsiyaning ijtimoiy-iqtisodiy oqibatlariga qaysi biri KIRMAYDI?",o:["Aholi va korxonalarning real daromadlari pasayadi","Uzoq muddatli investitsiyalar ko'payadi","Pul jamg'armalarining qiymati tushib ketadi","Daromadlar va boyliklar qayta taqsimlanadi"],c:1},
+{q:"Inflyatsiya sharoitida debitorlar va kreditorlar munosabati qanday o'zgaradi?",o:["Kreditorlar foyda ko'radi, debitorlar zarar ko'radi","Debitorlar foyda ko'radi, kreditorlar zarar ko'radi","Ikkala tomon ham foyda ko'radi","Ikkala tomon ham zarar ko'radi"],c:1},
+{q:"Deinflyatsion siyosat nima?",o:["Pul massasini ko'paytirish siyosati","Mamlakatda pulga bo'lgan talabni pul-kredit va moliya mexanizmlari yordamida tartibga solib turish","Narxlarni oshirish siyosati","Ish haqini oshirish siyosati"],c:1},
+{q:"Deinflyatsion siyosat vositalariga qaysi biri KIRMAYDI?",o:["Davlat xarajatlarini qisqartirish","Kreditlar uchun foiz stavkalarini oshirish","Pul massasini ko'paytirish","Majburiy zaxira normasini oshirish"],c:2},
+{q:"Pul islohotining qaysi turida eski qadrsizlangan pullar bekor qilinib, yangi pullar chiqariladi?",o:["Denominatsiya","Devalvatsiya","Nullifikatsiya","Revalvatsiya"],c:2},
+{q:"Devalvatsiya va revalvatsiyaning farqi?",o:["Devalvatsiya - milliy valyuta kursining ko'tarilishi, revalvatsiya - tushishi","Devalvatsiya - milliy valyuta kursining chet el valyutasiga nisbatan tushishi, revalvatsiya - ko'tarilishi","Devalvatsiya - pul birligini yiriklashtirish, revalvatsiya - maydalashtirish","Devalvatsiya - eski pullarni bekor qilish, revalvatsiya - yangi pullar chiqarish"],c:1},
+{q:"Sudraluvchan inflyatsiyada baholar yiliga qancha foiz o'sadi?",o:["2-3 foiz","6-8 foiz","10-15 foiz","20-25 foiz"],c:1},
+{q:"Shiddatli inflyatsiya davrida baholar yiliga qancha foizgacha o'sishi mumkin?",o:["10 foizgacha","50 foizgacha","100 foizgacha","20 foizdan 200 foizgacha"],c:3},
+{q:"Birinchi jahon urushidan keyin giperinflyatsiya kuzatilgan mamlakat qaysi?",o:["Fransiya","Angliya","Germaniya","Italiya"],c:2},
+{q:"Banklarning vujudga kelishi qaysi davrga to'g'ri keladi?",o:["Sanoat inqilobi davriga","Tovar-pul munosabatlarining rivojlanishi va pulning qiymat shakli paydo bo'lishi davriga","XX asr boshlariga","O'rta asrlarga"],c:1},
+{q:"'Bank' so'zi qaysi tildan olingan va qanday ma'noni anglatadi?",o:["Lotin tilidan - 'pul' degan ma'noni","Ingliz tilidan - 'qarz' degan ma'noni","Italyancha 'banca' so'zidan - 'stol' yoki 'pullik stol' degan ma'noni","Fransuz tilidan - 'hisob' degan ma'noni"],c:2},
+{q:"Dastlabki banklar qayerda va qachon paydo bo'lgan?",o:["Angliyada, XIV asrda","Fransiyada, XII asrda","Italiyaning Venetsiya va Genuya shaharlarida, X asrda","Germaniyada, XIII asrda"],c:2},
+{q:"1407-yilda Genuyada ochilgan mashhur bank qanday nomlangan?",o:["Angliya banki","Muqaddas Grigoriy banki","Venetsiya banki","Medichi banki"],c:1},
+{q:"Jirobanklarning vujudga kelishi qaysi asrga to'g'ri keladi?",o:["XIV asr","XV asr","XVI asr","XVII asr"],c:2},
+{q:"Banko de Rialto jirobanki qachon tuzilgan?",o:["1407 yil","1587 yil","1609 yil","1694 yil"],c:1},
+{q:"Tarixda birinchi aksionerlik banki qaysi?",o:["Venetsiya banki","Amsterdam banki","Angliya banki","Shimoliy Amerika banki"],c:2},
+{q:"Angliya banki qachon tashkil etilgan va qaysi yilgacha yagona bank bo'lgan?",o:["1587 yil, 1700 yilgacha","1694 yil, 1825 yilgacha","1782 yil, 1850 yilgacha","1800 yil, 1900 yilgacha"],c:1},
+{q:"O'zbekiston Respublikasi bank tizimi necha pog'onadan iborat?",o:["Bir pog'onadan","Ikki pog'onadan","Uch pog'onadan","To'rt pog'onadan"],c:1},
+{q:"Markaziy banklarning paydo bo'lish sabablariga qaysi biri KIRMAYDI?",o:["Naqd pullarni emissiya qilishning bitta markazda to'planishi zaruriyati","Tijorat banklarining inqiroz paytida majburiyatlarini ta'minlay olmasligi","Davlatni moliyaviy tang ahvoldan qutqarish zaruriyati","Tijorat banklarining kreditlash faoliyatini kengaytirish"],c:3},
+{q:"Ilk Markaziy bank qachon va qayerda tashkil etilgan?",o:["1694-yilda Angliyada","1668-yilda Shvetsiyada (Riksbank)","1800-yilda Fransiyada","1913-yilda AQShda"],c:1},
+{q:"Banklarning asosiy funksiyalariga qaysi biri KIRMAYDI?",o:["Depozitlarni jalb qilish","Kreditlash","Soliq undirish","Hisob-kitob xizmatlari"],c:2},
+{q:"AQShda Markaziy bank qanday nomlanadi?",o:["Angliya banki","Yevropa Markaziy banki","Federal zaxira tizimi","Milliy bank"],c:2},
+{q:"Angliya banki qachon emission markaz sifatida faoliyat ko'rsatishga moslashgan?",o:["1694 yil","1800 yil","1844 yil","1893 yil"],c:2},
+{q:"Majburiy zaxira talablari birinchi marta qayerda va qachon ishlab chiqilgan?",o:["Angliyada, 1694 yil","Fransiyada, 1800 yil","AQSH Federal Zaxira Tizimi tomonidan, 1863 yil","Germaniyada, 1875 yil"],c:2},
+{q:"Valyutaviy SVOP operatsiyasining predmeti nima?",o:["Qimmatli qog'ozlar","Oltin","Xorijiy valyuta","Ko'chmas mulk"],c:2},
+{q:"O'zbekiston Respublikasida 2025-yil 1-yanvardan bank ustav kapitalining eng kam miqdori qancha?",o:["100 milliard so'm","200 milliard so'm","500 milliard so'm","1 trillion so'm"],c:2},
+{q:"Banklar qanday shaklda tashkil etiladi?",o:["Mas'uliyati cheklangan jamiyat","Aksiyadorlik jamiyati","Xususiy korxona","Davlat unitar korxonasi"],c:1},
+{q:"Tijorat banklarining jismoniy shaxslarga ko'rsatadigan xizmatlariga qaysi biri KIRMAYDI?",o:["Omonatlar","Bank kartalari","Faktoring","Pul o'tkazmalari"],c:2},
+{q:"Passiv operatsiyalarning mohiyati nimadan iborat?",o:["Banklarning jalb qilingan mablag'larini joylashtirish","Banklarning o'z resurslarini shakllantirish bilan bog'liq operatsiyalar","Banklarning vositachilik xizmatlari","Banklarning xarajatlarini amalga oshirish"],c:1},
+{q:"Depozit sertifikatlari va jamg'arma sertifikatlari o'rtasidagi farq nimada?",o:["Depozit sertifikatlari qisqa muddatli, jamg'arma sertifikatlari uzoq muddatli","Depozit sertifikatlari yuridik shaxslar, jamg'arma sertifikatlari jismoniy shaxslar uchun mo'ljallangan","Depozit sertifikatlari foizli, jamg'arma sertifikatlari foizsiz","Depozit sertifikatlari milliy valyutada, jamg'arma sertifikatlari xorijiy valyutada chiqariladi"],c:1},
+{q:"Aktiv operatsiyalarning asosiy maqsadi nima?",o:["Bank resurslarini shakllantirish","Daromad (foyda) olish va bank likvidligini ta'minlash","Mijozlarga maslahat xizmatlari ko'rsatish","Bank xarajatlarini qoplash"],c:1},
+{q:"'Substandart' sifatida tasniflangan aktivlar bo'yicha qancha zaxira shakllantiriladi?",o:["1%","5%","10%","25%"],c:2},
+{q:"'Umidsiz' deb tasniflangan aktivlar bo'yicha qancha zaxira shakllantiriladi?",o:["25%","50%","75%","100%"],c:3},
+{q:"Faktoring operatsiyasida nechta tomon ishtirok etadi?",o:["2 tomon","3 tomon","4 tomon","5 tomon"],c:1},
+{q:"Lizing operatsiyasining mohiyati qanday izohlanadi?",o:["Oddiy ijara shartnomasi","'Kredit - ijara' tarzida talqin etiladigan, ijara va kredit elementlari mujassamlashgan operatsiya","Faqat moliyaviy xizmat","Faqat tovar ayirboshlash"],c:1},
+{q:"Kontokorrent (overdraft) operatsiyasida nima amalga oshiriladi?",o:["Mijozning hisobvarag'iga qo'shimcha mablag' o'tkazish","Mijozning depozit hisobvarag'ida mablag' bo'lmagan holda ma'lum miqdorda debet qoldiq qolishiga ruxsat berish","Mijozga uzoq muddatli kredit berish","Mijozning mulkini boshqarish"],c:1},
+{q:"Forfeyting operatsiyalarining faktoring operatsiyalaridan asosiy farqi?",o:["Forfeyting qisqa muddatli, faktoring uzoq muddatli","Forfeyting uzoq muddatli (6 oydan 5-6 yilgacha) va yirik summalarga tuziladi","Forfeytingda faqat ikki tomon ishtirok etadi","Forfeyting faqat davlat tashkilotlari o'rtasida qo'llaniladi"],c:1},
+{q:"'A forfait' so'zi qaysi tildan olingan va qanday ma'noni anglatadi?",o:["Ingliz tilidan - 'oldi-sotdi'","Nemis tilidan - 'kredit'","Fransuz tilidan - 'huquqdan voz kechish'","Italyan tilidan - 'to'lov'"],c:2},
+{q:"Trast operatsiyalarida bank qanday vazifani bajaradi?",o:["Kredit berish","Mijozlarning mulkini boshqarish yoki ishonchli vakil sifatida ularning nomidan xizmatlarni bajarish","Valyuta ayirboshlash","Depozit qabul qilish"],c:1},
+{q:"Noan'anaviy bank operatsiyalarining rivojlanishiga qaysi omil ijobiy ta'sir ko'rsatmaydi?",o:["Milliy valyuta kursining barqarorligi","Bank tizimiga aholi ishonchining mustahkamligi","Yuqori inflyatsiya darajasi","Qonunchilik bazasining takomillashuvi"],c:2},
+]}
+];
+
+let cur=null,qs=[],qi=0,score=0,ans=false;
+
+function init(){
+  const g=document.getElementById('subjectsGrid');g.innerHTML='';
+  SUBJECTS.forEach(s=>{
+    const d=document.createElement('div');
+    d.className='sc'+(s.locked?' locked':'');
+    d.style.setProperty('--sc-g',s.sg);d.style.setProperty('--sc-b',s.sb);
+    d.innerHTML=`<div class="sc-ico" style="background:${s.ibg}">${s.icon}</div>
+      <div class="sc-info"><div class="sc-name">${s.name}</div><div class="sc-meta">${s.desc}</div></div>
+      <div class="sc-btn${s.locked?' lock':''}">${s.locked?'🔒':'▶ Start'}</div>`;
+    d.onclick=s.locked?()=>toast('Tez orada! 🚀'):()=>start(s);
+    g.appendChild(d);
+  });
+}
+
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>{s.classList.remove('active');s.style.display='';});
+  const el=document.getElementById(id);el.style.display='flex';
+  requestAnimationFrame(()=>el.classList.add('active'));
+}
+function goHome(){show('home');document.getElementById('fb').classList.remove('show');}
+
+function start(s){
+  cur=s;
+  qs=[...s.questions].sort(()=>Math.random()-.5).slice(0,Math.min(30,s.questions.length));
+  qi=0;score=0;show('quiz-screen');renderQ();
+}
+
+function renderQ(){
+  ans=false;
+  const q=qs[qi],tot=qs.length;
+  document.getElementById('qName').textContent=cur.name;
+  document.getElementById('qProg').textContent=`Savol ${qi+1} / ${tot}`;
+  document.getElementById('scTag').textContent=`✓ ${score}`;
+  document.getElementById('pbFill').style.width=`${qi/tot*100}%`;
+  document.getElementById('qNum').textContent=`SAVOL ${qi+1}`;
+  document.getElementById('qTxt').textContent=q.q;
+  document.getElementById('fb').classList.remove('show');
+  const L=['A','B','C','D'],list=document.getElementById('optsList');list.innerHTML='';
+  q.o.forEach((o,j)=>{
+    const btn=document.createElement('button');btn.className='opt';
+    btn.innerHTML=`<div class="opt-let">${L[j]}</div><div class="opt-txt">${o}</div><div class="opt-ico">${j===q.c?'✓':'✗'}</div>`;
+    btn.onclick=e=>pick(btn,j,q.c,e);list.appendChild(btn);
+  });
+  document.getElementById('quiz-screen').scrollTo({top:0,behavior:'smooth'});
+}
+
+function pick(btn,ch,co,e){
+  if(ans)return;ans=true;
+  const r=document.createElement('div');r.className='ripple';
+  const rc=btn.getBoundingClientRect(),sz=Math.max(btn.offsetWidth,btn.offsetHeight);
+  r.style.cssText=`width:${sz}px;height:${sz}px;left:${(e.clientX||rc.left+rc.width/2)-rc.left-sz/2}px;top:${(e.clientY||rc.top+rc.height/2)-rc.top-sz/2}px`;
+  btn.appendChild(r);setTimeout(()=>r.remove(),600);
+  const ok=ch===co;
+  document.querySelectorAll('.opt').forEach((b,j)=>{
+    b.classList.add('ans');
+    if(j===co)b.classList.add('correct');
+    else if(j===ch&&!ok)b.classList.add('wrong');
+    else b.classList.add('dim');
+  });
+  if(ok){score++;document.getElementById('scTag').textContent=`✓ ${score}`;}
+  else btn.classList.add('shk');
+  showFB(ok,ok?null:qs[qi].o[co]);
+}
+
+function showFB(ok,ct){
+  const oe=['🎉','🔥','✨','💯','⚡'],ne=['💪','😤','📖','🙁'];
+  const ot=['Ajoyib!','To\'g\'ri!','Zo\'r!','Barakallo!','Perfect!'];
+  document.getElementById('fbEm').textContent=ok?oe[~~(Math.random()*oe.length)]:ne[~~(Math.random()*ne.length)];
+  const t=document.getElementById('fbTi');
+  t.textContent=ok?ot[~~(Math.random()*ot.length)]:'Noto\'g\'ri!';
+  t.className='fb-ti '+(ok?'ok':'no');
+  document.getElementById('fbSu').textContent=ok?'Davom eting, siz zo\'rsiz!':ct?`To'g'ri: ${ct}`:'Keyingi safar to\'g\'ri bo\'ladi!';
+  document.getElementById('nxBtn').textContent=qi<qs.length-1?'Keyingisi →':'Natijani ko\'rish 🏆';
+  document.getElementById('fb').classList.add('show');
+}
+
+function nextQ(){qi++;if(qi>=qs.length)showResult();else renderQ();}
+
+function showResult(){
+  document.getElementById('fb').classList.remove('show');show('result-screen');
+  const tot=qs.length,wrong=tot-score,pct=Math.round(score/tot*100);
+  document.getElementById('rsOk').textContent=score;
+  document.getElementById('rsNo').textContent=wrong;
+  document.getElementById('rsAll').textContent=tot;
+  let em,ti,su;
+  if(pct>=90){em='🏆';ti='Ustoz darajasi!';su='Siz haqiqiy bilimdon!';}
+  else if(pct>=75){em='🎯';ti='Zo\'r natija!';su='Yuqori daraja, davom eting!';}
+  else if(pct>=50){em='💪';ti='Yaxshi!';su='Yana bir oz mashq qiling!';}
+  else{em='📖';ti='Ko\'proq o\'qing!';su='Bilimlaringizni oshiring va qayta urining.';}
+  document.getElementById('resEm').textContent=em;
+  document.getElementById('resTi').textContent=ti;
+  document.getElementById('resSu').textContent=`${su} — ${pct}% natija`;
+  const circ=2*Math.PI*68,off=circ*(1-pct/100),fill=document.getElementById('ringFill');
+  fill.style.strokeDasharray=circ;fill.style.strokeDashoffset=circ;
+  fill.style.stroke=pct>=75?'var(--green)':pct>=50?'var(--yellow)':'var(--red)';
+  document.getElementById('ringPct').style.color=fill.style.stroke;
+  document.getElementById('ringPct').textContent='0%';
+  setTimeout(()=>{fill.style.strokeDashoffset=off;anim(document.getElementById('ringPct'),0,pct,1000,v=>`${v}%`);},300);
+  if(pct>=75)confetti();
+}
+function retry(){start(cur);}
+
+function anim(el,from,to,dur,fmt){
+  const s=performance.now();
+  const f=now=>{const t=Math.min((now-s)/dur,1);el.textContent=fmt(Math.round(from+(to-from)*(1-Math.pow(1-t,3))));if(t<1)requestAnimationFrame(f);};
+  requestAnimationFrame(f);
+}
+function confetti(){
+  const w=document.getElementById('confW');w.innerHTML='';
+  const cols=['#6257ff','#b94dff','#00e591','#ffc300','#ff3355','#00b4ff'];
+  for(let i=0;i<55;i++){
+    const p=document.createElement('div');p.className='conf';
+    p.style.cssText=`left:${Math.random()*100}%;background:${cols[~~(Math.random()*cols.length)]};animation-duration:${1.5+Math.random()*2}s;animation-delay:${Math.random()*.8}s;width:${5+Math.random()*8}px;height:${7+Math.random()*12}px;border-radius:${Math.random()>.5?'50%':'3px'};`;
+    w.appendChild(p);
+  }
+  setTimeout(()=>w.innerHTML='',4000);
+}
+function toast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');
+  setTimeout(()=>t.classList.remove('on'),2500);
+}
+init();
+</script>
+
+</body>
+</html>
