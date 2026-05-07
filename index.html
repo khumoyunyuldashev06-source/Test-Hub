@@ -172,6 +172,81 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   padding:9px 17px;border-radius:10px;font-size:13px;z-index:999;
   white-space:nowrap;opacity:0;transition:all .28s;pointer-events:none;}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* === LIGHT THEME === */
+body.light{
+  --bg:#f5f6fc;--card:#ffffff;--border:#e2e5f0;--border2:#d0d4e2;
+  --text:#1a1d2e;--muted:#6b7290;--white:#0a0c1a;
+}
+body.light::before{
+  background:radial-gradient(ellipse 80% 60% at 10% -5%,rgba(98,87,255,.08) 0%,transparent 65%),
+             radial-gradient(ellipse 60% 50% at 90% 100%,rgba(185,77,255,.06) 0%,transparent 65%);
+}
+body.light .home-hero{background:linear-gradient(180deg,rgba(98,87,255,.05) 0%,transparent 100%);}
+body.light .qhdr,body.light .pb-wrap{background:rgba(245,246,252,.97);}
+body.light .fb{background:rgba(255,255,255,.99);}
+body.light .opt{background:#ffffff;border-color:#e2e5f0;}
+body.light .opt-let{background:rgba(0,0,0,.04);color:#6b7290;border-color:rgba(0,0,0,.06);}
+body.light .opt-txt{color:#3a4060;}
+body.light .opt.dim{opacity:.4;}
+body.light .footer-bar{background:rgba(245,246,252,.94);}
+body.light .toast{background:#fff;color:#1a1d2e;}
+
+/* === THEME TOGGLE === */
+.theme-tog{position:absolute;top:18px;right:18px;width:38px;height:38px;
+  border-radius:50%;background:var(--card);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  font-size:18px;z-index:10;transition:all .3s;color:var(--text);}
+.theme-tog:active{transform:scale(.9) rotate(15deg);}
+
+/* === ACHIEVEMENTS BAR === */
+.ach-row{display:flex;gap:8px;padding:0 16px 14px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.ach-row::-webkit-scrollbar{display:none;}
+.ach-badge{flex-shrink:0;background:var(--card);border:1px solid var(--border);
+  border-radius:13px;padding:9px 13px;display:flex;align-items:center;gap:8px;
+  font-size:12px;color:var(--muted);transition:all .2s;}
+.ach-badge.unlocked{border-color:rgba(255,195,0,.45);
+  background:linear-gradient(135deg,rgba(255,195,0,.08),rgba(255,107,90,.06));
+  color:var(--text);}
+.ach-badge.unlocked .ach-em{filter:none;}
+.ach-em{font-size:16px;filter:grayscale(1) opacity(.5);}
+
+/* === MODE SELECT MODAL === */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);
+  z-index:50;display:none;align-items:flex-end;justify-content:center;}
+.modal-bg.show{display:flex;animation:fadeIn .25s ease;}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal{background:var(--card);border-top-left-radius:24px;border-top-right-radius:24px;
+  padding:24px 20px 32px;width:100%;max-width:500px;
+  border-top:1px solid var(--border2);
+  animation:slideUp .3s cubic-bezier(.34,1.56,.64,1);}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-h{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--text);margin-bottom:6px;}
+.modal-sub{font-size:13px;color:var(--muted);margin-bottom:20px;}
+.mode-list{display:flex;flex-direction:column;gap:10px;}
+.mode-itm{display:flex;align-items:center;gap:14px;padding:14px;border-radius:14px;
+  border:1.5px solid var(--border);background:var(--card);cursor:pointer;transition:all .15s;}
+.mode-itm:active{transform:scale(.98);}
+.mode-itm:hover{border-color:var(--accent);}
+.mode-num{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-weight:800;font-size:16px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;flex-shrink:0;}
+.mode-info{flex:1;}
+.mode-ti{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:var(--text);}
+.mode-de{font-size:12px;color:var(--muted);margin-top:2px;}
+.modal-cls{margin-top:14px;width:100%;padding:13px;border:1px solid var(--border);
+  background:transparent;border-radius:13px;font-family:'Syne',sans-serif;
+  font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;}
+
+/* === REVIEW BANNER === */
+.review-ban{background:linear-gradient(135deg,rgba(255,195,0,.12),rgba(255,107,90,.08));
+  border:1px solid rgba(255,195,0,.3);border-radius:14px;padding:14px;
+  margin:0 17px 14px;display:flex;align-items:center;gap:12px;}
+.review-em{font-size:24px;flex-shrink:0;}
+.review-tx{flex:1;}
+.review-ti{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--text);}
+.review-de{font-size:11px;color:var(--muted);margin-top:2px;}
+
 </style>
 </head>
 <body>
@@ -180,6 +255,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 <!-- HOME -->
 <div id="home" class="screen active">
   <div class="home-hero">
+    <div class="theme-tog" onclick="toggleTheme()" id="themeTog">🌙</div>
     <div class="brand">
       <div class="brand-ico">🧠</div>
       <div class="brand-name">TestHub</div>
@@ -192,6 +268,8 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
       <div class="chip">⚡ Tez natija</div>
     </div>
   </div>
+  <div class="sec-lbl">YUTUQLAR</div>
+  <div class="ach-row" id="achRow"></div>
   <div class="sec-lbl">FANLAR</div>
   <div class="subjects" id="subjectsGrid"></div>
   <div class="footer-bar">Yangi fanlar tez orada qo'shiladi 🚀</div>
@@ -249,6 +327,16 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 </div>
 
 </div>
+<!-- MODE SELECTOR -->
+<div class="modal-bg" id="modeModal">
+  <div class="modal">
+    <div class="modal-h" id="modalSubjName">Fan tanlandi</div>
+    <div class="modal-sub">Test rejimini tanlang:</div>
+    <div class="mode-list" id="modeList"></div>
+    <button class="modal-cls" onclick="closeModal()">Bekor qilish</button>
+  </div>
+</div>
+
 <div class="conf-w" id="confW"></div>
 <div class="toast" id="toast"></div>
 
@@ -718,8 +806,35 @@ questions:[
 ];
 
 let cur=null,qs=[],qi=0,score=0,ans=false;
+let mistakes=[]; // questions answered wrong this session
+let reviewMode=false; // are we currently reviewing mistakes
+let pendingSubj=null; // subject waiting for mode selection
+
+// Storage helpers
+const ST = {
+  get:(k,d)=>{try{return JSON.parse(localStorage.getItem('th_'+k))??d;}catch(e){return d;}},
+  set:(k,v)=>{try{localStorage.setItem('th_'+k,JSON.stringify(v));}catch(e){}}
+};
+
+// Achievements definitions
+const ACHIEVEMENTS = [
+  {id:'first',em:'🎯',name:'Birinchi qadam',desc:'1ta testni tugating'},
+  {id:'perfect',em:'💯',name:'Mukammallik',desc:'100% natija oling'},
+  {id:'streak3',em:'🔥',name:'Olov',desc:'3 ta test ketma-ket'},
+  {id:'streak10',em:'⚡',name:'Tezkor',desc:'10 ta test'},
+  {id:'master',em:'🏆',name:'Ustoz',desc:'Barcha 5 fan'},
+  {id:'reviewer',em:'📚',name:'Mehnatkash',desc:'Xatolarni tuzating'},
+];
 
 function init(){
+  // Apply saved theme
+  const theme = ST.get('theme','dark');
+  if(theme==='light'){document.body.classList.add('light');document.getElementById('themeTog').textContent='☀️';}
+  
+  // Render achievements
+  renderAchievements();
+  
+  // Render subjects
   const g=document.getElementById('subjectsGrid');g.innerHTML='';
   SUBJECTS.forEach(s=>{
     const d=document.createElement('div');
@@ -728,29 +843,113 @@ function init(){
     d.innerHTML=`<div class="sc-ico" style="background:${s.ibg}">${s.icon}</div>
       <div class="sc-info"><div class="sc-name">${s.name}</div><div class="sc-meta">${s.desc}</div></div>
       <div class="sc-btn${s.locked?' lock':''}">${s.locked?'🔒':'▶ Start'}</div>`;
-    d.onclick=s.locked?()=>toast('Tez orada! 🚀'):()=>start(s);
+    d.onclick=s.locked?()=>toast('Tez orada! 🚀'):()=>openModeSelect(s);
     g.appendChild(d);
   });
 }
+
+function renderAchievements(){
+  const ach = ST.get('ach',[]);
+  const row = document.getElementById('achRow');
+  row.innerHTML='';
+  ACHIEVEMENTS.forEach(a=>{
+    const unlocked = ach.includes(a.id);
+    const div = document.createElement('div');
+    div.className='ach-badge'+(unlocked?' unlocked':'');
+    div.innerHTML=`<div class="ach-em">${a.em}</div><div>${a.name}</div>`;
+    div.onclick=()=>toast(`${a.em} ${a.name}: ${a.desc}${unlocked?' ✓':''}`);
+    row.appendChild(div);
+  });
+}
+
+function unlockAch(id){
+  let ach = ST.get('ach',[]);
+  if(!ach.includes(id)){
+    ach.push(id);
+    ST.set('ach',ach);
+    const a = ACHIEVEMENTS.find(x=>x.id===id);
+    if(a)setTimeout(()=>toast(`🎉 Yangi yutuq: ${a.em} ${a.name}!`),500);
+  }
+}
+
+function toggleTheme(){
+  const isLight = document.body.classList.toggle('light');
+  ST.set('theme',isLight?'light':'dark');
+  document.getElementById('themeTog').textContent=isLight?'☀️':'🌙';
+  try{
+    if(window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.HapticFeedback){
+      window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+    }
+  }catch(e){}
+}
+
+function openModeSelect(s){
+  pendingSubj = s;
+  document.getElementById('modalSubjName').textContent = s.icon + ' ' + s.name;
+  const total = s.questions.length;
+  const list = document.getElementById('modeList');
+  const modes = [
+    {n:10, t:'Tezkor', d:'10 ta savol — 3 daqiqa'},
+    {n:30, t:'Standart', d:'30 ta savol — taklif etiladi'},
+    {n:50, t:'Kuchli', d:'50 ta savol'},
+    {n:total, t:'To\'liq', d:`Barcha ${total} ta savol`},
+  ];
+  list.innerHTML='';
+  modes.forEach(m=>{
+    if(m.n > total && m.t !== 'To\'liq')return;
+    if(m.n === total && m.t !== 'To\'liq')return;
+    const d = document.createElement('div');
+    d.className='mode-itm';
+    d.innerHTML=`<div class="mode-num">${m.n}</div>
+      <div class="mode-info"><div class="mode-ti">${m.t}</div><div class="mode-de">${m.d}</div></div>`;
+    d.onclick=()=>{closeModal();start(s,m.n);};
+    list.appendChild(d);
+  });
+  document.getElementById('modeModal').classList.add('show');
+}
+
+function closeModal(){document.getElementById('modeModal').classList.remove('show');}
 
 function show(id){
   document.querySelectorAll('.screen').forEach(s=>{s.classList.remove('active');s.style.display='';});
   const el=document.getElementById(id);el.style.display='flex';
   requestAnimationFrame(()=>el.classList.add('active'));
 }
-function goHome(){show('home');document.getElementById('fb').classList.remove('show');}
+function goHome(){
+  show('home');
+  document.getElementById('fb').classList.remove('show');
+  const ban=document.getElementById('revBanner');if(ban)ban.remove();
+  reviewMode=false;mistakes=[];
+  renderAchievements();
+}
 
-function start(s){
+function start(s,count){
   cur=s;
-  qs=[...s.questions].sort(()=>Math.random()-.5).slice(0,Math.min(30,s.questions.length));
-  qi=0;score=0;show('quiz-screen');renderQ();
+  count = count || 30;
+  qs=[...s.questions].sort(()=>Math.random()-.5).slice(0,Math.min(count,s.questions.length));
+  qi=0;score=0;mistakes=[];reviewMode=false;
+  show('quiz-screen');renderQ();
 }
 
 function renderQ(){
   ans=false;
   const q=qs[qi],tot=qs.length;
-  document.getElementById('qName').textContent=cur.name;
-  document.getElementById('qProg').textContent=`Savol ${qi+1} / ${tot}`;
+  // Show/hide review banner
+  let banner = document.getElementById('revBanner');
+  if(reviewMode){
+    if(!banner){
+      banner = document.createElement('div');
+      banner.id='revBanner';
+      banner.className='review-ban';
+      banner.innerHTML=`<div class="review-em">📚</div>
+        <div class="review-tx"><div class="review-ti">Xatolarni takrorlash</div>
+        <div class="review-de">Bu savollarda xato qildingiz</div></div>`;
+      const optsList = document.getElementById('optsList');
+      optsList.parentNode.insertBefore(banner,optsList);
+    }
+  } else if(banner){banner.remove();}
+  document.getElementById('qName').textContent=cur.name+(reviewMode?' • Review':'');
+  document.getElementById('qProg').textContent=(reviewMode?'Xato ':'Savol ')+`${qi+1} / ${tot}`;
   document.getElementById('scTag').textContent=`✓ ${score}`;
   document.getElementById('pbFill').style.width=`${qi/tot*100}%`;
   document.getElementById('qNum').textContent=`SAVOL ${qi+1}`;
@@ -782,7 +981,6 @@ function pick(btn,ch,co,e){
   if(ok){
     score++;
     document.getElementById('scTag').textContent=`✓ ${score}`;
-    // Light short feedback for correct
     try{
       if(window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.HapticFeedback){
         window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
@@ -791,7 +989,11 @@ function pick(btn,ch,co,e){
     }catch(e){}
   } else {
     btn.classList.add('shk');
-    // Stronger longer feedback for wrong - double pulse
+    // Track mistake for review (if not already in review mode)
+    if(!reviewMode){
+      const m = qs[qi];
+      if(!mistakes.find(x=>x.q===m.q))mistakes.push(m);
+    }
     try{
       if(window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.HapticFeedback){
         window.Telegram.WebApp.HapticFeedback.notificationOccurred('error');
@@ -814,11 +1016,58 @@ function showFB(ok,ct){
   document.getElementById('fb').classList.add('show');
 }
 
-function nextQ(){qi++;if(qi>=qs.length)showResult();else renderQ();}
+function nextQ(){
+  qi++;
+  if(qi>=qs.length){
+    // If we have mistakes and not in review mode, start review
+    if(!reviewMode && mistakes.length>0){
+      startReview();
+    } else {
+      showResult();
+    }
+  } else renderQ();
+}
+
+function startReview(){
+  reviewMode=true;
+  qs=[...mistakes];
+  qi=0;
+  // score stays the same; we're just reviewing
+  show('quiz-screen');
+  renderQ();
+  setTimeout(()=>{
+    toast('📚 Xatolarni takrorlang!');
+  },300);
+}
 
 function showResult(){
   document.getElementById('fb').classList.remove('show');show('result-screen');
-  const tot=qs.length,wrong=tot-score,pct=Math.round(score/tot*100);
+  // Use original total for stats (not review)
+  const tot = reviewMode ? mistakes.length + score : qs.length;
+  const wrong = tot - score;
+  const pct = Math.round(score/tot*100);
+  
+  // Track achievements
+  unlockAch('first');
+  if(pct === 100) unlockAch('perfect');
+  if(reviewMode) unlockAch('reviewer');
+  
+  // Track session count
+  let sessions = ST.get('sessions',0) + 1;
+  ST.set('sessions', sessions);
+  if(sessions >= 3) unlockAch('streak3');
+  if(sessions >= 10) unlockAch('streak10');
+  
+  // Track subjects completed
+  let done = ST.get('subj_done',[]);
+  if(!done.includes(cur.id)){
+    done.push(cur.id);
+    ST.set('subj_done',done);
+  }
+  if(done.length >= 5) unlockAch('master');
+  
+  // Re-render achievements for next time
+  renderAchievements();
   document.getElementById('rsOk').textContent=score;
   document.getElementById('rsNo').textContent=wrong;
   document.getElementById('rsAll').textContent=tot;
@@ -838,7 +1087,10 @@ function showResult(){
   setTimeout(()=>{fill.style.strokeDashoffset=off;anim(document.getElementById('ringPct'),0,pct,1000,v=>`${v}%`);},300);
   if(pct>=75)confetti();
 }
-function retry(){start(cur);}
+function retry(){
+  reviewMode=false;mistakes=[];
+  start(cur,qs.length);
+}
 
 function anim(el,from,to,dur,fmt){
   const s=performance.now();
