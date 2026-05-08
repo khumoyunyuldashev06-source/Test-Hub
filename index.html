@@ -969,7 +969,10 @@ const ST = {
     // Return from cache if exists
     if (this._cache[k] !== undefined) return this._cache[k];
     // Fallback to localStorage
-    try { const v = JSON.parse(localStorage.getItem('th_'+k)); if(v!==null) return v; } catch(e){}
+    try { 
+      const v = JSON.parse(localStorage.getItem('th_'+k)); 
+      if(v !== null && v !== undefined) { this._cache[k] = v; return v; }
+    } catch(e){}
     return d;
   },
 
@@ -985,23 +988,30 @@ const ST = {
 
   // Load from Telegram CloudStorage into cache (called once on start)
   loadFromCloud(keys, cb) {
-    if (!TGCloud) { cb(); return; }
-    TGCloud.getItems(keys, (err, values) => {
-      if (!err && values) {
-        keys.forEach(k => {
-          const raw = values['th_'+k];
-          if (raw !== undefined && raw !== '') {
-            try {
-              const parsed = JSON.parse(raw);
-              this._cache[k] = parsed;
-              // Sync to localStorage
-              try { localStorage.setItem('th_'+k, raw); } catch(e){}
-            } catch(e){}
-          }
-        });
-      }
-      cb();
-    });
+    // Always call cb safely
+    const safeCb = () => { try { cb(); } catch(e) { console.error('init error:', e); } };
+    if (!TGCloud) { safeCb(); return; }
+    try {
+      // keys are plain names like 'th_ach' - use them directly
+      TGCloud.getItems(keys, (err, values) => {
+        if (!err && values) {
+          keys.forEach(k => {
+            const plainK = k.replace(/^th_/, ''); // strip prefix to get plain key
+            const raw = values[k];
+            if (raw !== undefined && raw !== '') {
+              try {
+                const parsed = JSON.parse(raw);
+                this._cache[plainK] = parsed;
+                try { localStorage.setItem(k, raw); } catch(e){}
+              } catch(e){}
+            }
+          });
+        }
+        safeCb();
+      });
+    } catch(e) {
+      safeCb();
+    }
   }
 };
 
@@ -1312,9 +1322,18 @@ try{
 }catch(e){}
 
 // Load cloud storage first, then init
-ST.loadFromCloud(CLOUD_KEYS, () => {
-  init();
-});
+try {
+  ST.loadFromCloud(CLOUD_KEYS, () => {
+    try { init(); } catch(e) { 
+      console.error('init failed:', e); 
+      // Fallback: try init without cloud data
+      try { init(); } catch(e2) {}
+    }
+  });
+} catch(e) {
+  console.error('loadFromCloud failed:', e);
+  try { init(); } catch(e2) {}
+}
 </script>
 </body>
 </html>
