@@ -957,11 +957,56 @@ let mistakes=[]; // questions answered wrong this session
 let reviewMode=false; // are we currently reviewing mistakes
 let pendingSubj=null; // subject waiting for mode selection
 
-// Storage helpers
+// Storage helpers — uses Telegram CloudStorage if available, else localStorage
+const TG = window.Telegram?.WebApp;
+const TGCloud = TG?.CloudStorage;
+
 const ST = {
-  get:(k,d)=>{try{return JSON.parse(localStorage.getItem('th_'+k))??d;}catch(e){return d;}},
-  set:(k,v)=>{try{localStorage.setItem('th_'+k,JSON.stringify(v));}catch(e){}}
+  // In-memory cache so UI updates immediately
+  _cache: {},
+
+  get(k, d) {
+    // Return from cache if exists
+    if (this._cache[k] !== undefined) return this._cache[k];
+    // Fallback to localStorage
+    try { const v = JSON.parse(localStorage.getItem('th_'+k)); if(v!==null) return v; } catch(e){}
+    return d;
+  },
+
+  set(k, v) {
+    // Always update cache and localStorage immediately
+    this._cache[k] = v;
+    try { localStorage.setItem('th_'+k, JSON.stringify(v)); } catch(e){}
+    // Also save to Telegram CloudStorage if available
+    if (TGCloud) {
+      try { TGCloud.setItem('th_'+k, JSON.stringify(v)); } catch(e){}
+    }
+  },
+
+  // Load from Telegram CloudStorage into cache (called once on start)
+  loadFromCloud(keys, cb) {
+    if (!TGCloud) { cb(); return; }
+    TGCloud.getItems(keys, (err, values) => {
+      if (!err && values) {
+        keys.forEach(k => {
+          const raw = values['th_'+k];
+          if (raw !== undefined && raw !== '') {
+            try {
+              const parsed = JSON.parse(raw);
+              this._cache[k] = parsed;
+              // Sync to localStorage
+              try { localStorage.setItem('th_'+k, raw); } catch(e){}
+            } catch(e){}
+          }
+        });
+      }
+      cb();
+    });
+  }
 };
+
+// Cloud storage keys we use
+const CLOUD_KEYS = ['ach','sessions','subj_done','theme'].map(k=>'th_'+k);
 
 // Achievements definitions
 const ACHIEVEMENTS = [
@@ -1265,7 +1310,11 @@ try{
     window.Telegram.WebApp.expand();
   }
 }catch(e){}
-init();
+
+// Load cloud storage first, then init
+ST.loadFromCloud(CLOUD_KEYS, () => {
+  init();
+});
 </script>
 </body>
 </html>
