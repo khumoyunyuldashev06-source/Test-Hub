@@ -341,6 +341,163 @@ body{transition:background .35s ease, color .35s ease;}
 .review-ti{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--text);}
 .review-de{font-size:11px;color:var(--muted);margin-top:2px;}
 
+
+/* === PROGRESS ON SUBJECT CARD === */
+.sc-progress{margin-top:6px;display:flex;align-items:center;gap:8px;}
+.sc-pbar{flex:1;height:3px;background:var(--border2);border-radius:99px;overflow:hidden;}
+.sc-pbar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .5s ease;}
+.sc-pbest{font-size:10px;font-weight:700;color:var(--muted);flex-shrink:0;}
+
+/* === SOUND TOGGLE === */
+.sound-tog{position:absolute;top:18px;right:62px;width:38px;height:38px;
+  border-radius:50%;background:var(--card);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  font-size:16px;z-index:10;transition:all .3s;color:var(--text);}
+.sound-tog:active{transform:scale(.9);}
+body.light .sound-tog{background:#fff;border-color:#e4e7f3;box-shadow:0 2px 8px rgba(0,0,0,.04);}
+
+/* === REVIEW SCREEN === */
+#review-screen{min-height:100vh;}
+.review-header{
+  display:flex;align-items:center;gap:10px;padding:14px 16px;
+  position:sticky;top:0;z-index:20;
+  background:rgba(3,4,13,.97);backdrop-filter:blur(22px);
+  border-bottom:1px solid var(--border);
+}
+body.light .review-header{background:rgba(244,245,251,.97);border-bottom-color:#e4e7f3;}
+.review-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--text);flex:1;}
+.review-list{padding:14px 16px 100px;display:flex;flex-direction:column;gap:10px;}
+.review-item{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+.review-item-header{padding:12px 14px;display:flex;align-items:flex-start;gap:10px;}
+.ri-num{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:var(--muted);
+  background:var(--border2);border-radius:6px;padding:2px 7px;flex-shrink:0;margin-top:1px;}
+.ri-q{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--text);line-height:1.45;flex:1;}
+.review-opts{padding:0 14px 12px;display:flex;flex-direction:column;gap:6px;}
+.ro{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:9px;font-size:12px;}
+.ro.correct{background:rgba(0,229,145,.08);color:var(--green);font-weight:600;}
+.ro.wrong{background:rgba(255,51,85,.07);color:var(--red);}
+.ro.neutral{color:var(--muted);}
+.ro-let{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-size:10px;font-weight:800;flex-shrink:0;}
+.ro.correct .ro-let{background:var(--green);color:#000;}
+.ro.wrong .ro-let{background:var(--red);color:#fff;}
+.ro.neutral .ro-let{background:var(--border2);color:var(--muted);}
+
+/* === STATS ON RESULT === */
+.res-stats-ext{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;max-width:300px;margin-bottom:16px;}
+.rse-box{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:12px 10px;}
+.rse-v{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-bottom:2px;color:var(--accent);}
+.rse-l{font-size:11px;color:var(--muted);}
+body.light .rse-box{background:#fff;border-color:#e4e7f3;}
+
+/* === SHARE BUTTON === */
+.btn-share{padding:14px;border-radius:13px;border:none;
+  background:linear-gradient(135deg,#0088cc,#229ed9);
+  color:#fff;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;
+  cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-share:active{transform:scale(.97);}
+
+/* === REVIEW BTN ON RESULT === */
+.btn-review{padding:14px;border-radius:13px;border:1.5px solid rgba(255,195,0,.4);
+  background:rgba(255,195,0,.06);color:var(--yellow);
+  font-family:'Syne',sans-serif;font-size:14px;font-weight:700;
+  cursor:pointer;transition:all .15s;}
+.btn-review:active{transform:scale(.97);}
+.btn-review.hidden{display:none;}
+
+
+/* === FLASH CARDS BUTTON ON HOME === */
+.fc-banner{margin:10px 13px 0;background:linear-gradient(135deg,rgba(98,87,255,.15),rgba(185,77,255,.1));
+  border:1px solid rgba(98,87,255,.3);border-radius:18px;padding:16px 18px;
+  display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .18s;}
+.fc-banner:active{transform:scale(.98);}
+.fc-ico{width:46px;height:46px;border-radius:13px;font-size:24px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 4px 16px rgba(98,87,255,.4);}
+.fc-info{flex:1;min-width:0;}
+.fc-ti{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--white);margin-bottom:2px;}
+.fc-su{font-size:12px;color:var(--muted);}
+.fc-arrow{font-size:18px;color:var(--accent);flex-shrink:0;}
+body.light .fc-banner{background:linear-gradient(135deg,rgba(91,81,229,.08),rgba(165,67,232,.06));}
+
+/* === FLASH CARDS SCREEN === */
+#fc-screen{min-height:100vh;}
+#fc-screen.active .fc-stage{min-height:480px;}
+.fc-hdr{display:flex;align-items:center;gap:10px;padding:13px 15px;
+  position:sticky;top:0;z-index:30;
+  background:rgba(3,4,13,.97);backdrop-filter:blur(22px);border-bottom:1px solid var(--border);}
+body.light .fc-hdr{background:rgba(244,245,251,.97);border-bottom-color:#e4e7f3;}
+.fc-hdr-mid{flex:1;text-align:center;}
+.fc-hdr-ti{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--text);}
+.fc-hdr-su{font-size:11px;color:var(--muted);margin-top:2px;}
+
+.fc-stage{flex:1;display:flex;align-items:center;justify-content:center;
+  padding:24px 20px;min-height:480px;}
+.fc-card{width:100%;max-width:340px;min-height:440px;
+  position:relative;cursor:pointer;
+  transition:transform .25s ease;}
+.fc-card:active{transform:scale(.98);}
+.fc-face{
+  border-radius:24px;
+  display:flex;flex-direction:column;padding:24px;min-height:440px;
+  border:1px solid var(--border);background:var(--card);
+  box-shadow:0 10px 40px rgba(0,0,0,.3);
+  transition:opacity .35s ease, transform .35s ease;
+}
+body.light .fc-face{box-shadow:0 10px 30px rgba(0,0,0,.08);}
+.fc-front{background:linear-gradient(155deg,var(--card) 0%,rgba(98,87,255,.06) 100%);}
+.fc-back{background:linear-gradient(155deg,var(--card) 0%,rgba(0,229,145,.05) 100%);
+  position:absolute;inset:0;opacity:0;pointer-events:none;transform:translateY(8px);}
+.fc-card.flipped .fc-front{opacity:0;pointer-events:none;transform:translateY(-8px);}
+.fc-card.flipped .fc-back{opacity:1;pointer-events:auto;transform:translateY(0);}
+.fc-tag{display:inline-block;font-family:'Syne',sans-serif;font-size:9px;font-weight:800;
+  letter-spacing:2px;color:var(--accent);background:rgba(98,87,255,.13);
+  padding:5px 11px;border-radius:6px;margin-bottom:18px;align-self:flex-start;}
+.fc-tag-back{color:var(--green);background:rgba(0,229,145,.13);}
+.fc-q{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;line-height:1.5;
+  color:var(--text);flex:1;display:flex;align-items:center;text-align:left;min-height:200px;}
+.fc-a-block{flex:1;display:flex;flex-direction:column;justify-content:center;gap:14px;}
+.fc-a-row{display:flex;gap:11px;align-items:flex-start;}
+.fc-a-let{width:34px;height:34px;border-radius:9px;flex-shrink:0;
+  background:var(--green);color:#000;font-family:'Syne',sans-serif;
+  font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+.fc-a-txt{font-family:'Syne',sans-serif;font-size:15px;font-weight:600;line-height:1.45;color:var(--green);}
+.fc-e-block{margin-top:14px;padding:13px 14px;border-radius:12px;
+  background:rgba(98,87,255,.06);border:1px solid rgba(98,87,255,.2);}
+.fc-e-lbl{font-family:'Syne',sans-serif;font-size:9px;font-weight:800;
+  letter-spacing:1.5px;color:var(--accent);margin-bottom:6px;}
+.fc-e-txt{font-size:12.5px;line-height:1.5;color:var(--text);}
+.fc-hint{margin-top:auto;padding-top:14px;text-align:center;
+  font-size:11px;color:var(--muted);opacity:.7;}
+
+.fc-foot{padding:14px 22px 22px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.fc-nav-btn{flex:1;padding:14px;border-radius:13px;border:1px solid var(--border);
+  background:var(--card);color:var(--text);font-family:'Syne',sans-serif;
+  font-size:13px;font-weight:700;cursor:pointer;transition:all .14s;}
+.fc-nav-btn:active{transform:scale(.96);}
+.fc-nav-btn:disabled{opacity:.35;cursor:default;}
+.fc-nav-btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#fff;border-color:transparent;box-shadow:0 4px 16px rgba(98,87,255,.35);}
+.fc-progress{flex:1.4;text-align:center;font-family:'Syne',sans-serif;
+  font-size:13px;font-weight:700;color:var(--muted);}
+.fc-progress strong{color:var(--accent);font-size:18px;}
+
+/* === EXPLANATION IN FEEDBACK BAR === */
+.fb-exp{margin-top:10px;padding:11px 13px;border-radius:11px;
+  background:rgba(98,87,255,.07);border:1px solid rgba(98,87,255,.18);
+  font-size:12.5px;line-height:1.5;color:var(--text);}
+.fb-exp-lbl{font-family:'Syne',sans-serif;font-size:9px;font-weight:800;
+  letter-spacing:1.3px;color:var(--accent);margin-bottom:5px;display:block;}
+body.light .fb-exp{background:rgba(91,81,229,.06);border-color:rgba(91,81,229,.2);}
+
+/* Mode selector subject button - flash cards option */
+.mode-fc-btn{margin-top:8px;width:100%;padding:13px;border-radius:13px;
+  border:1.5px dashed var(--accent);background:rgba(98,87,255,.06);
+  color:var(--accent);font-family:'Syne',sans-serif;font-size:13px;font-weight:700;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:all .15s;}
+.mode-fc-btn:active{transform:scale(.97);}
+
 </style>
 </head>
 <body>
@@ -349,6 +506,7 @@ body{transition:background .35s ease, color .35s ease;}
 <!-- HOME -->
 <div id="home" class="screen active">
   <div class="home-hero">
+    <div class="sound-tog" onclick="toggleSound()" id="soundTog">🔔</div>
     <div class="theme-tog" onclick="toggleTheme()" id="themeTog">🌙</div>
     <div class="brand">
       <div class="brand-ico">🧠</div>
@@ -361,6 +519,14 @@ body{transition:background .35s ease, color .35s ease;}
       <div class="chip">📝 498+ savol</div>
       <div class="chip">⚡ Tez natija</div>
     </div>
+  </div>
+  <div class="fc-banner" onclick="openFCSubjectPicker()">
+    <div class="fc-ico">🎴</div>
+    <div class="fc-info">
+      <div class="fc-ti">Flash kartochkalar</div>
+      <div class="fc-su">Tez yodlash uchun kartochka rejimi</div>
+    </div>
+    <div class="fc-arrow">→</div>
   </div>
   <div class="sec-lbl">YUTUQLAR</div>
   <div class="ach-row" id="achRow"></div>
@@ -414,19 +580,75 @@ body{transition:background .35s ease, color .35s ease;}
     <div class="rs-box"><div class="rs-v" id="rsNo" style="color:var(--red)">0</div><div class="rs-l">Noto'g'ri</div></div>
     <div class="rs-box"><div class="rs-v" id="rsAll" style="color:var(--accent)">0</div><div class="rs-l">Jami</div></div>
   </div>
+  <div id="resStatsExt" class="res-stats-ext"></div>
+
   <div class="res-btns">
+    <button class="btn-share" onclick="shareResult()">✈️ Natijani ulashish</button>
+    <button class="btn-review" id="btnReview" onclick="showReview()">📋 Xatolarni ko'rish</button>
     <button class="btn-r" onclick="retry()">🔄 Qayta urinish</button>
     <button class="btn-h" onclick="goHome()">🏠 Bosh sahifa</button>
   </div>
 </div>
 
 </div>
+<!-- FLASH CARDS SCREEN -->
+<div id="fc-screen" class="screen">
+  <div class="fc-hdr">
+    <div class="back" onclick="goHome()" role="button" tabindex="0">←</div>
+    <div class="fc-hdr-mid">
+      <div class="fc-hdr-ti" id="fcSubjName">Flash kartochkalar</div>
+      <div class="fc-hdr-su" id="fcSubjMeta"></div>
+    </div>
+    <div style="width:36px"></div>
+  </div>
+  <div class="fc-stage">
+    <div class="fc-card" id="fcCard" onclick="flipCard()">
+      <div class="fc-face fc-front">
+        <div class="fc-tag">SAVOL</div>
+        <div class="fc-q" id="fcQ"></div>
+        <div class="fc-hint">Javobni ko'rish uchun bosing</div>
+      </div>
+      <div class="fc-face fc-back">
+        <div class="fc-tag fc-tag-back">JAVOB</div>
+        <div class="fc-a-block">
+          <div class="fc-a-row">
+            <div class="fc-a-let" id="fcLet">A</div>
+            <div class="fc-a-txt" id="fcA"></div>
+          </div>
+          <div class="fc-e-block" id="fcEBlock">
+            <div class="fc-e-lbl">IZOH</div>
+            <div class="fc-e-txt" id="fcE"></div>
+          </div>
+        </div>
+        <div class="fc-hint">Keyingi kartochka uchun bosing</div>
+      </div>
+    </div>
+  </div>
+  <div class="fc-foot">
+    <button class="fc-nav-btn" id="fcPrev" onclick="fcPrev()">← Oldingi</button>
+    <div class="fc-progress"><strong id="fcIdx">1</strong> / <span id="fcTot">10</span></div>
+    <button class="fc-nav-btn primary" id="fcNext" onclick="fcNext()">Keyingi →</button>
+  </div>
+</div>
+
+<!-- REVIEW SCREEN -->
+<div id="review-screen" class="screen">
+  <div class="review-header">
+    <div class="back" onclick="show('result-screen')">←</div>
+    <div class="review-title">📋 Xatolar tahlili</div>
+  </div>
+  <div class="review-list" id="reviewList"></div>
+</div>
+
 <!-- MODE SELECTOR -->
 <div class="modal-bg" id="modeModal">
   <div class="modal">
     <div class="modal-h" id="modalSubjName">Fan tanlandi</div>
     <div class="modal-sub">Test rejimini tanlang:</div>
     <div class="mode-list" id="modeList"></div>
+    <button class="mode-fc-btn" onclick="closeModal();startFlashCards(pendingSubj);">
+      🎴 Flash kartochkalar rejimi
+    </button>
     <button class="modal-cls" onclick="closeModal()">Bekor qilish</button>
   </div>
 </div>
@@ -958,8 +1180,8 @@ let reviewMode=false; // are we currently reviewing mistakes
 let pendingSubj=null; // subject waiting for mode selection
 
 // Storage helpers — uses Telegram CloudStorage if available, else localStorage
-const TG = window.Telegram?.WebApp;
-const TGCloud = TG?.CloudStorage;
+const TG=(window.Telegram&&window.Telegram.WebApp)?window.Telegram.WebApp:null;
+const TGCloud=TG?TG.CloudStorage:null;
 
 const ST = {
   // In-memory cache so UI updates immediately
@@ -1016,7 +1238,7 @@ const ST = {
 };
 
 // Cloud storage keys we use
-const CLOUD_KEYS = ['ach','sessions','subj_done','theme'].map(k=>'th_'+k);
+const CLOUD_KEYS=['th_ach','th_sessions','th_subj_done','th_theme','th_sound','th_best_raqamli','th_att_raqamli','th_best_mikro','th_att_mikro','th_best_siyosat','th_att_siyosat','th_best_pul','th_att_pul','th_best_tahlil','th_att_tahlil'];
 
 // Achievements definitions
 const ACHIEVEMENTS = [
@@ -1028,10 +1250,271 @@ const ACHIEVEMENTS = [
   {id:'reviewer',em:'📚',name:'Mehnatkash',desc:'Xatolarni tuzating'},
 ];
 
+// ── SOUND ──
+const SOUNDS = {
+  correct: 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJiVkHVwaHKUlJKPc3J5f4eEf3Rpa3mCiIiGgHl2eH+FiomIhH96en+GiomHgnx3en+HiomIgn15e4CHiomIgn15e4CHiomIgn15e4CHiomIgn15e4CH',
+  wrong: 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJiVkHVwaHKUlJKPjY+Rk5GOjIuKiomIh4aFhIOCgYB/fn18e3p5eHd2dXRzcnFwb25tbGtqaWhnZmVkY2JhYF9eXVxbWllYV1ZVVFNSUVBPUE9OTUxLSklIR0ZFRENCQUA/',
+};
+let soundEnabled = true;
+let audioCtx = null;
+
+function getAudioCtx(){
+  if(!audioCtx) try{audioCtx = new (window.AudioContext||window.webkitAudioContext)();}catch(e){}
+  return audioCtx;
+}
+
+function playSound(type){
+  if(!soundEnabled) return;
+  try{
+    const ctx = getAudioCtx();
+    if(!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    if(type === 'correct'){
+      osc.frequency.setValueAtTime(523, ctx.currentTime);
+      osc.frequency.setValueAtTime(659, ctx.currentTime + 0.1);
+      osc.frequency.setValueAtTime(784, ctx.currentTime + 0.2);
+      gain.gain.setValueAtTime(0.15, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.4);
+    } else {
+      osc.frequency.setValueAtTime(300, ctx.currentTime);
+      osc.frequency.setValueAtTime(200, ctx.currentTime + 0.15);
+      gain.gain.setValueAtTime(0.15, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.35);
+    }
+  }catch(e){}
+}
+
+function toggleSound(){
+  soundEnabled = !soundEnabled;
+  ST.set('sound', soundEnabled);
+  document.getElementById('soundTog').textContent = soundEnabled ? '🔔' : '🔕';
+  toast(soundEnabled ? '🔔 Ovoz yoqildi' : '🔕 Ovoz o\'chirildi');
+  try{
+    if(window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.HapticFeedback){
+      window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+    }
+  }catch(e){}
+}
+
+// ── SHARE RESULT ──
+function shareResult(){
+  const pct = Math.round(score/qs.length*100);
+  const stars = pct>=90?'🌟🌟🌟':pct>=75?'⭐⭐🌟':pct>=50?'⭐⭐':'⭐';
+  const msg = `${stars} TestHub natijam:
+
+📚 ${cur.name}
+✅ To'g'ri: ${score}/${qs.length} (${pct}%)
+
+🧠 @Testhubuz_bot da sinab ko'ring!`;
+  try{
+    if(window.Telegram&&window.Telegram.WebApp){
+      window.Telegram.WebApp.openTelegramLink(`https://t.me/share/url?url=https://t.me/Testhubuz_bot&text=${encodeURIComponent(msg)}`);
+    } else {
+      if(navigator.share){
+        navigator.share({title:'TestHub',text:msg});
+      } else {
+        navigator.clipboard.writeText(msg).then(()=>toast('📋 Nusxalandi!'));
+      }
+    }
+  }catch(e){
+    try{navigator.clipboard.writeText(msg).then(()=>toast('📋 Nusxalandi!'));}catch(e2){}
+  }
+}
+
+// ── REVIEW MISTAKES ──
+function showReview(){
+  if(!mistakes || mistakes.length === 0){toast('Xatolar yo\'q! 🎉');return;}
+  const list = document.getElementById('reviewList');
+  list.innerHTML = '';
+  const L = ['A','B','C','D'];
+  mistakes.forEach((q, i) => {
+    const div = document.createElement('div');
+    div.className = 'review-item';
+    let optsHtml = '';
+    q.o.forEach((opt, j) => {
+      const cls = j===q.c ? 'correct' : 'neutral';
+      optsHtml += `<div class="ro ${cls}">
+        <div class="ro-let">${L[j]}</div>
+        <div>${opt}</div>
+        ${j===q.c?'<div style="margin-left:auto;font-size:14px">✓</div>':''}
+      </div>`;
+    });
+    const expText = generateExplanation(q);
+    div.innerHTML = `
+      <div class="review-item-header">
+        <div class="ri-num">#${i+1}</div>
+        <div class="ri-q">${q.q}</div>
+      </div>
+      <div class="review-opts">${optsHtml}</div>
+      <div style="padding:0 14px 14px"><div class="fb-exp" style="margin:0"><span class="fb-exp-lbl">IZOH</span>${expText}</div></div>`;
+    list.appendChild(div);
+  });
+  show('review-screen');
+}
+
+// ── EXPLANATIONS ──
+// Smart auto-explanation: for each question, generate a brief Uzbek explanation
+// based on correct answer + question type.
+
+// Specific detailed explanations for important/common topics
+const EXP_MAP = {
+  // Common digital economy concepts
+  'axborot jamiyati': 'Axborot jamiyati g\'oyasi 1960-yillarda yapon olimlari T.Umesov va F.Maxlup tomonidan ilgari surilgan. Bu jamiyatda asosiy resurs - axborot va bilim.',
+  'raqamli iqtisodiyot': 'Raqamli iqtisodiyot atamasi 1995-yilda Don Tapskott tomonidan kiritilgan. U raqamli texnologiyalar asosida shakllangan iqtisodiy munosabatlar tizimini ifodalaydi.',
+  'sun\'iy intellekt': 'AI (Artificial Intelligence) - mashinalarga inson aql-zakovatiga xos vazifalarni bajarish qobiliyatini beradigan texnologiya.',
+  'blokcheyn': 'Blokcheyn - bloklardan iborat taqsimlangan ma\'lumotlar bazasi. Har bir blok kriptografik usulda bog\'langan va o\'zgartirib bo\'lmaydigan.',
+  'bulutli hisoblash': 'Cloud Computing - internet orqali masofadan kompyuter resurslari (saqlash, ishlov berish) bilan ta\'minlash. Asoschi - Amazon (AWS, 2006).',
+  
+  // Mikroiqtisodiyot
+  'pareto': 'Pareto samaradorligi - hech kimning ahvolini yomonlashtirmasdan boshqasining ahvolini yaxshilash mumkin emas degan holat.',
+  'monopoliya': 'Monopoliya - bozorda bir sotuvchi hukmronlik qiladigan tuzilma. Narx ustidan to\'liq nazorat, lekin samaradorlik past bo\'ladi.',
+  'oligopoliya': 'Oligopoliya - bozorda bir necha yirik firma hukmronlik qiladigan tuzilma. Narx urushi yoki yashirin kelishuv bo\'lishi mumkin.',
+  'narx diskriminatsiyasi': 'Narx diskriminatsiyasi - bir xil tovarni turli xaridorlarga turli narxda sotish. 3 daraja mavjud: individual, hajm bo\'yicha va guruh bo\'yicha.',
+  'tashqi samara': 'Eksternaliya (tashqi samara) - bozor narxida aks etmagan ta\'sir. Salbiy (ifloslanish) yoki ijobiy (ta\'lim) bo\'lishi mumkin.',
+  
+  // Pul va banklar
+  'pulning funksiyalari': 'Pul 5 ta funksiyani bajaradi: qiymat o\'lchovi, muomala vositasi, to\'lov vositasi, jamg\'arma vositasi va jahon puli.',
+  'inflyatsiya': 'Inflyatsiya - tovar va xizmatlar narxining umumiy darajasi oshib borishi. Pul qadrini pasaytiradi.',
+  'devalvatsiya': 'Devalvatsiya - milliy valyuta kursining xorijiy valyutalarga nisbatan tushishi. Revalvatsiya - aksincha, ko\'tarilishi.',
+  'markaziy bank': 'Markaziy bank - mamlakatning bosh emission banki. Pul-kredit siyosatini olib boradi va tijorat banklarini nazorat qiladi.',
+  'kredit': 'Kredit - qaytarish, muddatlilik va to\'lovlilik tamoyillari asosida pul yoki tovar berish.',
+  
+  // Iqtisodiy siyosat  
+  'fiskal siyosat': 'Fiskal (byudjet-soliq) siyosat - davlat xarajatlari va soliqlar orqali iqtisodiyotni boshqarish.',
+  'monetar siyosat': 'Monetar (pul-kredit) siyosat - Markaziy bank tomonidan pul massasi va foiz stavkalari orqali iqtisodiyotni boshqarish.',
+  'byudjet defitsiti': 'Byudjet taqchilligi (defitsit) - davlat xarajatlari daromadlardan oshib ketgan holat. Davlat qarzini oshirishga olib keladi.',
+  'xususiylashtirish': 'Xususiylashtirish - davlat mulkini xususiy mulkka o\'tkazish jarayoni. Maqsad - samaradorlikni oshirish.',
+  'inflatsiya': 'Inflyatsiyaga qarshi kurash: pul massasini cheklash, byudjet xarajatlarini qisqartirish, foiz stavkasini oshirish.',
+  
+  // Ma'lumotlar tahlili
+  'regressiya': 'Regression tahlil - bog\'liq o\'zgaruvchining (Y) mustaqil o\'zgaruvchilarga (X) bog\'liqligini tushuntiruvchi statistik model.',
+  'korrelyatsiya': 'Korrelyatsiya - ikki o\'zgaruvchi orasidagi bog\'liqlikning kuchi va yo\'nalishi. -1 dan +1 gacha.',
+  'statsionar': 'Statsionar vaqt qatori - o\'rtacha va dispersiyasi vaqt bo\'yicha o\'zgarmaydigan qator. ARIMA modellari uchun zarur.',
+  'autokorrelyatsiya': 'Autokorrelyatsiya - o\'zgaruvchining o\'zining kechikkan (lag) qiymatlari bilan bog\'liqligi. Vaqt qatorlarida muhim.',
+  'panel ma\'lumotlar': 'Panel ma\'lumotlar - bir necha ob\'ektni vaqt davomida kuzatish. Heterojenlikni nazorat qilish imkonini beradi.',
+  'fe modeli': 'Fixed Effects (FE) - individual effektlar X bilan korrelyatsiyalanganda qo\'llaniladi. Within transformation orqali baholanadi.',
+  're modeli': 'Random Effects (RE) - individual effektlar X bilan korrelyatsiyalanmaganda samarali. GLS bilan baholanadi.',
+};
+
+function generateExplanation(q) {
+  // First check if question has explicit explanation
+  if (q.e) return q.e;
+  
+  // Check EXP_MAP for keyword matches
+  const qLower = q.q.toLowerCase();
+  for (const key in EXP_MAP) {
+    if (qLower.includes(key)) {
+      return EXP_MAP[key];
+    }
+  }
+  
+  // Auto-generate based on correct answer
+  const correctText = q.o[q.c];
+  const letters = ['A', 'B', 'C', 'D'];
+  return `To'g'ri javob — ${letters[q.c]}: ${correctText}. Boshqa variantlar bu savol uchun mos kelmaydi.`;
+}
+
+// ── FLASH CARDS ──
+let fcSubj = null;
+let fcCards = [];
+let fcIdx = 0;
+
+function openFCSubjectPicker() {
+  // Show modal with subject choices
+  const list = document.getElementById('modeList');
+  document.getElementById('modalSubjName').textContent = '🎴 Flash kartochkalar';
+  document.querySelector('.modal-sub').textContent = 'Qaysi fan bo\'yicha mashq qilasiz?';
+  list.innerHTML = '';
+  SUBJECTS.forEach(s => {
+    if (s.locked) return;
+    const d = document.createElement('div');
+    d.className = 'mode-itm';
+    d.innerHTML = `
+      <div class="mode-num" style="background:${s.ibg};font-size:22px">${s.icon}</div>
+      <div class="mode-info">
+        <div class="mode-ti">${s.name}</div>
+        <div class="mode-de">${s.questions.length} ta kartochka</div>
+      </div>`;
+    d.onclick = () => { closeModal(); startFlashCards(s); };
+    list.appendChild(d);
+  });
+  // Hide flash card option (we're already there)
+  const fcBtn = document.querySelector('.mode-fc-btn');
+  if (fcBtn) fcBtn.style.display = 'none';
+  document.getElementById('modeModal').classList.add('show');
+}
+
+function startFlashCards(s) {
+  if (!s) return;
+  fcSubj = s;
+  // Shuffle and take first 20 cards
+  fcCards = [...s.questions].sort(() => Math.random() - .5).slice(0, Math.min(20, s.questions.length));
+  fcIdx = 0;
+  document.getElementById('fcSubjName').textContent = s.icon + ' ' + s.name;
+  document.getElementById('fcSubjMeta').textContent = `${fcCards.length} ta kartochka`;
+  document.getElementById('fcTot').textContent = fcCards.length;
+  show('fc-screen');
+  renderFlashCard();
+}
+
+function renderFlashCard() {
+  const card = document.getElementById('fcCard');
+  card.classList.remove('flipped');
+  const q = fcCards[fcIdx];
+  const letters = ['A', 'B', 'C', 'D'];
+  document.getElementById('fcQ').textContent = q.q;
+  document.getElementById('fcLet').textContent = letters[q.c];
+  document.getElementById('fcA').textContent = q.o[q.c];
+  document.getElementById('fcE').textContent = generateExplanation(q);
+  document.getElementById('fcIdx').textContent = fcIdx + 1;
+  document.getElementById('fcPrev').disabled = fcIdx === 0;
+  document.getElementById('fcNext').textContent = fcIdx === fcCards.length - 1 ? 'Tugatish ✓' : 'Keyingi →';
+}
+
+function flipCard() {
+  const card = document.getElementById('fcCard');
+  card.classList.toggle('flipped');
+  try{
+    if(window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.HapticFeedback){
+      window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+    }
+    if(navigator.vibrate) navigator.vibrate(20);
+  }catch(e){}
+}
+
+function fcPrev() {
+  if (fcIdx > 0) {
+    fcIdx--;
+    renderFlashCard();
+  }
+}
+
+function fcNext() {
+  if (fcIdx < fcCards.length - 1) {
+    fcIdx++;
+    renderFlashCard();
+  } else {
+    // Finished all cards
+    toast('🎉 Barcha kartochkalar ko\'rildi!');
+    setTimeout(() => goHome(), 800);
+  }
+}
+
 function init(){
   // Apply saved theme
   const theme = ST.get('theme','dark');
   if(theme==='light'){document.body.classList.add('light');document.getElementById('themeTog').textContent='☀️';}
+  
+  // Apply saved sound setting
+  soundEnabled = ST.get('sound', true);
+  document.getElementById('soundTog').textContent = soundEnabled ? '🔔' : '🔕';
   
   // Render achievements
   renderAchievements();
@@ -1042,8 +1525,18 @@ function init(){
     const d=document.createElement('div');
     d.className='sc'+(s.locked?' locked':'');
     d.style.setProperty('--sc-g',s.sg);d.style.setProperty('--sc-b',s.sb);
+    const best = ST.get('best_'+s.id, 0);
+    const attempts = ST.get('att_'+s.id, 0);
+    const progBar = best > 0 ? `<div class="sc-progress">
+      <div class="sc-pbar"><div class="sc-pbar-fill" style="width:${best}%"></div></div>
+      <div class="sc-pbest">${best}%</div>
+    </div>` : '';
     d.innerHTML=`<div class="sc-ico" style="background:${s.ibg}">${s.icon}</div>
-      <div class="sc-info"><div class="sc-name">${s.name}</div><div class="sc-meta">${s.desc}</div></div>
+      <div class="sc-info">
+        <div class="sc-name">${s.name}</div>
+        <div class="sc-meta">${s.desc}${attempts > 0 ? ' • '+attempts+' marta' : ''}</div>
+        ${progBar}
+      </div>
       <div class="sc-btn${s.locked?' lock':''}">${s.locked?'🔒':'▶ Start'}</div>`;
     d.onclick=s.locked?()=>toast('Tez orada! 🚀'):()=>openModeSelect(s);
     g.appendChild(d);
@@ -1087,6 +1580,11 @@ function toggleTheme(){
 
 function openModeSelect(s){
   pendingSubj = s;
+  // Ensure flash cards button is visible (it may have been hidden by FC picker)
+  const fcBtn = document.querySelector('.mode-fc-btn');
+  if (fcBtn) fcBtn.style.display = '';
+  // Reset modal subtitle
+  document.querySelector('.modal-sub').textContent = 'Test rejimini tanlang:';
   document.getElementById('modalSubjName').textContent = s.icon + ' ' + s.name;
   const total = s.questions.length;
   const list = document.getElementById('modeList');
@@ -1183,6 +1681,7 @@ function pick(btn,ch,co,e){
   if(ok){
     score++;
     document.getElementById('scTag').textContent=`✓ ${score}`;
+    playSound('correct');
     try{
       if(window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.HapticFeedback){
         window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
@@ -1191,6 +1690,7 @@ function pick(btn,ch,co,e){
     }catch(e){}
   } else {
     btn.classList.add('shk');
+    playSound('wrong');
     // Track mistake for review (if not already in review mode)
     if(!reviewMode){
       const m = qs[qi];
@@ -1215,6 +1715,22 @@ function showFB(ok,ct){
   t.className='fb-ti '+(ok?'ok':'no');
   document.getElementById('fbSu').textContent=ok?'Davom eting, siz zo\'rsiz!':ct?`To'g'ri: ${ct}`:'Keyingi safar to\'g\'ri bo\'ladi!';
   document.getElementById('nxBtn').textContent=qi<qs.length-1?'Keyingisi →':'Natijani ko\'rish 🏆';
+  
+  // Remove old explanation if any
+  const oldExp = document.getElementById('fbExp');
+  if (oldExp) oldExp.remove();
+  
+  // Add explanation if answered wrong
+  if (!ok) {
+    const expDiv = document.createElement('div');
+    expDiv.id = 'fbExp';
+    expDiv.className = 'fb-exp';
+    expDiv.innerHTML = `<span class="fb-exp-lbl">IZOH</span>${generateExplanation(qs[qi])}`;
+    const fb = document.getElementById('fb');
+    const nxBtn = document.getElementById('nxBtn');
+    fb.insertBefore(expDiv, nxBtn);
+  }
+  
   document.getElementById('fb').classList.add('show');
 }
 
@@ -1249,6 +1765,25 @@ function showResult(){
   const wrong = tot - score;
   const pct = Math.round(score/tot*100);
   
+  // Save per-subject stats
+  const prevBest = ST.get('best_'+cur.id, 0);
+  if(pct > prevBest) ST.set('best_'+cur.id, pct);
+  const att = ST.get('att_'+cur.id, 0) + 1;
+  ST.set('att_'+cur.id, att);
+  
+  // Show extra stats
+  const allTime = ST.get('sessions', 0);
+  const allBest = ST.get('best_'+cur.id, pct);
+  const extDiv = document.getElementById('resStatsExt');
+  extDiv.innerHTML = `
+    <div class="rse-box"><div class="rse-v">${Math.max(pct,allBest)}%</div><div class="rse-l">Eng yaxshi natija</div></div>
+    <div class="rse-box"><div class="rse-v">${att}</div><div class="rse-l">Urinishlar soni</div></div>
+  `;
+
+  // Show/hide review button
+  const reviewBtn = document.getElementById('btnReview');
+  if(reviewBtn) reviewBtn.className = 'btn-review' + (mistakes.length > 0 ? '' : ' hidden');
+
   // Track achievements
   unlockAch('first');
   if(pct === 100) unlockAch('perfect');
