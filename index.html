@@ -81,8 +81,37 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   box-shadow:0 2px 12px rgba(98,87,255,.3);}
 .sc-btn.lock{background:var(--border2);color:var(--muted);box-shadow:none;}
 
-.footer-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(3,4,13,.94);backdrop-filter:blur(20px);
-  border-top:1px solid var(--border);padding:10px 20px 18px;text-align:center;font-size:12px;color:var(--muted);}
+/* Home bottom section — message + credit */
+.home-bottom{
+  margin-top:24px;padding:20px 20px 28px;
+  text-align:center;
+  border-top:1px solid var(--border);
+  background:linear-gradient(180deg,transparent,rgba(98,87,255,.04));
+}
+.hb-msg{font-size:13px;color:var(--muted);margin-bottom:14px;font-weight:500;}
+.hb-divider{
+  width:32px;height:2px;border-radius:99px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  margin:0 auto 14px;opacity:.5;
+}
+.hb-credit{
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  font-family:'Inter',sans-serif;font-size:11px;
+  color:var(--muted);flex-wrap:wrap;
+}
+.hb-mb{font-weight:400;opacity:.7;}
+.hb-name{
+  font-family:'Syne',sans-serif;font-weight:800;font-size:12px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+}
+.hb-name.claude{
+  background:linear-gradient(135deg,#ff8a47,#ff5e3a);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+}
+.hb-amp{color:var(--muted);opacity:.4;font-weight:300;}
 
 /* QUIZ */
 #quiz-screen{min-height:100vh;}
@@ -277,7 +306,7 @@ body.light .rs-l{color:#6e7596;}
 body.light .btn-h{background:#ffffff;border-color:#e4e7f3;color:#1a1d2e;}
 
 /* Footer */
-body.light .footer-bar{background:rgba(244,245,251,.94);border-top-color:#e4e7f3;color:#6e7596;}
+body.light .home-bottom{border-top-color:#e4e7f3;background:linear-gradient(180deg,transparent,rgba(91,81,229,.03));}
 
 /* Modal */
 body.light .modal-bg{background:rgba(0,0,0,.4);}
@@ -379,7 +408,16 @@ body{transition:background .35s ease, color .35s ease;}
 body.light .sound-tog{background:#fff;border-color:#e4e7f3;box-shadow:0 2px 8px rgba(0,0,0,.04);}
 
 /* === REVIEW SCREEN === */
-#review-screen{min-height:100vh;}
+#review-screen{
+  position:fixed !important;
+  top:0;left:0;right:0;bottom:0;
+  background:var(--bg);
+  z-index:100;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  flex-direction:column !important;
+}
+#review-screen.active{display:flex !important;}
 .review-header{
   display:flex;align-items:center;gap:10px;padding:14px 16px;
   position:sticky;top:0;z-index:20;
@@ -541,6 +579,7 @@ body.light .fc-foot{border-top-color:#e4e7f3;}
   cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
 .mode-fc-btn:active{transform:scale(.97);}
 
+
 </style>
 </head>
 <body>
@@ -575,7 +614,16 @@ body.light .fc-foot{border-top-color:#e4e7f3;}
   <div class="ach-row" id="achRow"></div>
   <div class="sec-lbl">FANLAR</div>
   <div class="subjects" id="subjectsGrid"></div>
-  <div class="footer-bar">Yangi fanlar tez orada qo'shiladi 🚀</div>
+  <div class="home-bottom">
+    <div class="hb-msg">Yangi fanlar tez orada qo'shiladi 🚀</div>
+    <div class="hb-divider"></div>
+    <div class="hb-credit">
+      <span class="hb-mb">Made by</span>
+      <span class="hb-name">Humoyun</span>
+      <span class="hb-amp">&amp;</span>
+      <span class="hb-name claude">ClaudeCode</span>
+    </div>
+  </div>
 </div>
 
 <!-- QUIZ -->
