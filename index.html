@@ -20,6 +20,24 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .app{position:relative;z-index:1;min-height:100vh;}
 .screen{display:none;}
 .screen.active{display:flex;flex-direction:column;animation:fu .32s ease both;}
+
+/* FC screen as fixed overlay */
+#fc-screen{
+  position:fixed !important;
+  top:0;left:0;right:0;bottom:0;
+  background:var(--bg);
+  z-index:100;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  flex-direction:column !important;
+}
+#fc-screen.active{display:flex !important;}
+#fc-screen .fc-body{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
 @keyframes fu{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 
 /* HOME */
@@ -343,10 +361,14 @@ body{transition:background .35s ease, color .35s ease;}
 
 
 /* === PROGRESS ON SUBJECT CARD === */
-.sc-progress{margin-top:6px;display:flex;align-items:center;gap:8px;}
-.sc-pbar{flex:1;height:3px;background:var(--border2);border-radius:99px;overflow:hidden;}
-.sc-pbar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .5s ease;}
-.sc-pbest{font-size:10px;font-weight:700;color:var(--muted);flex-shrink:0;}
+.sc{flex-direction:column;align-items:stretch !important;}
+.sc-card-top{display:flex;align-items:center;gap:13px;width:100%;}
+.sc-progress-wrap{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);}
+.sc-pbar{height:6px;background:var(--border2);border-radius:99px;overflow:hidden;margin-bottom:6px;}
+.sc-pbar-fill{height:100%;border-radius:99px;transition:width .6s ease;}
+.sc-prog-info{display:flex;justify-content:space-between;align-items:center;}
+.sc-prog-text{font-size:11px;color:var(--muted);font-weight:500;}
+.sc-prog-pct{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--accent);}
 
 /* === SOUND TOGGLE === */
 .sound-tog{position:absolute;top:18px;right:62px;width:38px;height:38px;
@@ -406,82 +428,6 @@ body.light .rse-box{background:#fff;border-color:#e4e7f3;}
 .btn-review.hidden{display:none;}
 
 
-/* === FLASH CARDS BUTTON ON HOME === */
-.fc-banner{margin:10px 13px 0;background:linear-gradient(135deg,rgba(98,87,255,.15),rgba(185,77,255,.1));
-  border:1px solid rgba(98,87,255,.3);border-radius:18px;padding:16px 18px;
-  display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .18s;}
-.fc-banner:active{transform:scale(.98);}
-.fc-ico{width:46px;height:46px;border-radius:13px;font-size:24px;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 4px 16px rgba(98,87,255,.4);}
-.fc-info{flex:1;min-width:0;}
-.fc-ti{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--white);margin-bottom:2px;}
-.fc-su{font-size:12px;color:var(--muted);}
-.fc-arrow{font-size:18px;color:var(--accent);flex-shrink:0;}
-body.light .fc-banner{background:linear-gradient(135deg,rgba(91,81,229,.08),rgba(165,67,232,.06));}
-
-/* === FLASH CARDS SCREEN === */
-#fc-screen{min-height:100vh;}
-#fc-screen.active .fc-stage{min-height:480px;}
-.fc-hdr{display:flex;align-items:center;gap:10px;padding:13px 15px;
-  position:sticky;top:0;z-index:30;
-  background:rgba(3,4,13,.97);backdrop-filter:blur(22px);border-bottom:1px solid var(--border);}
-body.light .fc-hdr{background:rgba(244,245,251,.97);border-bottom-color:#e4e7f3;}
-.fc-hdr-mid{flex:1;text-align:center;}
-.fc-hdr-ti{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--text);}
-.fc-hdr-su{font-size:11px;color:var(--muted);margin-top:2px;}
-
-.fc-stage{flex:1;display:flex;align-items:center;justify-content:center;
-  padding:24px 20px;min-height:480px;}
-.fc-card{width:100%;max-width:340px;min-height:440px;
-  position:relative;cursor:pointer;
-  transition:transform .25s ease;}
-.fc-card:active{transform:scale(.98);}
-.fc-face{
-  border-radius:24px;
-  display:flex;flex-direction:column;padding:24px;min-height:440px;
-  border:1px solid var(--border);background:var(--card);
-  box-shadow:0 10px 40px rgba(0,0,0,.3);
-  transition:opacity .35s ease, transform .35s ease;
-}
-body.light .fc-face{box-shadow:0 10px 30px rgba(0,0,0,.08);}
-.fc-front{background:linear-gradient(155deg,var(--card) 0%,rgba(98,87,255,.06) 100%);}
-.fc-back{background:linear-gradient(155deg,var(--card) 0%,rgba(0,229,145,.05) 100%);
-  position:absolute;inset:0;opacity:0;pointer-events:none;transform:translateY(8px);}
-.fc-card.flipped .fc-front{opacity:0;pointer-events:none;transform:translateY(-8px);}
-.fc-card.flipped .fc-back{opacity:1;pointer-events:auto;transform:translateY(0);}
-.fc-tag{display:inline-block;font-family:'Syne',sans-serif;font-size:9px;font-weight:800;
-  letter-spacing:2px;color:var(--accent);background:rgba(98,87,255,.13);
-  padding:5px 11px;border-radius:6px;margin-bottom:18px;align-self:flex-start;}
-.fc-tag-back{color:var(--green);background:rgba(0,229,145,.13);}
-.fc-q{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;line-height:1.5;
-  color:var(--text);flex:1;display:flex;align-items:center;text-align:left;min-height:200px;}
-.fc-a-block{flex:1;display:flex;flex-direction:column;justify-content:center;gap:14px;}
-.fc-a-row{display:flex;gap:11px;align-items:flex-start;}
-.fc-a-let{width:34px;height:34px;border-radius:9px;flex-shrink:0;
-  background:var(--green);color:#000;font-family:'Syne',sans-serif;
-  font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;}
-.fc-a-txt{font-family:'Syne',sans-serif;font-size:15px;font-weight:600;line-height:1.45;color:var(--green);}
-.fc-e-block{margin-top:14px;padding:13px 14px;border-radius:12px;
-  background:rgba(98,87,255,.06);border:1px solid rgba(98,87,255,.2);}
-.fc-e-lbl{font-family:'Syne',sans-serif;font-size:9px;font-weight:800;
-  letter-spacing:1.5px;color:var(--accent);margin-bottom:6px;}
-.fc-e-txt{font-size:12.5px;line-height:1.5;color:var(--text);}
-.fc-hint{margin-top:auto;padding-top:14px;text-align:center;
-  font-size:11px;color:var(--muted);opacity:.7;}
-
-.fc-foot{padding:14px 22px 22px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
-.fc-nav-btn{flex:1;padding:14px;border-radius:13px;border:1px solid var(--border);
-  background:var(--card);color:var(--text);font-family:'Syne',sans-serif;
-  font-size:13px;font-weight:700;cursor:pointer;transition:all .14s;}
-.fc-nav-btn:active{transform:scale(.96);}
-.fc-nav-btn:disabled{opacity:.35;cursor:default;}
-.fc-nav-btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));
-  color:#fff;border-color:transparent;box-shadow:0 4px 16px rgba(98,87,255,.35);}
-.fc-progress{flex:1.4;text-align:center;font-family:'Syne',sans-serif;
-  font-size:13px;font-weight:700;color:var(--muted);}
-.fc-progress strong{color:var(--accent);font-size:18px;}
-
 /* === EXPLANATION IN FEEDBACK BAR === */
 .fb-exp{margin-top:10px;padding:11px 13px;border-radius:11px;
   background:rgba(98,87,255,.07);border:1px solid rgba(98,87,255,.18);
@@ -496,6 +442,103 @@ body.light .fb-exp{background:rgba(91,81,229,.06);border-color:rgba(91,81,229,.2
   color:var(--accent);font-family:'Syne',sans-serif;font-size:13px;font-weight:700;
   cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;
   transition:all .15s;}
+.mode-fc-btn:active{transform:scale(.97);}
+
+
+/* === FLASH CARDS BANNER ON HOME === */
+.fc-banner{margin:10px 13px 0;background:linear-gradient(135deg,rgba(98,87,255,.18),rgba(185,77,255,.12));
+  border:1px solid rgba(98,87,255,.35);border-radius:18px;padding:16px 18px;
+  display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .18s;}
+.fc-banner:active{transform:scale(.98);}
+.fc-ico{width:48px;height:48px;border-radius:14px;font-size:26px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 4px 20px rgba(98,87,255,.45);}
+.fc-info{flex:1;min-width:0;}
+.fc-ti{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--white);margin-bottom:2px;}
+.fc-su{font-size:12px;color:var(--muted);}
+.fc-arrow{font-size:20px;color:var(--accent);flex-shrink:0;}
+body.light .fc-banner{background:linear-gradient(135deg,rgba(91,81,229,.1),rgba(165,67,232,.07));}
+
+/* === FLASH CARDS SCREEN — simple vertical layout === */
+.fc-hdr{display:flex;align-items:center;gap:10px;padding:13px 15px;
+  background:rgba(3,4,13,.97);backdrop-filter:blur(22px);border-bottom:1px solid var(--border);
+  flex-shrink:0;position:sticky;top:0;z-index:30;}
+body.light .fc-hdr{background:rgba(244,245,251,.97);border-bottom-color:#e4e7f3;}
+.fc-hdr-mid{flex:1;text-align:center;}
+.fc-hdr-ti{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--text);}
+.fc-hdr-su{font-size:11px;color:var(--muted);margin-top:2px;}
+
+.fc-body{padding:20px 18px 24px;width:100%;box-sizing:border-box;}
+
+.fc-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:24px 22px;
+  box-shadow:0 10px 40px rgba(0,0,0,.3);
+  cursor:pointer;
+  transition:transform .25s ease, box-shadow .25s ease;
+  position:relative;
+  overflow:hidden;
+}
+body.light .fc-card{box-shadow:0 10px 30px rgba(0,0,0,.08);}
+.fc-card:active{transform:scale(.98);}
+.fc-card.flipping{transform:scale(.94);opacity:.5;transition:all .2s ease;}
+
+/* Gradient stripe at top of card */
+.fc-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+}
+.fc-card.is-answer::before{
+  background:linear-gradient(90deg,var(--green),#00d2a0);
+}
+
+.fc-tag{display:inline-block;font-family:'Syne',sans-serif;font-size:10px;font-weight:800;
+  letter-spacing:2px;color:var(--accent);background:rgba(98,87,255,.14);
+  padding:6px 13px;border-radius:7px;margin-bottom:18px;}
+.fc-card.is-answer .fc-tag{color:var(--green);background:rgba(0,229,145,.14);}
+
+.fc-emoji{font-size:48px;margin-bottom:14px;text-align:center;}
+
+.fc-q{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;line-height:1.5;
+  color:var(--text);margin-bottom:20px;min-height:80px;}
+
+.fc-a-row{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px;}
+.fc-a-let{width:36px;height:36px;border-radius:10px;flex-shrink:0;
+  background:var(--green);color:#000;font-family:'Syne',sans-serif;
+  font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 12px rgba(0,229,145,.35);}
+.fc-a-txt{font-family:'Syne',sans-serif;font-size:15px;font-weight:600;line-height:1.45;
+  color:var(--green);padding-top:4px;}
+
+.fc-e-block{padding:14px;border-radius:13px;
+  background:rgba(98,87,255,.07);border:1px solid rgba(98,87,255,.2);margin-bottom:16px;}
+.fc-e-lbl{font-family:'Syne',sans-serif;font-size:9px;font-weight:800;
+  letter-spacing:1.5px;color:var(--accent);margin-bottom:6px;}
+.fc-e-txt{font-size:13px;line-height:1.55;color:var(--text);}
+
+.fc-hint{text-align:center;font-size:12px;color:var(--muted);opacity:.7;
+  padding:4px 0;font-style:italic;}
+
+.fc-foot{padding:14px 18px 22px;display:flex;align-items:center;gap:10px;
+  background:var(--bg);border-top:1px solid var(--border);position:sticky;bottom:0;}
+body.light .fc-foot{border-top-color:#e4e7f3;}
+.fc-nav-btn{flex:1;padding:14px;border-radius:13px;border:1px solid var(--border);
+  background:var(--card);color:var(--text);font-family:'Syne',sans-serif;
+  font-size:13px;font-weight:700;cursor:pointer;transition:all .14s;}
+.fc-nav-btn:active{transform:scale(.96);}
+.fc-nav-btn:disabled{opacity:.35;}
+.fc-nav-btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#fff;border-color:transparent;box-shadow:0 4px 16px rgba(98,87,255,.35);}
+.fc-progress{flex:1.2;text-align:center;font-family:'Syne',sans-serif;
+  font-size:14px;font-weight:700;color:var(--muted);}
+.fc-progress strong{color:var(--accent);font-size:18px;}
+
+.mode-fc-btn{margin-top:8px;width:100%;padding:13px;border-radius:13px;
+  border:1.5px dashed var(--accent);background:rgba(98,87,255,.06);
+  color:var(--accent);font-family:'Syne',sans-serif;font-size:13px;font-weight:700;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
 .mode-fc-btn:active{transform:scale(.97);}
 
 </style>
@@ -601,27 +644,9 @@ body.light .fb-exp{background:rgba(91,81,229,.06);border-color:rgba(91,81,229,.2
     </div>
     <div style="width:36px"></div>
   </div>
-  <div class="fc-stage">
+  <div class="fc-body">
     <div class="fc-card" id="fcCard" onclick="flipCard()">
-      <div class="fc-face fc-front">
-        <div class="fc-tag">SAVOL</div>
-        <div class="fc-q" id="fcQ"></div>
-        <div class="fc-hint">Javobni ko'rish uchun bosing</div>
-      </div>
-      <div class="fc-face fc-back">
-        <div class="fc-tag fc-tag-back">JAVOB</div>
-        <div class="fc-a-block">
-          <div class="fc-a-row">
-            <div class="fc-a-let" id="fcLet">A</div>
-            <div class="fc-a-txt" id="fcA"></div>
-          </div>
-          <div class="fc-e-block" id="fcEBlock">
-            <div class="fc-e-lbl">IZOH</div>
-            <div class="fc-e-txt" id="fcE"></div>
-          </div>
-        </div>
-        <div class="fc-hint">Keyingi kartochka uchun bosing</div>
-      </div>
+      <div id="fcContent"></div>
     </div>
   </div>
   <div class="fc-foot">
@@ -1183,6 +1208,16 @@ let pendingSubj=null; // subject waiting for mode selection
 const TG=(window.Telegram&&window.Telegram.WebApp)?window.Telegram.WebApp:null;
 const TGCloud=TG?TG.CloudStorage:null;
 
+// Simple hash for question identification
+function hashQ(text){
+  let h = 0;
+  for(let i = 0; i < text.length; i++){
+    h = ((h << 5) - h) + text.charCodeAt(i);
+    h |= 0;
+  }
+  return h;
+}
+
 const ST = {
   // In-memory cache so UI updates immediately
   _cache: {},
@@ -1238,7 +1273,7 @@ const ST = {
 };
 
 // Cloud storage keys we use
-const CLOUD_KEYS=['th_ach','th_sessions','th_subj_done','th_theme','th_sound','th_best_raqamli','th_att_raqamli','th_best_mikro','th_att_mikro','th_best_siyosat','th_att_siyosat','th_best_pul','th_att_pul','th_best_tahlil','th_att_tahlil'];
+const CLOUD_KEYS=['th_ach','th_sessions','th_subj_done','th_theme','th_sound','th_best_raqamli','th_att_raqamli','th_answered_raqamli','th_best_mikro','th_att_mikro','th_answered_mikro','th_best_siyosat','th_att_siyosat','th_answered_siyosat','th_best_pul','th_att_pul','th_answered_pul','th_best_tahlil','th_att_tahlil','th_answered_tahlil'];
 
 // Achievements definitions
 const ACHIEVEMENTS = [
@@ -1464,15 +1499,73 @@ function startFlashCards(s) {
   renderFlashCard();
 }
 
+// Emoji palette for question topics
+const FC_EMOJIS = {
+  'pul':['💰','💵','💳','🏦','💸'],
+  'bank':['🏦','💼','💳','🏛️'],
+  'inflyatsiya':['📈','💹','💸'],
+  'soliq':['📋','💼','🏛️'],
+  'iqtisod':['📊','📈','💼'],
+  'monopol':['👑','🎯','⚖️'],
+  'raqobat':['🥊','⚔️','🎯'],
+  'narx':['💲','🏷️','📉'],
+  'bozor':['🛒','🏪','📊'],
+  'raqamli':['💻','📱','🌐'],
+  'internet':['🌐','💻','📡'],
+  'blokcheyn':['⛓️','🔗','🧩'],
+  'kriptovalyuta':['₿','💎','🔐'],
+  'sun\'iy intellekt':['🤖','🧠','✨'],
+  'bulutli':['☁️','💾','🔄'],
+  'davlat':['🏛️','🇺🇿','📜'],
+  'byudjet':['📊','💼','💰'],
+  'kredit':['🏦','📝','💵'],
+  'foiz':['📈','%','💹'],
+  'tahlil':['📊','📈','🔍'],
+  'statistika':['📊','📉','🔢'],
+  'model':['🧮','📐','🔬'],
+  'mehnat':['💼','👷','🛠️'],
+  'ish':['💼','👔','🏢'],
+  'aholi':['👥','🌍','📊'],
+  'eksport':['📦','🚢','🌍'],
+  'import':['📥','✈️','🛒'],
+  'fan':['🔬','📚','🎓'],
+  'jamiyat':['👥','🏘️','🌍'],
+  'texnologiya':['⚙️','🔧','🚀'],
+  'platform':['🖥️','📱','🌐'],
+  'investitsiya':['💎','📈','💼'],
+};
+
+function getFCEmoji(q){
+  const text = (q.q + ' ' + q.o.join(' ')).toLowerCase();
+  for(const key in FC_EMOJIS){
+    if(text.includes(key)){
+      const list = FC_EMOJIS[key];
+      return list[Math.floor(Math.random()*list.length)];
+    }
+  }
+  // Default emojis
+  const defaults = ['💡','📚','🎯','✨','🧠','📖','🔍','💭'];
+  return defaults[Math.floor(Math.random()*defaults.length)];
+}
+
 function renderFlashCard() {
   const card = document.getElementById('fcCard');
-  card.classList.remove('flipped');
+  const content = document.getElementById('fcContent');
   const q = fcCards[fcIdx];
   const letters = ['A', 'B', 'C', 'D'];
-  document.getElementById('fcQ').textContent = q.q;
-  document.getElementById('fcLet').textContent = letters[q.c];
-  document.getElementById('fcA').textContent = q.o[q.c];
-  document.getElementById('fcE').textContent = generateExplanation(q);
+  const emoji = getFCEmoji(q);
+  
+  // Always start with question side (not flipped)
+  card.classList.remove('is-answer');
+  
+  // Render question side
+  content.innerHTML = `
+    <div class="fc-tag">SAVOL ${fcIdx + 1}</div>
+    <div class="fc-emoji">${emoji}</div>
+    <div class="fc-q">${q.q}</div>
+    <div class="fc-hint">👆 Javobni ko'rish uchun bosing</div>
+  `;
+  
   document.getElementById('fcIdx').textContent = fcIdx + 1;
   document.getElementById('fcPrev').disabled = fcIdx === 0;
   document.getElementById('fcNext').textContent = fcIdx === fcCards.length - 1 ? 'Tugatish ✓' : 'Keyingi →';
@@ -1480,7 +1573,45 @@ function renderFlashCard() {
 
 function flipCard() {
   const card = document.getElementById('fcCard');
-  card.classList.toggle('flipped');
+  const content = document.getElementById('fcContent');
+  const q = fcCards[fcIdx];
+  const letters = ['A', 'B', 'C', 'D'];
+  const isAnswer = card.classList.contains('is-answer');
+  
+  // Add flipping animation
+  card.classList.add('flipping');
+  
+  setTimeout(() => {
+    if (isAnswer) {
+      // Going back to question
+      card.classList.remove('is-answer');
+      const emoji = getFCEmoji(q);
+      content.innerHTML = `
+        <div class="fc-tag">SAVOL ${fcIdx + 1}</div>
+        <div class="fc-emoji">${emoji}</div>
+        <div class="fc-q">${q.q}</div>
+        <div class="fc-hint">👆 Javobni ko'rish uchun bosing</div>
+      `;
+    } else {
+      // Showing answer
+      card.classList.add('is-answer');
+      content.innerHTML = `
+        <div class="fc-tag">✅ TO'G'RI JAVOB</div>
+        <div class="fc-emoji">🎯</div>
+        <div class="fc-a-row">
+          <div class="fc-a-let">${letters[q.c]}</div>
+          <div class="fc-a-txt">${q.o[q.c]}</div>
+        </div>
+        <div class="fc-e-block">
+          <div class="fc-e-lbl">📖 IZOH</div>
+          <div class="fc-e-txt">${generateExplanation(q)}</div>
+        </div>
+        <div class="fc-hint">👆 Savolni qaytadan ko'rish uchun bosing</div>
+      `;
+    }
+    card.classList.remove('flipping');
+  }, 200);
+  
   try{
     if(window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.HapticFeedback){
       window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
@@ -1520,6 +1651,10 @@ function init(){
   renderAchievements();
   
   // Render subjects
+  renderSubjects();
+}
+
+function renderSubjects(){
   const g=document.getElementById('subjectsGrid');g.innerHTML='';
   SUBJECTS.forEach(s=>{
     const d=document.createElement('div');
@@ -1527,17 +1662,33 @@ function init(){
     d.style.setProperty('--sc-g',s.sg);d.style.setProperty('--sc-b',s.sb);
     const best = ST.get('best_'+s.id, 0);
     const attempts = ST.get('att_'+s.id, 0);
-    const progBar = best > 0 ? `<div class="sc-progress">
-      <div class="sc-pbar"><div class="sc-pbar-fill" style="width:${best}%"></div></div>
-      <div class="sc-pbest">${best}%</div>
-    </div>` : '';
-    d.innerHTML=`<div class="sc-ico" style="background:${s.ibg}">${s.icon}</div>
-      <div class="sc-info">
-        <div class="sc-name">${s.name}</div>
-        <div class="sc-meta">${s.desc}${attempts > 0 ? ' • '+attempts+' marta' : ''}</div>
-        ${progBar}
+    const answered = ST.get('answered_'+s.id, []);
+    const totalQ = s.questions.length;
+    const answeredCount = answered.length;
+    const answeredPct = totalQ > 0 ? Math.round(answeredCount/totalQ*100) : 0;
+    
+    // Color based on progress
+    let barColor = 'linear-gradient(90deg,var(--accent),var(--accent2))';
+    if(answeredPct >= 70) barColor = 'linear-gradient(90deg,#00c878,#00e591)';
+    else if(answeredPct >= 30) barColor = 'linear-gradient(90deg,#e6a900,#ffc300)';
+    else if(answeredPct > 0) barColor = 'linear-gradient(90deg,#e63950,#ff5577)';
+    
+    const progBar = answeredCount > 0 ? `<div class="sc-progress-wrap">
+      <div class="sc-pbar"><div class="sc-pbar-fill" style="width:${answeredPct}%;background:${barColor}"></div></div>
+      <div class="sc-prog-info">
+        <span class="sc-prog-text">${answeredCount}/${totalQ} javob berildi</span>
+        <span class="sc-prog-pct">${answeredPct}%</span>
       </div>
-      <div class="sc-btn${s.locked?' lock':''}">${s.locked?'🔒':'▶ Start'}</div>`;
+    </div>` : '';
+    d.innerHTML=`<div class="sc-card-top">
+        <div class="sc-ico" style="background:${s.ibg}">${s.icon}</div>
+        <div class="sc-info">
+          <div class="sc-name">${s.name}</div>
+          <div class="sc-meta">${s.desc}${attempts > 0 ? ' • '+attempts+' marta' : ''}</div>
+        </div>
+        <div class="sc-btn${s.locked?' lock':''}">${s.locked?'🔒':'▶ Start'}</div>
+      </div>
+      ${progBar}`;
     d.onclick=s.locked?()=>toast('Tez orada! 🚀'):()=>openModeSelect(s);
     g.appendChild(d);
   });
@@ -1613,6 +1764,7 @@ function closeModal(){document.getElementById('modeModal').classList.remove('sho
 function show(id){
   document.querySelectorAll('.screen').forEach(s=>{s.classList.remove('active');s.style.display='';});
   const el=document.getElementById(id);el.style.display='flex';
+  window.scrollTo(0,0);
   requestAnimationFrame(()=>el.classList.add('active'));
 }
 function goHome(){
@@ -1621,6 +1773,7 @@ function goHome(){
   const ban=document.getElementById('revBanner');if(ban)ban.remove();
   reviewMode=false;mistakes=[];
   renderAchievements();
+  renderSubjects();
 }
 
 function start(s,count){
@@ -1681,6 +1834,13 @@ function pick(btn,ch,co,e){
   if(ok){
     score++;
     document.getElementById('scTag').textContent=`✓ ${score}`;
+    // Track this question as correctly answered (unique by question text hash)
+    const qHash = hashQ(qs[qi].q);
+    let answered = ST.get('answered_'+cur.id, []);
+    if(!answered.includes(qHash)){
+      answered.push(qHash);
+      ST.set('answered_'+cur.id, answered);
+    }
     playSound('correct');
     try{
       if(window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.HapticFeedback){
